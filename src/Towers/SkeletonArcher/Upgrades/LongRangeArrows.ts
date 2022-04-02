@@ -1,4 +1,4 @@
-import { TowerUpgrade } from "../TowerUpgrade";
+import { TowerUpgrade } from "../../TowerUpgrade";
 
 export class LongRangeArrows extends TowerUpgrade {
     public name = "Long Range Arrows";

@@ -1,4 +1,4 @@
-import { TowerUpgrade } from "../TowerUpgrade";
+import { TowerUpgrade } from "../../TowerUpgrade";
 
 export class QuickShots extends TowerUpgrade {
     public name = "Quick Shots";

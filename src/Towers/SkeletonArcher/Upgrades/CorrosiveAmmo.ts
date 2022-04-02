@@ -1,4 +1,4 @@
-import { TowerUpgrade } from "../TowerUpgrade";
+import { TowerUpgrade } from "../../TowerUpgrade";
 
 export class CorrosiveAmmo extends TowerUpgrade {
     public name = "Corrosive Ammo";

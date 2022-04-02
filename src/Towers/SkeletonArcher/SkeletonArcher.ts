@@ -1,16 +1,16 @@
 import { TowerType } from "../TowerType";
 import { TowerUpgrade } from "../TowerUpgrade";
-import { MeatWagon } from "./MeatWagon";
-import { EnhancedEyesight } from "./EnhancedEyesight";
-import { LongRangeArrows } from "./LongRangeArrows";
-import { QuickShots } from "./QuickShots";
-import { RazorSharpArrows } from "./RazorSharpArrows";
-import { BurningArcher } from "./BurningArcher";
-import { SharpArrows } from "./SharpArrows";
-import { TripleShot } from "./TripleShot";
-import { VeryQuickShots } from "./VeryQuickShots";
-import { CorrosiveAmmo } from "./CorrosiveAmmo";
-import { StarThrower } from "./StarThrower";
+import { MeatWagon } from "./Upgrades/MeatWagon";
+import { EnhancedEyesight } from "./Upgrades/EnhancedEyesight";
+import { LongRangeArrows } from "./Upgrades/LongRangeArrows";
+import { QuickShots } from "./Upgrades/QuickShots";
+import { RazorSharpArrows } from "./Upgrades/RazorSharpArrows";
+import { BurningArcher } from "./Upgrades/BurningArcher";
+import { SharpArrows } from "./Upgrades/SharpArrows";
+import { TripleShot } from "./Upgrades/TripleShot";
+import { VeryQuickShots } from "./Upgrades/VeryQuickShots";
+import { CorrosiveAmmo } from "./Upgrades/CorrosiveAmmo";
+import { StarThrower } from "./Upgrades/StarThrower";
 
 export class SkeletonArcher extends TowerType {
     public icon = "ReplaceableTextures\\CommandButtons\\BTNSkeletonArcher.blp";
