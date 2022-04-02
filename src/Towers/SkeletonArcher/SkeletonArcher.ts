@@ -28,6 +28,8 @@ export class SkeletonArcher extends TowerType {
             new QuickShots(),
             new VeryQuickShots(),
             new TripleShot(),
+            // TODO: Add Upgrade
+            // TODO: Add Upgrade
         ],
         [
             new LongRangeArrows(),
