@@ -11,6 +11,8 @@ import { TripleShot } from "./Upgrades/TripleShot";
 import { VeryQuickShots } from "./Upgrades/VeryQuickShots";
 import { CorrosiveAmmo } from "./Upgrades/CorrosiveAmmo";
 import { StarThrower } from "./Upgrades/StarThrower";
+import { SharpShooter } from "./Upgrades/SharpShooter";
+import { BowMaster } from "./Upgrades/BowMaster";
 
 export class SkeletonArcher extends TowerType {
     public icon = "ReplaceableTextures\\CommandButtons\\BTNSkeletonArcher.blp";
@@ -31,6 +33,8 @@ export class SkeletonArcher extends TowerType {
             new LongRangeArrows(),
             new EnhancedEyesight(),
             new BurningArcher(),
+            new SharpShooter(),
+            new BowMaster(),
         ]
     ];
     public unitTypeId: number = FourCC('h000');
