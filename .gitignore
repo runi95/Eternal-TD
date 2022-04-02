@@ -1,0 +1,12 @@
+.DS_Store
+.vscode
+.idea
+/lua
+/target
+/node_modules
+/package-lock.json
+maps/map/war3map.lua
+/logs
+/backups
+/logo
+settings.json
