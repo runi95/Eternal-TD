@@ -1,9 +1,9 @@
-import { BlueVillager } from "../Creeps/BlueVillager";
+import { BlueVillager } from "../Creeps/Villagers/BlueVillager";
 import { Creep } from "../Creeps/Creep";
-import { GreenVillager } from "../Creeps/GreenVillager";
-import { PinkVillager } from "../Creeps/PinkVillager";
-import { RedVillager } from "../Creeps/RedVillager";
-import { YellowVillager } from "../Creeps/YellowVillager";
+import { GreenVillager } from "../Creeps/Villagers/GreenVillager";
+import { PinkVillager } from "../Creeps/Villagers/PinkVillager";
+import { RedVillager } from "../Creeps/Villagers/RedVillager";
+import { YellowVillager } from "../Creeps/Villagers/YellowVillager";
 
 interface CreepSpawnDetails {
     creepType: typeof Creep;

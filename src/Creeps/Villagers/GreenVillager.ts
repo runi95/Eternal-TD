@@ -1,6 +1,6 @@
-import { Color } from "../Utility/Color";
+import { Color } from "../../Utility/Color";
+import { Creep } from "../Creep";
 import { BlueVillager } from "./BlueVillager";
-import { Creep } from "./Creep";
 
 export class GreenVillager extends Creep {
     public speed = 1.8;

@@ -1,5 +1,5 @@
-import { Color } from "../Utility/Color";
-import { Creep } from "./Creep";
+import { Color } from "../../Utility/Color";
+import { Creep } from "../Creep";
 import { GreenVillager } from "./GreenVillager";
 
 export class YellowVillager extends Creep {
