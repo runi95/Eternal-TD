@@ -1,4 +1,4 @@
-import { TowerUpgrade } from "../../TowerUpgrade";
+import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class MeatWagon extends TowerUpgrade {
     public name = "Meat Wagon";

@@ -1,18 +1,18 @@
 import { TowerType } from "../TowerType";
 import { TowerUpgrade } from "../TowerUpgrade";
-import { MeatWagon } from "./Upgrades/MeatWagon";
-import { EnhancedEyesight } from "./Upgrades/EnhancedEyesight";
-import { LongRangeArrows } from "./Upgrades/LongRangeArrows";
-import { QuickShots } from "./Upgrades/QuickShots";
-import { RazorSharpArrows } from "./Upgrades/RazorSharpArrows";
-import { BurningArcher } from "./Upgrades/BurningArcher";
-import { SharpArrows } from "./Upgrades/SharpArrows";
-import { TripleShot } from "./Upgrades/TripleShot";
-import { VeryQuickShots } from "./Upgrades/VeryQuickShots";
-import { CorrosiveAmmo } from "./Upgrades/CorrosiveAmmo";
-import { StarThrower } from "./Upgrades/StarThrower";
-import { SharpShooter } from "./Upgrades/SharpShooter";
-import { BowMaster } from "./Upgrades/BowMaster";
+import { MeatWagon } from "./Upgrades/Path1/MeatWagon";
+import { EnhancedEyesight } from "./Upgrades/Path3/EnhancedEyesight";
+import { LongRangeArrows } from "./Upgrades/Path3/LongRangeArrows";
+import { QuickShots } from "./Upgrades/Path2/QuickShots";
+import { RazorSharpArrows } from "./Upgrades/Path1/RazorSharpArrows";
+import { BurningArcher } from "./Upgrades/Path3/BurningArcher";
+import { SharpArrows } from "./Upgrades/Path1/SharpArrows";
+import { TripleShot } from "./Upgrades/Path2/TripleShot";
+import { VeryQuickShots } from "./Upgrades/Path2/VeryQuickShots";
+import { CorrosiveAmmo } from "./Upgrades/Path1/CorrosiveAmmo";
+import { StarThrower } from "./Upgrades/Path1/StarThrower";
+import { SharpShooter } from "./Upgrades/Path3/SharpShooter";
+import { BowMaster } from "./Upgrades/Path3/BowMaster";
 
 export class SkeletonArcher extends TowerType {
     public icon = "ReplaceableTextures\\CommandButtons\\BTNSkeletonArcher.blp";

@@ -1,4 +1,4 @@
-import { TowerUpgrade } from "../../TowerUpgrade";
+import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class EnhancedEyesight extends TowerUpgrade {
     public name = "Enhanced Eyesight";
