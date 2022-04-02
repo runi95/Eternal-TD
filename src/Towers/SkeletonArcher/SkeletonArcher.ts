@@ -5,7 +5,7 @@ import { EnhancedEyesight } from "./EnhancedEyesight";
 import { LongRangeArrows } from "./LongRangeArrows";
 import { QuickShots } from "./QuickShots";
 import { RazorSharpArrows } from "./RazorSharpArrows";
-import { SearingArrows } from "./SearingArrows";
+import { BurningArcher } from "./BurningArcher";
 import { SharpArrows } from "./SharpArrows";
 import { TripleShot } from "./TripleShot";
 import { VeryQuickShots } from "./VeryQuickShots";
@@ -30,7 +30,7 @@ export class SkeletonArcher extends TowerType {
         [
             new LongRangeArrows(),
             new EnhancedEyesight(),
-            new SearingArrows(),
+            new BurningArcher(),
         ]
     ];
     public unitTypeId: number = FourCC('h000');
