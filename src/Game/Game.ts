@@ -263,7 +263,7 @@ export class Game {
                 this.roundCreepController.set(handleId, new SpawnedCreep(initializedCreepType, this.checkpoints[0], 0));
                 IssuePointOrder(creep, 'move', this.checkpoints[0].x, this.checkpoints[0].y);
 
-                if (creepCount > creepSpawnDetails.amount) {
+                if (creepCount >= creepSpawnDetails.amount) {
                     creepIndex++;
                     creepCount = 0;
                 }
