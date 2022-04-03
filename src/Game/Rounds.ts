@@ -6,6 +6,8 @@ import { RedVillager } from "../Creeps/Normal/RedVillager";
 import { YellowVillager } from "../Creeps/Normal/YellowVillager";
 import { Modifier } from "../Creeps/Modifier";
 import { RegenModifier } from "../Creeps/Modifiers/RegenModifier";
+import { BlackVillager } from "../Creeps/Normal/BlackVillager";
+import { WhiteVillager } from "../Creeps/Normal/WhiteVillager";
 
 const regenModifier = new RegenModifier();
 
@@ -322,6 +324,66 @@ const rounds: Rounds = [
             delay: 0.9
         },
     ],
+
+    // ROUND 20:
+    [
+        {
+            creepType: BlackVillager,
+            amount: 6,
+            delay: 0.9
+        },
+    ],
+
+    // ROUND 21
+    [
+        {
+            creepType: YellowVillager,
+            amount: 40,
+            delay: 0.9
+        },
+        {
+            creepType: PinkVillager,
+            amount: 14,
+            delay: 0.9
+        },
+    ],
+
+    // ROUND 22:
+    [
+        {
+            creepType: WhiteVillager,
+            amount: 16,
+            delay: 0.9
+        },
+    ],
+
+    // ROUND 23:
+    [
+        {
+            creepType: BlackVillager,
+            amount: 7,
+            delay: 0.9
+        },
+        {
+            creepType: WhiteVillager,
+            amount: 7,
+            delay: 0.9
+        },
+    ],
+
+    // ROUND 24:
+    // [
+    //     {
+    //         creepType: BlueVillager,
+    //         amount: 20,
+    //         delay: 0.9
+    //     },
+    //     {
+    //         creepType: GreenVillager, // TODO: Should be camo!
+    //         amount: 1,
+    //         delay: 0.9
+    //     },
+    // ],
 ];
 
 export function getRoundCreeps(currentRound: number): Round {
