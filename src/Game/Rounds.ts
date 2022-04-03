@@ -1,14 +1,19 @@
-import { BlueVillager } from "../Creeps/Villagers/BlueVillager";
+import { BlueVillager } from "../Creeps/Normal/BlueVillager";
 import { Creep } from "../Creeps/Creep";
-import { GreenVillager } from "../Creeps/Villagers/GreenVillager";
-import { PinkVillager } from "../Creeps/Villagers/PinkVillager";
-import { RedVillager } from "../Creeps/Villagers/RedVillager";
-import { YellowVillager } from "../Creeps/Villagers/YellowVillager";
+import { GreenVillager } from "../Creeps/Normal/GreenVillager";
+import { PinkVillager } from "../Creeps/Normal/PinkVillager";
+import { RedVillager } from "../Creeps/Normal/RedVillager";
+import { YellowVillager } from "../Creeps/Normal/YellowVillager";
+import { Modifier } from "../Creeps/Modifier";
+import { RegenModifier } from "../Creeps/Modifiers/RegenModifier";
+
+const regenModifier = new RegenModifier();
 
 interface CreepSpawnDetails {
     creepType: typeof Creep;
     amount: number;
     delay: number;
+    modifiers?: Modifier[];
 }
 
 type Round = CreepSpawnDetails[];
@@ -275,36 +280,48 @@ const rounds: Rounds = [
     ],
 
     // ROUND 17:
-    // [
-    //     {
-    //         creepType: YellowVillager, // TODO: Should be regen!
-    //         amount: 12,
-    //         spacing: 1
-    //     },
-    // ],
+    [
+        {
+            creepType: YellowVillager,
+            amount: 12,
+            delay: 0.9,
+            modifiers: [regenModifier],
+        },
+    ],
 
     // ROUND 18:
-    // [
-    //     {
-    //         creepType: GreenVillager,
-    //         amount: 80,
-    //         spacing: 1
-    //     }
-    // ],
+    [
+        {
+            creepType: GreenVillager,
+            amount: 80,
+            delay: 0.9
+        }
+    ],
 
     // ROUND 19:
-    // [
-    //     {
-    //         creepType: GreenVillager,
-    //         amount: 10,
-    //         spacing: 1
-    //     },
-    //     {
-    //         creepType: YellowVillager,
-    //         amount: 4,
-    //         spacing: 1
-    //     }
-    // ]
+    [
+        {
+            creepType: GreenVillager,
+            amount: 10,
+            delay: 0.9
+        },
+        {
+            creepType: YellowVillager,
+            amount: 4,
+            delay: 0.9
+        },
+        {
+            creepType: YellowVillager,
+            amount: 5,
+            delay: 0.9,
+            modifiers: [regenModifier],
+        },
+        {
+            creepType: PinkVillager,
+            amount: 4,
+            delay: 0.9
+        },
+    ],
 ];
 
 export function getRoundCreeps(currentRound: number): Round {

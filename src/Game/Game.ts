@@ -7,20 +7,22 @@ import { DamageEngineGlobals } from "../Utility/DamageEngine/DamageEngineGlobals
 import { DamageEngine } from "../Utility/DamageEngine/DamageEngine";
 import { DamageEventController } from "../Utility/DamageEngine/DamageEventController";
 import { RoundCreepController } from "./RoundCreepController";
-import { Creep } from "../Creeps/Creep";
 import { SpawnedCreep } from "../Creeps/SpawnedCreep";
 import { Checkpoint } from "./Checkpoint";
 import { GroupInRange } from "../JassOverrides/GroupInRange";
 import { TowerSystem } from "./Frames";
 import { Tower } from "../Towers/Tower";
+import { Modifier } from "../Creeps/Modifier";
+import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
+import { regenUnitMap } from "../Creeps/Modifiers/RegenModifier"
 
 export class Game {
-    private readonly creepUnitId: number = FourCC('u000');
     private readonly timerUtils: TimerUtils;
     private readonly damageEngineGlobals: DamageEngineGlobals;
     private readonly damageEngine: DamageEngine;
     private readonly damageEventController: DamageEventController;
     private readonly roundCreepController: RoundCreepController;
+    private readonly creepRegenSystem: CreepRegenSystem;
     private readonly checkpoints: Checkpoint[];
     private readonly spells: Spells;
     private readonly towerSystem: TowerSystem;
@@ -34,6 +36,7 @@ export class Game {
         this.roundCreepController = new RoundCreepController();
         this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController);
         this.towerSystem = new TowerSystem(this.towers);
+        this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
 
         this.checkpoints = [
             // RED
@@ -99,6 +102,15 @@ export class Game {
         });
         constTrig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_CONSTRUCT_START);
 
+        const deathTrig: Trigger = new Trigger();
+        deathTrig.addAction(() => {
+            const trig: unit = GetTriggerUnit();
+            const trigHandleId: number = GetHandleId(trig);
+            regenUnitMap.delete(trigHandleId);
+            this.roundCreepController.delete(trigHandleId);
+        });
+        deathTrig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_DEATH);
+
         const trig: Trigger = new Trigger();
         let disableTrig = false;
         let eff: effect;
@@ -117,7 +129,7 @@ export class Game {
                     return;
                 }
 
-                const creep: Creep = this.roundCreepController.get(GetHandleId(u)) as Creep;
+                const creep: SpawnedCreep = this.roundCreepController.get(GetHandleId(u)) as SpawnedCreep;
                 const creepCheckpointIndex = creep.currentCheckpointIndex;
                 if (creepCheckpointIndex < index) {
                     return;
@@ -194,7 +206,9 @@ export class Game {
                     return RemoveUnit(enteringUnit);
                 }
 
-                (this.roundCreepController.get(GetHandleId(enteringUnit)) as Creep).setCheckpoint(nextCheckpoint, nextCheckpointIndex);
+                const spawnedCreep: SpawnedCreep = this.roundCreepController.get(GetHandleId(enteringUnit)) as SpawnedCreep;
+                spawnedCreep.currentCheckpoint = nextCheckpoint;
+                spawnedCreep.currentCheckpointIndex = nextCheckpointIndex;
                 IssuePointOrder(enteringUnit, 'move', nextCheckpoint.x, nextCheckpoint.y);
             });
             trig.registerEnterRectSimple(Rect(checkpoint.x - 32, checkpoint.y - 32, checkpoint.x + 32, checkpoint.y + 32));
@@ -235,11 +249,18 @@ export class Game {
             if (tick >= creepSpawnDetails.delay) {
                 tick = 0;
                 creepCount++;
-                const creep: unit = CreateUnit(Player(23), this.creepUnitId, -3296, 2049, 0);
+                const initializedCreepType = new creepSpawnDetails.creepType();
+                for (let i = 0; creepSpawnDetails.modifiers !== undefined && i < creepSpawnDetails.modifiers.length; i++) {
+                    (creepSpawnDetails.modifiers as Modifier[])[i].transform(initializedCreepType);
+                }
+
+                const creep: unit = CreateUnit(Player(23), initializedCreepType.unitTypeId, -3296, 2049, 0);
                 const handleId: number = GetHandleId(creep);
-                const initializedCreep = new creepSpawnDetails.creepType(new SpawnedCreep(this.checkpoints[0], 0));
-                initializedCreep.apply(creep);
-                this.roundCreepController.set(handleId, initializedCreep);
+                initializedCreepType.apply(creep);
+                for (let i = 0; creepSpawnDetails.modifiers !== undefined && i < creepSpawnDetails.modifiers.length; i++) {
+                    (creepSpawnDetails.modifiers as Modifier[])[i].apply(creep);
+                }
+                this.roundCreepController.set(handleId, new SpawnedCreep(initializedCreepType, this.checkpoints[0], 0));
                 IssuePointOrder(creep, 'move', this.checkpoints[0].x, this.checkpoints[0].y);
 
                 if (creepCount > creepSpawnDetails.amount) {

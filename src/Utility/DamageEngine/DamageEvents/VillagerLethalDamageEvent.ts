@@ -1,7 +1,7 @@
 import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { RoundCreepController } from "../../../Game/RoundCreepController";
-import { Creep } from "../../../Creeps/Creep";
+import { SpawnedCreep } from "../../../Creeps/SpawnedCreep";
 
 export class VillagerLethalDamageEvent implements DamageEvent {
     private readonly roundCreepController: RoundCreepController;
@@ -19,28 +19,20 @@ export class VillagerLethalDamageEvent implements DamageEvent {
         const x: number = GetUnitX(globals.DamageEventTarget as unit);
         const y: number = GetUnitY(globals.DamageEventTarget as unit);
         const face: number = GetUnitFacing(globals.DamageEventTarget as unit);
-        const lethalAbsDamage: number = Math.floor(Math.abs(globals.LethalDamageHP));
-        const [creepsToSummon] = this.findNextCreep(this.roundCreepController.get(globals.DamageEventTargetUnitId as number) as Creep, lethalAbsDamage);
-        for (let i = 0; i < creepsToSummon.length; i++) {
-            const newCreep: unit = CreateUnit(Player(23), creepsToSummon[i].unitTypeId, x, y, face);
-            this.roundCreepController.set(GetHandleId(newCreep), creepsToSummon[i]);
-            creepsToSummon[i].apply(newCreep);
-            IssuePointOrder(newCreep, 'move', creepsToSummon[i].currentCheckpoint.x, creepsToSummon[i].currentCheckpoint.y);
-        }
-    }
+        const spawnedCreep: SpawnedCreep = this.roundCreepController.get(globals.DamageEventTargetUnitId as number) as SpawnedCreep;
+        const { spawnedCreeps, overflowingDamage } = spawnedCreep.creep.dealDamage(globals.DamageEventAmount);
+        globals.DamageEventAmount = overflowingDamage;
 
-    private findNextCreep(currentCreep: Creep, damageOverflow: number): [Creep[], number] {        
-        if (damageOverflow === 0) {
-            return [currentCreep.children, damageOverflow];
+        if (spawnedCreeps.length > 0) {
+            spawnedCreep.creep = spawnedCreeps[0];
+            spawnedCreeps[0].apply(globals.DamageEventTarget as unit);
         }
-
-        const returnedCreeps: Creep[] = [];
-        for (let i = 0; i < currentCreep.children.length; i++) {
-            const [remainingCreeps, newOverflowCount] = this.findNextCreep(currentCreep.children[i], damageOverflow - 1);
-            returnedCreeps.concat(remainingCreeps);
-            damageOverflow = newOverflowCount;
+        for (let i = 1; i < spawnedCreeps.length; i++) {
+            const newCreep: unit = CreateUnit(Player(23), spawnedCreeps[i].unitTypeId, x, y, face);
+            const newSpawnedCreep = new SpawnedCreep(spawnedCreeps[i], spawnedCreep.currentCheckpoint, spawnedCreep.currentCheckpointIndex);
+            this.roundCreepController.set(GetHandleId(newCreep), newSpawnedCreep);
+            spawnedCreeps[i].apply(newCreep);
+            IssuePointOrder(newCreep, 'move', newSpawnedCreep.currentCheckpoint.x,newSpawnedCreep.currentCheckpoint.y);
         }
-
-        return [returnedCreeps, damageOverflow];
     }
 }

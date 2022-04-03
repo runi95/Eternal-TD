@@ -1,9 +1,9 @@
-import { Creep } from "../Creeps/Creep";
+import { SpawnedCreep } from "../Creeps/SpawnedCreep";
 
 export class RoundCreepController {
-    private creepMap: Map<number, Creep> = new Map<number, Creep>();
+    private creepMap: Map<number, SpawnedCreep> = new Map<number, SpawnedCreep>();
 
-    public set(unitId: number, creep: Creep): void {
+    public set(unitId: number, creep: SpawnedCreep): void {
         this.creepMap.set(unitId, creep);
     }
 
@@ -11,7 +11,7 @@ export class RoundCreepController {
         return this.creepMap.delete(unitId);
     }
 
-    public get(unitId: number): Creep | undefined {
+    public get(unitId: number): SpawnedCreep | undefined {
         return this.creepMap.get(unitId);
     }
 
