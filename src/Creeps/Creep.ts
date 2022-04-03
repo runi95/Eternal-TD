@@ -26,9 +26,9 @@ export class Creep {
 
     public dealLethalDamage(damageAmount: number): CreepDamageEvent {
         let spawnedCreeps: Creep[] = [];
-        for (let i = 0; i < this.children.length && damageAmount > 0; i++) {
+        for (let i = 0; i < this.children.length; i++) {
             this.children[i]._parent = this;
-            const creepDamageEvent = this.children[i].dealDamage(damageAmount - this.health);
+            const creepDamageEvent = this.children[i].dealDamage(damageAmount);
             damageAmount = creepDamageEvent.overflowingDamage;
             spawnedCreeps = spawnedCreeps.concat(creepDamageEvent.spawnedCreeps);
         }
