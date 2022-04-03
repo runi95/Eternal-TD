@@ -11,6 +11,7 @@ import { WhiteVillager } from "../Creeps/Normal/WhiteVillager";
 import { InvisibilityModifier } from "../Creeps/Modifiers/InvisibilityModifier";
 import { PurpleVillager } from "../Creeps/Normal/PurpleVillager";
 import { ZebraVillager } from "../Creeps/Normal/ZebraVillager";
+import { FortifiedVillager } from "../Creeps/Normal/FortifiedVillager";
 
 const regenModifier = new RegenModifier();
 const invisibilityModifier = new InvisibilityModifier();
@@ -426,7 +427,6 @@ const rounds: Rounds = [
             creepType: RedVillager,
             amount: 100,
             delay: 0.1,
-            modifiers: [regenModifier]
         },
         {
             creepType: BlueVillager,
@@ -446,7 +446,62 @@ const rounds: Rounds = [
     ],
 
     // ROUND 28:
-    // TODO: Implement reinforced villagers
+    [
+        {
+            creepType: FortifiedVillager,
+            amount: 6,
+            delay: 0.9,
+        },
+    ],
+
+    // ROUND 29:
+    [
+        {
+            creepType: YellowVillager,
+            amount: 50,
+            delay: 0.9,
+        },
+        {
+            creepType: YellowVillager,
+            amount: 15,
+            delay: 0.9,
+            modifiers: [regenModifier]
+        },
+    ],
+
+    // ROUND 30:
+    [
+        {
+            creepType: FortifiedVillager,
+            amount: 9,
+            delay: 0.9,
+        },
+    ],
+
+    // ROUND 31:
+    [
+        {
+            creepType: BlackVillager,
+            amount: 8,
+            delay: 0.9,
+        },
+        {
+            creepType: WhiteVillager,
+            amount: 8,
+            delay: 0.9,
+        },
+        {
+            creepType: ZebraVillager,
+            amount: 8,
+            delay: 0.9,
+        },
+        {
+            creepType: ZebraVillager,
+            amount: 2,
+            delay: 0.9,
+            modifiers: [regenModifier]
+        },
+    ],
 ];
 
 export function getRoundCreeps(currentRound: number): Round {
