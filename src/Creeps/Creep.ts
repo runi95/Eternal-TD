@@ -9,9 +9,9 @@ export class Creep {
     public health = 1;
     public speed = 1;
     public unitTypeId: number = FourCC('u000');
+    public color: Color = {r: 255, g: 255, b: 255, a: 255};
     protected children: Creep[] = [];
     protected _parent: Creep | null = null;
-    protected color: Color = {r: 255, g: 255, b: 255, a: 255};
 
     public apply(unit: unit): void {
         SetUnitVertexColor(unit, this.color.r, this.color.g, this.color.b, this.color.a);
