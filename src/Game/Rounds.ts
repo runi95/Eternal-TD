@@ -12,6 +12,9 @@ import { InvisibilityModifier } from "../Creeps/Modifiers/InvisibilityModifier";
 import { PurpleVillager } from "../Creeps/Normal/PurpleVillager";
 import { ZebraVillager } from "../Creeps/Normal/ZebraVillager";
 import { FortifiedVillager } from "../Creeps/Normal/FortifiedVillager";
+import { RainbowVillager } from "../Creeps/Normal/RainbowVillager";
+import { LargeVillager } from "../Creeps/Normal/LargeVillager";
+import { Zeppelin } from "../Creeps/Normal/Zeppelin";
 
 const regenModifier = new RegenModifier();
 const invisibilityModifier = new InvisibilityModifier();
@@ -500,6 +503,192 @@ const rounds: Rounds = [
             amount: 2,
             delay: 0.9,
             modifiers: [regenModifier]
+        },
+    ],
+
+    // ROUND 32:
+    [
+        {
+            creepType: BlackVillager,
+            amount: 15,
+            delay: 0.9,
+        },
+        {
+            creepType: WhiteVillager,
+            amount: 20,
+            delay: 0.9,
+        },
+        {
+            creepType: PurpleVillager,
+            amount: 10,
+            delay: 0.9,
+        },
+    ],
+
+    // ROUND 33:
+    [
+        {
+            creepType: RedVillager,
+            amount: 20,
+            delay: 0.1,
+            modifiers: [invisibilityModifier],
+        },
+        {
+            creepType: YellowVillager,
+            amount: 13,
+            delay: 0.6,
+            modifiers: [invisibilityModifier],
+        },
+    ],
+
+    // ROUND 34:
+    [
+        {
+            creepType: YellowVillager,
+            amount: 160,
+            delay: 0.05,
+        },
+        {
+            creepType: ZebraVillager,
+            amount: 6,
+            delay: 0.9,
+        },
+    ],
+
+    // ROUND 35:
+    [
+        {
+            creepType: PinkVillager,
+            amount: 35,
+            delay: 0.4,
+        },
+        {
+            creepType: BlackVillager,
+            amount: 30,
+            delay: 0.4,
+        },
+        {
+            creepType: WhiteVillager,
+            amount: 25,
+            delay: 0.4,
+        },
+        {
+            creepType: RainbowVillager,
+            amount: 6,
+            delay: 0.4,
+        },
+    ],
+
+    // ROUND 36:
+    [
+        {
+            creepType: PinkVillager,
+            amount: 140,
+            delay: 0.05,
+        },
+        {
+            creepType: GreenVillager,
+            amount: 30,
+            delay: 0.4,
+            modifiers: [regenModifier, invisibilityModifier],
+        },
+    ],
+
+    // ROUND 37:
+    [
+        {
+            creepType: BlackVillager,
+            amount: 25,
+            delay: 0.5,
+        },
+        {
+            creepType: WhiteVillager,
+            amount: 25,
+            delay: 0.5,
+        },
+        {
+            creepType: WhiteVillager,
+            amount: 7,
+            delay: 0.5,
+            modifiers: [invisibilityModifier],
+        },
+        {
+            creepType: ZebraVillager,
+            amount: 10,
+            delay: 0.5,
+        },
+        {
+            creepType: FortifiedVillager,
+            amount: 15,
+            delay: 0.5,
+        },
+    ],
+
+    // ROUND 38:
+    [
+        {
+            creepType: PinkVillager,
+            amount: 42,
+            delay: 0.1,
+        },
+        {
+            creepType: WhiteVillager,
+            amount: 17,
+            delay: 0.1,
+        },
+        {
+            creepType: ZebraVillager,
+            amount: 10,
+            delay: 0.1,
+        },
+        {
+            creepType: FortifiedVillager,
+            amount: 14,
+            delay: 0.1,
+        },
+        {
+            creepType: LargeVillager,
+            amount: 2,
+            delay: 0.9,
+        },
+    ],
+
+    // ROUND 39:
+    [
+        {
+            creepType: BlackVillager,
+            amount: 10,
+            delay: 0.1,
+        },
+        {
+            creepType: WhiteVillager,
+            amount: 10,
+            delay: 0.1,
+        },
+        {
+            creepType: ZebraVillager,
+            amount: 20,
+            delay: 0.1,
+        },
+        {
+            creepType: RainbowVillager,
+            amount: 18,
+            delay: 0.1,
+        },
+        {
+            creepType: RainbowVillager,
+            amount: 2,
+            delay: 0.1,
+            modifiers: [regenModifier],
+        },
+    ],
+
+    // ROUND 40:
+    [
+        {
+            creepType: Zeppelin,
+            amount: 1,
+            delay: 0.9,
         },
     ],
 ];
