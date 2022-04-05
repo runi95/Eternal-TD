@@ -15,7 +15,6 @@ import { SharpShooter } from "./Upgrades/Path3/SharpShooter";
 import { BowMaster } from "./Upgrades/Path3/BowMaster";
 
 export class SkeletonArcher extends TowerType {
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNSkeletonArcher.blp";
     public upgrades: TowerUpgrade[][] = [
         [
             new SharpArrows(),
