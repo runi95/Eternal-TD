@@ -7,6 +7,6 @@ export class VeryQuickShots extends TowerUpgrade {
     public description = "Attack +27.6% faster!";
 
     public applyUpgrade(unit: unit): void {
-        BlzSetUnitAttackCooldown(unit, BlzGetUnitAttackCooldown(unit, 0) / 1.2755, 0);
+        BlzSetUnitAttackCooldown(unit, BlzGetUnitAttackCooldown(unit, 0) * 0.745, 0);
     }
 }

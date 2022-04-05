@@ -14,7 +14,7 @@ export class BowMaster extends TowerUpgrade {
         // NOTE: For some reason index starts at 1 for the UNIT_WEAPON_RF_ATTACK_RANGE field and it adds range instead of setting it.
         BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 200);
 
-        BlzSetUnitAttackCooldown(unit, BlzGetUnitAttackCooldown(unit, 0) / 4.6875, 0);
+        BlzSetUnitAttackCooldown(unit, BlzGetUnitAttackCooldown(unit, 0) * 0.7895, 0);
         BlzSetUnitBaseDamage(unit, BlzGetUnitBaseDamage(unit, 0) + 3, 0);
         SetUnitAbilityLevel(unit, this.sharpShooterAbilityId, 2);
     }
