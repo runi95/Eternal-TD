@@ -10,5 +10,7 @@ export class StarThrower extends TowerUpgrade {
         BlzSetUnitBaseDamage(unit, BlzGetUnitBaseDamage(unit, 0) + 3, 0);
         BlzSetUnitWeaponStringField(unit, UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART, 0, 'Abilities\\Weapons\\FaerieDragonMissile\\FaerieDragonMissile.mdl');
         BlzSetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_PROJECTILE_SPEED, 0, BlzGetUnitWeaponRealField(unit, UNIT_WEAPON_RF_ATTACK_PROJECTILE_SPEED, 0) + 150);
+
+        // TODO: Increase damage against Large villagers
     }
 }

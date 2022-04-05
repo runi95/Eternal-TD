@@ -8,6 +8,7 @@ export class MeatWagon extends TowerUpgrade {
     public newUnitTypeId = FourCC('h001');
 
     public applyUpgrade(_unit: unit): void {
+        // TODO: Increase damage against Large villagers
         return;
     }
 }

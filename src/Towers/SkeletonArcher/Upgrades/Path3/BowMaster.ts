@@ -17,5 +17,7 @@ export class BowMaster extends TowerUpgrade {
         BlzSetUnitAttackCooldown(unit, BlzGetUnitAttackCooldown(unit, 0) * 0.7895, 0);
         BlzSetUnitBaseDamage(unit, BlzGetUnitBaseDamage(unit, 0) + 3, 0);
         SetUnitAbilityLevel(unit, this.sharpShooterAbilityId, 2);
+        
+        // TODO: Make sure this upgrade can damage any enemy of any type
     }
 }
