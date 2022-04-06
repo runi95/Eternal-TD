@@ -46,6 +46,8 @@ export class SeaGiantDamageEvent implements DamageEvent {
 
                 UnitDamageTargetBJ(trig, u, 1, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
             });
+            grp.destroy();
+            RemoveLocation(loc);
 
             if (ticks <= 0) {
                 this.timerUtils.releaseTimer(t);
