@@ -37,7 +37,6 @@ export class SeaGiantDamageEvent implements DamageEvent {
             ticks--;
 
             const loc: location = Location(x + 150 * Math.cos(45 * ticks), y + 150 * Math.sin(45 * ticks));
-            // DestroyEffect(AddSpecialEffectLoc('Abilities\\Spells\\Orc\\WarStomp\\WarStompCaster.mdl', loc));
             DestroyEffect(AddSpecialEffectLoc('Abilities\\Weapons\\CannonTowerMissile\\CannonTowerMissile.mdl', loc));
             const grp: GroupInRange = new GroupInRange(200, loc);
             grp.for((u: unit) => {
