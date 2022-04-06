@@ -5,10 +5,10 @@ import { HeavierRocks } from "./Upgrades/Path1/HeavierRocks";
 import { ReallyBigRocks } from "./Upgrades/Path1/ReallyBigRocks";
 import { FasterHurling } from "./Upgrades/Path2/FasterHurling";
 import { ExcessiveHurling } from "./Upgrades/Path2/ExcessiveHurling";
-import { ZeppelinMauler } from "./Upgrades/Path2/ZeppelinMauler";
+import { Wendigo } from "./Upgrades/Path2/Wendigo";
 import { ExtraRange } from "./Upgrades/Path3/ExtraRange";
 import { FragBombs } from "./Upgrades/Path3/FragBombs";
-import { ClusterBombs } from "./Upgrades/Path3/ClusterBombs";
+import { SeaGiant } from "./Upgrades/Path3/SeaGiant";
 
 export class Abomination extends TowerType {
     public upgrades: TowerUpgrade[][] = [
@@ -20,12 +20,12 @@ export class Abomination extends TowerType {
         [
             new FasterHurling(),
             new ExcessiveHurling(),
-            new ZeppelinMauler(),
+            new Wendigo(),
         ],
         [
             new ExtraRange(),
             new FragBombs(),
-            new ClusterBombs(),
+            new SeaGiant(),
         ]
     ];
     public unitTypeId: number = FourCC('h003');

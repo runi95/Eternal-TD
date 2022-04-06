@@ -7,6 +7,6 @@ export class FragBombs extends TowerUpgrade {
     public description = "TO BE IMPLEMENTED";
 
     public applyUpgrade(unit: unit): void {
-        // TODO: Implement
+        BlzSetUnitBaseDamage(unit, BlzGetUnitBaseDamage(unit, 0) + 1, 0);
     }
 }

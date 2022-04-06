@@ -1,4 +1,5 @@
 import { Color } from "../Utility/Color";
+import { CreepType } from "./CreepType";
 
 export interface CreepDamageEvent {
     spawnedCreeps: Creep[];
@@ -11,6 +12,7 @@ export class Creep {
     public speed = 1;
     public unitTypeId: number = defaultCreepUnitTypeId;
     public color: Color = {r: 255, g: 255, b: 255, a: 255};
+    public readonly creepType: CreepType | null = null;
     protected children: Creep[] = [];
     protected _parent: Creep | null = null;
 

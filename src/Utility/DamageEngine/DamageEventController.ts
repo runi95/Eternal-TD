@@ -1,14 +1,18 @@
 import { RoundCreepController } from "../../Game/RoundCreepController";
+import { TimerUtils } from "../TimerUtils";
 import { DamageEngine } from "./DamageEngine";
+import { SeaGiantDamageEvent } from "./DamageEvents/SeaGiantDamageEvent";
 import { VillagerLethalDamageEvent } from "./DamageEvents/VillagerLethalDamageEvent";
+import { WendigoDamageEvent } from "./DamageEvents/WendigoDamageEvent";
 
 export class DamageEventController {
-    constructor(damageEngine: DamageEngine, roundCreepController: RoundCreepController) {
+    constructor(damageEngine: DamageEngine, roundCreepController: RoundCreepController, timerUtils: TimerUtils) {
         // Initial damage events
         // damageEngine.addInitialDamageEvent(new MyInitialDamageEvent());
 
         // Initial damage modification events
-        // damageEngine.addInitialDamageModificationEvent(new MyInitialDamageModificationEvent());
+        damageEngine.addInitialDamageModificationEvent(new WendigoDamageEvent(roundCreepController));
+        damageEngine.addInitialDamageModificationEvent(new SeaGiantDamageEvent(timerUtils));
 
         // Final damage modification events
         // damageEngine.addFinalDamageModificationEvent(new MyFinalDamageModificationEvent());

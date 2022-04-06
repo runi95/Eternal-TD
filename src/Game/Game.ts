@@ -34,7 +34,7 @@ export class Game {
         this.damageEngineGlobals = new DamageEngineGlobals();
         this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
         this.roundCreepController = new RoundCreepController();
-        this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController);
+        this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils);
         this.towerSystem = new TowerSystem(this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
 

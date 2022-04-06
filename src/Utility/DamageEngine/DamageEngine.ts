@@ -378,6 +378,7 @@ export class DamageEngine {
         this.damageEngineGlobals.DamageEventTargetOwningPlayer = GetOwningPlayer(this.damageEngineGlobals.DamageEventTarget);
         this.damageEngineGlobals.DamageEventTargetOwningPlayerId = GetPlayerId(this.damageEngineGlobals.DamageEventTargetOwningPlayer);
         this.damageEngineGlobals.DamageEventTargetUnitId = GetHandleId(this.damageEngineGlobals.DamageEventTarget); // <- Custom Eternal TD code!
+        this.damageEngineGlobals.DamageEventSourceUnitTypeId = GetUnitTypeId(this.damageEngineGlobals.DamageEventSource); // <- Custom Eternal TD code!
         this.damageEngineGlobals.DamageEventAmount = amt;
         this.damageEngineGlobals.PiercingOverflowAmount = 0;
         this.damageEngineGlobals.DamageEventAttackT = GetHandleId(at);
@@ -462,6 +463,7 @@ export class DamageEngine {
             this.damageEngineGlobals.DamageEventTargetOwningPlayer = GetOwningPlayer(this.damageEngineGlobals.DamageEventTarget);
             this.damageEngineGlobals.DamageEventTargetOwningPlayerId = GetPlayerId(this.damageEngineGlobals.DamageEventTargetOwningPlayer);
             this.damageEngineGlobals.DamageEventTargetUnitId = GetHandleId(this.damageEngineGlobals.DamageEventTarget); // <- Custom Eternal TD code!
+            this.damageEngineGlobals.DamageEventSourceUnitTypeId = GetUnitTypeId(this.damageEngineGlobals.DamageEventSource); // <- Custom Eternal TD code!
             this.damageEngineGlobals.DamageEventAmount = this.prev.amount;
             this.damageEngineGlobals.PiercingOverflowAmount = 0;
             this.damageEngineGlobals.DamageEventPrevAmt = this.prev.preAmt;
