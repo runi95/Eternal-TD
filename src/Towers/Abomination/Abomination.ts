@@ -11,6 +11,7 @@ import { FragBombs } from "./Upgrades/Path3/FragBombs";
 import { SeaGiant } from "./Upgrades/Path3/SeaGiant";
 import { SkeletalHammer } from "./Upgrades/Path1/SkeletalHammer";
 
+// TODO: Update Abomination AOE to only be able to hit up to X units on every attack
 export class Abomination extends TowerType {
     public upgrades: TowerUpgrade[][] = [
         [
