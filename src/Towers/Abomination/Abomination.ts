@@ -9,6 +9,7 @@ import { Wendigo } from "./Upgrades/Path2/Wendigo";
 import { ExtraRange } from "./Upgrades/Path3/ExtraRange";
 import { FragBombs } from "./Upgrades/Path3/FragBombs";
 import { SeaGiant } from "./Upgrades/Path3/SeaGiant";
+import { SkeletalHammer } from "./Upgrades/Path1/SkeletalHammer";
 
 export class Abomination extends TowerType {
     public upgrades: TowerUpgrade[][] = [
@@ -16,6 +17,7 @@ export class Abomination extends TowerType {
             new LargerRocks(),
             new HeavierRocks(),
             new ReallyBigRocks(),
+            new SkeletalHammer(),
         ],
         [
             new FasterHurling(),

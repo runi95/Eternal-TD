@@ -15,6 +15,7 @@ import { Tower } from "../Towers/Tower";
 import { Modifier } from "../Creeps/Modifier";
 import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
 import { regenUnitMap } from "../Creeps/Modifiers/RegenModifier"
+import { StunUtils } from "../Utility/StunUtils";
 
 export class Game {
     private readonly timerUtils: TimerUtils;
@@ -23,6 +24,7 @@ export class Game {
     private readonly damageEventController: DamageEventController;
     private readonly roundCreepController: RoundCreepController;
     private readonly creepRegenSystem: CreepRegenSystem;
+    private readonly stunUtils: StunUtils;
     private readonly checkpoints: Checkpoint[];
     private readonly spells: Spells;
     private readonly towerSystem: TowerSystem;
@@ -34,7 +36,8 @@ export class Game {
         this.damageEngineGlobals = new DamageEngineGlobals();
         this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
         this.roundCreepController = new RoundCreepController();
-        this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils);
+        this.stunUtils = new StunUtils(this.timerUtils);
+        this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils);
         this.towerSystem = new TowerSystem(this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
 

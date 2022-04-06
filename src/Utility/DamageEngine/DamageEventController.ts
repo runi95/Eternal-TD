@@ -1,12 +1,14 @@
 import { RoundCreepController } from "../../Game/RoundCreepController";
+import { StunUtils } from "../StunUtils";
 import { TimerUtils } from "../TimerUtils";
 import { DamageEngine } from "./DamageEngine";
 import { SeaGiantDamageEvent } from "./DamageEvents/SeaGiantDamageEvent";
+import { SkeletalOrcDamageEvent } from "./DamageEvents/SkeletalOrcDamageEvent";
 import { VillagerLethalDamageEvent } from "./DamageEvents/VillagerLethalDamageEvent";
 import { WendigoDamageEvent } from "./DamageEvents/WendigoDamageEvent";
 
 export class DamageEventController {
-    constructor(damageEngine: DamageEngine, roundCreepController: RoundCreepController, timerUtils: TimerUtils) {
+    constructor(damageEngine: DamageEngine, roundCreepController: RoundCreepController, timerUtils: TimerUtils, stunUtils: StunUtils) {
         // Initial damage events
         // damageEngine.addInitialDamageEvent(new MyInitialDamageEvent());
 
@@ -19,6 +21,7 @@ export class DamageEventController {
 
         // After damage events
         // damageEngine.addAfterDamageEvent(new MyAfterDamageEvent());
+        damageEngine.addAfterDamageEvent(new SkeletalOrcDamageEvent(stunUtils, roundCreepController));
 
         // Lethal damage events
         damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent(roundCreepController));
