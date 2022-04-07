@@ -4,7 +4,7 @@ export class SharpShooter extends TowerUpgrade {
     public name = "Sharp Shooter";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp";
     public cost = 2160;
-    public description = "Sharp Shooter attacks faster and and does powerful Critical Hits every few shots that do a lot more damage.";
+    public description = "TODO: Write description";
 
     private readonly sharpShooterAbilityId: number = FourCC('A002');
 

@@ -4,7 +4,7 @@ export class ExtraRange extends TowerUpgrade {
     public name = "Extra Range";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNDwarvenLongRifle.blp";
     public cost = 215;
-    public description = "Increases attack range.";
+    public description = "TODO: Write description";
 
     public applyUpgrade(unit: unit): void {
         SetUnitAcquireRange(unit, GetUnitAcquireRange(unit) + 70);

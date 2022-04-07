@@ -4,7 +4,7 @@ export class StarThrower extends TowerUpgrade {
     public name = "Star Thrower";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNStarfall.blp";
     public cost = 16200;
-    public description = "Throw compressed stars at the villagers for even more destructive power!";
+    public description = "TODO: Write description";
 
     public applyUpgrade(unit: unit): void {
         BlzSetUnitBaseDamage(unit, BlzGetUnitBaseDamage(unit, 0) + 3, 0);

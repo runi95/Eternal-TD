@@ -4,7 +4,7 @@ export class LongRangeArrows extends TowerUpgrade {
     public name = "Long Range Arrows";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNSentinel.blp";
     public cost = 95;
-    public description = "Shoot further than normal.";
+    public description = "TODO: Write description";
 
     public applyUpgrade(unit: unit): void {
         SetUnitAcquireRange(unit, GetUnitAcquireRange(unit) + 80);

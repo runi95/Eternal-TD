@@ -4,7 +4,7 @@ export class EnhancedEyesight extends TowerUpgrade {
     public name = "Enhanced Eyesight";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNUltravision.blp";
     public cost = 215;
-    public description = "Shoot even further and can attack hidden villagers.";
+    public description = "TODO: Write description";
 
     public applyUpgrade(unit: unit): void {
         SetUnitAcquireRange(unit, GetUnitAcquireRange(unit) + 80);

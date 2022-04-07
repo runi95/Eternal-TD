@@ -4,7 +4,7 @@ export class HeavierRocks extends TowerUpgrade {
     public name = "Heavier Rocks";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNHumanMissileUpTwo.blp";
     public cost = 700;
-    public description = "Hurl heavier rocks at the villagers; dealing more damage at an even larger area.";
+    public description = "TODO: Write description";
 
     public applyUpgrade(unit: unit): void {
         // NOTE: For some reason setting UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_FULL_DAMAGE also updates the attack cooldown so we have to remember it and re-set the value afterwards. 

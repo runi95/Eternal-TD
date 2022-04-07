@@ -4,7 +4,7 @@ export class CorrosiveAmmo extends TowerUpgrade {
     public name = "Corrosive Ammo";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNCorrosiveBreath.blp";
     public cost = 1945;
-    public description = "Hurl a corrosive bile that can damage even armored villagers and excells at melting even vehicles.";
+    public description = "TODO: Write description";
 
     public applyUpgrade(unit: unit): void {
         SetUnitAcquireRange(unit, GetUnitAcquireRange(unit) * 1.15);

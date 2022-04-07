@@ -4,7 +4,7 @@ export class ExcessiveHurling extends TowerUpgrade {
     public name = "Excessive Hurling";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNFlakCannons.blp";
     public cost = 430;
-    public description = "Hurl the rocks at an exceedingly fast pace.";
+    public description = "TODO: Write description";
 
     public applyUpgrade(unit: unit): void {
         SetUnitAcquireRange(unit, GetUnitAcquireRange(unit) + 40);

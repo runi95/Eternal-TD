@@ -4,7 +4,7 @@ export class TripleShot extends TowerUpgrade {
     public name = "Triple Shot";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNFanOfKnives.blp";
     public cost = 430;
-    public description = "Shoot 3 arrows per attack.";
+    public description = "TODO: Write description";
 
     private readonly tripleShotAbilityId: number = FourCC('A001');
 

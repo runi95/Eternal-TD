@@ -4,7 +4,7 @@ export class BowMaster extends TowerUpgrade {
     public name = "Bow Master";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNAmbush.blp";
     public cost = 25380;
-    public description = "Bow Master shoots really fast and devestates most Villagers with ease.";
+    public description = "TODO: Write description";
 
     private readonly sharpShooterAbilityId: number = FourCC('A002');
 
