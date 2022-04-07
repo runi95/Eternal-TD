@@ -10,6 +10,7 @@ import { ExtraRange } from "./Upgrades/Path3/ExtraRange";
 import { FragBombs } from "./Upgrades/Path3/FragBombs";
 import { SeaGiant } from "./Upgrades/Path3/SeaGiant";
 import { SkeletalHammer } from "./Upgrades/Path1/SkeletalHammer";
+import { GreaterHammers } from "./Upgrades/Path1/GreaterHammers";
 
 // TODO: Update Abomination AOE to only be able to hit up to X units on every attack
 export class Abomination extends TowerType {
@@ -19,6 +20,7 @@ export class Abomination extends TowerType {
             new HeavierRocks(),
             new ReallyBigRocks(),
             new SkeletalHammer(),
+            new GreaterHammers(),
         ],
         [
             new FasterHurling(),

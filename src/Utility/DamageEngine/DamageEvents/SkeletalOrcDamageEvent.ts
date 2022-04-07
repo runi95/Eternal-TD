@@ -6,6 +6,7 @@ import { SpawnedCreep } from "../../../Creeps/SpawnedCreep";
 import { CreepType } from "../../../Creeps/CreepType";
 
 const skeletalOrcUnitTypeId: number = FourCC('h006');
+const skeletalHammerAbilityId: number = FourCC('A004');
 export class SkeletalOrcDamageEvent implements DamageEvent {
     private readonly stunUtils: StunUtils;
     private readonly roundCreepController: RoundCreepController;
@@ -29,13 +30,18 @@ export class SkeletalOrcDamageEvent implements DamageEvent {
             return;
         }
 
-        const spawnedCreep: SpawnedCreep = this.roundCreepController.get(globals.DamageEventTargetUnitId as number) as SpawnedCreep;
-        switch (spawnedCreep.creep.creepType) {
-            case CreepType.ZEPPELIN:
-                // Skeletal Orc should not stun Zeppelins.
-            return;
+        const skeletalHammerAbilityLevel: number = GetUnitAbilityLevel(globals.DamageEventSource as unit, skeletalHammerAbilityId);
+        let stunDuration = 2;
+        if (skeletalHammerAbilityLevel === 1) {
+            stunDuration = 1;
+            const spawnedCreep: SpawnedCreep = this.roundCreepController.get(globals.DamageEventTargetUnitId as number) as SpawnedCreep;
+            switch (spawnedCreep.creep.creepType) {
+                case CreepType.ZEPPELIN:
+                    // Skeletal Orc should not stun Zeppelins unless upgraded.
+                return;
+            }
         }
 
-        this.stunUtils.stunUnit(globals.DamageEventTarget as unit, 1);
+        this.stunUtils.stunUnit(globals.DamageEventTarget as unit, stunDuration);
     }
 }
