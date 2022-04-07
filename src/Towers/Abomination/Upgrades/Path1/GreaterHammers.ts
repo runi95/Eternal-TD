@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 const skeletalHammerAbilityId: number = FourCC('A004');
 export class GreaterHammers extends TowerUpgrade {
     public name = "Greater Hammers";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNBash.blp";
+    public icon = "ReplaceableTextures\\CommandButtons\\BTNStormHammer.blp";
     public cost = 59400;
     public description = "TODO: Write description";
 
