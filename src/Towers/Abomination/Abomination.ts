@@ -11,6 +11,7 @@ import { FragBombs } from "./Upgrades/Path3/FragBombs";
 import { SeaGiant } from "./Upgrades/Path3/SeaGiant";
 import { SkeletalHammer } from "./Upgrades/Path1/SkeletalHammer";
 import { GreaterHammers } from "./Upgrades/Path1/GreaterHammers";
+import { RecursiveBombs } from "./Upgrades/Path3/RecursiveBombs";
 
 // TODO: Update Abomination AOE to only be able to hit up to X units on every attack
 export class Abomination extends TowerType {
@@ -31,6 +32,7 @@ export class Abomination extends TowerType {
             new ExtraRange(),
             new FragBombs(),
             new SeaGiant(),
+            new RecursiveBombs(),
         ]
     ];
     public unitTypeId: number = FourCC('h003');
