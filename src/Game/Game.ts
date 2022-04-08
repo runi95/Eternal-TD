@@ -16,6 +16,7 @@ import { Modifier } from "../Creeps/Modifier";
 import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
 import { regenUnitMap } from "../Creeps/Modifiers/RegenModifier"
 import { StunUtils } from "../Utility/StunUtils";
+import { TowerController } from "../Towers/TowerController";
 
 export class Game {
     private readonly timerUtils: TimerUtils;
@@ -28,6 +29,7 @@ export class Game {
     private readonly checkpoints: Checkpoint[];
     private readonly spells: Spells;
     private readonly towerSystem: TowerSystem;
+    private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower> = new Map();
 
     constructor() {
@@ -40,6 +42,7 @@ export class Game {
         this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils);
         this.towerSystem = new TowerSystem(this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
+        this.towerController = new TowerController(this.timerUtils, this.towers);
 
         this.checkpoints = [
             // RED
@@ -97,13 +100,6 @@ export class Game {
             // END
             {x: 2528, y: 2048},
         ];
-
-        const constTrig: Trigger = new Trigger();
-        constTrig.addAction(() => {
-            const trig: unit = GetTriggerUnit();
-            this.towers.set(GetHandleId(trig), new Tower(trig));
-        });
-        constTrig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_CONSTRUCT_START);
 
         const deathTrig: Trigger = new Trigger();
         deathTrig.addAction(() => {

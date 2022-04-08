@@ -224,7 +224,7 @@ export class TowerSystem {
                 const pathUpgrades = tower.pathUpgrades;
                 const unit = ReplaceUnitBJ(tower.unit, upgrade.newUnitTypeId, bj_UNIT_STATE_METHOD_DEFAULTS);
                 towerUnit = unit;
-                const newTower = new Tower(unit, pathUpgrades);
+                const newTower = new Tower(unit, tower.towerType, pathUpgrades);
                 this.selectedTower = newTower;
                 this.towers.set(GetHandleId(unit), newTower);
                 for (let i = 0; i < pathUpgrades.length; i++) {
