@@ -29,9 +29,12 @@ export class TowerController {
 
             const trigHandleId: number = GetHandleId(trig);
             const tower: Tower = new Tower(trig, towerType);
+            
+            // TODO: Remove towers from this map when the tower is sold
             this.towers.set(trigHandleId, tower);
 
             if (towerType.tick !== null) {
+                // TODO: Remove towers from this map when the tower is sold
                 this.tickTowers.set(trigHandleId, tower);
             }
 
