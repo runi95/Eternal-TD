@@ -32,7 +32,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
         const clusterBombsLevel: number = GetUnitAbilityLevel(trig, clusterBombsAbilityId);
         const x: number = GetUnitX(globals.DamageEventTarget as unit);
         const y: number = GetUnitY(globals.DamageEventTarget as unit);
-        const userData: number = GetUnitUserData(globals.DamageEventSource as unit) + 1 % 2;
+        const userData: number = (GetUnitUserData(globals.DamageEventSource as unit) + 1) % 2;
         SetUnitUserData(globals.DamageEventSource as unit, userData);
         let explosiveDamage = 1;
         if (clusterBombsLevel === 3) {
