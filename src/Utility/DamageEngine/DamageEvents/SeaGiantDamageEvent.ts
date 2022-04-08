@@ -51,9 +51,11 @@ export class SeaGiantDamageEvent implements DamageEvent {
                 });
                 grp.destroy();
                 RemoveLocation(loc);
+            } else if (clusterBombsLevel < 2) {
+                this.timerUtils.releaseTimer(t);
             } else if (ticks > 7) {
                 // Wait...
-            } else if (clusterBombsLevel > 1) {
+            } else {
                 const loc: location = Location(x + 200 * CosBJ(45 * ticks), y + 200 * SinBJ(45 * ticks));
                 DestroyEffect(AddSpecialEffectLoc('Abilities\\Weapons\\CannonTowerMissile\\CannonTowerMissile.mdl', loc));
                 const grp: GroupInRange = new GroupInRange(340, loc);
@@ -66,8 +68,6 @@ export class SeaGiantDamageEvent implements DamageEvent {
                 });
                 grp.destroy();
                 RemoveLocation(loc);
-            } else {
-                this.timerUtils.releaseTimer(t);
             }
 
             if (ticks <= 0) {
