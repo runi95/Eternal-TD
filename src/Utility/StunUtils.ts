@@ -25,7 +25,7 @@ export class StunUtils {
         } else {
             const stunnedUnit: StunnedUnit = new StunnedUnit(u, duration);
             this.stunnedUnits.set(handleId, stunnedUnit);
-            UnitAddAbilityBJ(this.stunAbilityId, stunnedUnit.getUnit());
+            UnitAddAbility(stunnedUnit.getUnit(), this.stunAbilityId);
             BlzPauseUnitEx(stunnedUnit.getUnit(), true);
             const t: Timer = this.timerUtils.newTimer();
             t.start(0.05, true, () => {
