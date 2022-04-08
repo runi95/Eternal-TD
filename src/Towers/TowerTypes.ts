@@ -1,4 +1,4 @@
-import { Sapper } from "./Abomination/Sapper";
+import { Sapper } from "./Sapper/Sapper";
 import { SkeletonArcher } from "./SkeletonArcher/SkeletonArcher";
 import { TowerType } from "./TowerType";
 
