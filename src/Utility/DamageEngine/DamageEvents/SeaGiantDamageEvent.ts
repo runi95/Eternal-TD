@@ -32,6 +32,12 @@ export class SeaGiantDamageEvent implements DamageEvent {
         const clusterBombsLevel: number = GetUnitAbilityLevel(trig, clusterBombsAbilityId);
         const x: number = GetUnitX(globals.DamageEventTarget as unit);
         const y: number = GetUnitY(globals.DamageEventTarget as unit);
+        const userData: number = GetUnitUserData(globals.DamageEventSource as unit) + 1 % 2;
+        SetUnitUserData(globals.DamageEventSource as unit, userData);
+        let explosiveDamage = 1;
+        if (clusterBombsLevel === 3) {
+            explosiveDamage += 4;
+        }
 
         let ticks = 21;
         const t: Timer = this.timerUtils.newTimer();
@@ -47,11 +53,11 @@ export class SeaGiantDamageEvent implements DamageEvent {
                         return;
                     }
 
-                    UnitDamageTargetBJ(trig, u, 1, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
+                    UnitDamageTargetBJ(trig, u, explosiveDamage, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
                 });
                 grp.destroy();
                 RemoveLocation(loc);
-            } else if (clusterBombsLevel < 2) {
+            } else if (clusterBombsLevel === 1 || (clusterBombsLevel === 2 && userData < 1)) {
                 this.timerUtils.releaseTimer(t);
             } else if (ticks > 7) {
                 // Wait...
@@ -64,7 +70,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
                         return;
                     }
 
-                    UnitDamageTargetBJ(trig, u, 60, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
+                    UnitDamageTargetBJ(trig, u, explosiveDamage, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
                 });
                 grp.destroy();
                 RemoveLocation(loc);
