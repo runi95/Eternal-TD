@@ -19,9 +19,9 @@
     "plugins": [
       {
         "transform": "war3-transformer",
-        "mapDir": "/Users/henningberge/Documents/wc3/Eternal-TD/maps/map.w3x",
-        "entryFile": "/Users/henningberge/Documents/wc3/Eternal-TD/src/main.ts",
-        "outputDir": "/Users/henningberge/Documents/wc3/Eternal-TD/dist/map.w3x"
+        "mapDir": "maps/map.w3x",
+        "entryFile": "./src/main.ts",
+        "outputDir": "dist/map.w3x"
       }
     ],
     "types": [

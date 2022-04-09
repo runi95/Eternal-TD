@@ -94,9 +94,9 @@ function updateTSConfig(mapFolder: string) {
   const tsconfig = loadJsonFile('tsconfig.json');
   const plugin = tsconfig.compilerOptions.plugins[0];
 
-  plugin.mapDir = path.resolve('maps', mapFolder).replace(/\\/g, '/');
-  plugin.entryFile = path.resolve(tsconfig.tstl.luaBundleEntry).replace(/\\/g, '/');
-  plugin.outputDir = path.resolve('dist', mapFolder).replace(/\\/g, '/');
+  plugin.mapDir = `maps/${mapFolder}`.replace(/\\/g, '/');
+  plugin.entryFile = tsconfig.tstl.luaBundleEntry.replace(/\\/g, '/');
+  plugin.outputDir = `dist/${mapFolder}`.replace(/\\/g, '/');
 
   writeFileSync('tsconfig.json', JSON.stringify(tsconfig, undefined, 2));
 }
