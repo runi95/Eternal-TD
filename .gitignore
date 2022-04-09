@@ -12,3 +12,4 @@ maps/map/war3map.lua
 settings.json
 config.json
 project.log
+/dist
