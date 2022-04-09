@@ -1,8 +1,8 @@
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
-export class MeatWagon extends TowerUpgrade {
-    public name = "Meat Wagon";
+export class BlackDragonWhelp extends TowerUpgrade {
+    public name = "Black Dragon Whelp";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNVorpalBlades.blp";
     public cost = 325;
     public description = "TODO: Write description";

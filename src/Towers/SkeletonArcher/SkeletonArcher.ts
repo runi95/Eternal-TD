@@ -1,6 +1,6 @@
 import { TowerType } from "../TowerType";
 import { TowerUpgrade } from "../TowerUpgrade";
-import { MeatWagon } from "./Upgrades/Path1/MeatWagon";
+import { BlackDragonWhelp } from "./Upgrades/Path1/BlackDragonWhelp";
 import { EnhancedEyesight } from "./Upgrades/Path3/EnhancedEyesight";
 import { LongRangeArrows } from "./Upgrades/Path3/LongRangeArrows";
 import { QuickShots } from "./Upgrades/Path2/QuickShots";
@@ -19,7 +19,7 @@ export class SkeletonArcher extends TowerType {
         [
             new SharpArrows(),
             new RazorSharpArrows(),
-            new MeatWagon(),
+            new BlackDragonWhelp(),
             new CorrosiveAmmo(),
             new StarThrower(),
         ],

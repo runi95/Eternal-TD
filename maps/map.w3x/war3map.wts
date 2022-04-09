@@ -114,12 +114,6 @@ STRING 32
 (Barrage)
 }
 
-STRING 35
-// Units: h001 (Meat Wagon), Name (Name)
-{
-Meat Wagon
-}
-
 STRING 36
 // Units: h002 (Burning Archer), Name (Name)
 {
@@ -373,7 +367,7 @@ TODO: Write description
 }
 
 STRING 97
-// Units: h001 (Meat Wagon), Ubertip (Tooltip - Extended)
+// Units: h001 (Black Dragon Whelp), Ubertip (Tooltip - Extended)
 {
 TODO: Write description
 }
@@ -562,5 +556,11 @@ STRING 134
 // Units: h00A (Skeleton Archer), Ubertip (Tooltip - Extended)
 {
 TODO: Write description
+}
+
+STRING 135
+// Units: h001 (Black Dragon Whelp), Name (Name)
+{
+Black Dragon Whelp
 }
 
