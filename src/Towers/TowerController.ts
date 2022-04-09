@@ -4,6 +4,7 @@ import { Trigger } from "../JassOverrides/Trigger";
 import { StunUtils } from "../Utility/StunUtils";
 import { TimerUtils } from "../Utility/TimerUtils";
 import { AbominationCustomData } from "./Abomination/Abomination";
+import { ObsidianStatueCustomData } from "./ObsidianStatue/ObsidianStatue";
 import { Tower } from "./Tower";
 import { TowerType } from "./TowerType";
 import towerTypeMap from "./TowerTypes";
@@ -11,6 +12,8 @@ import { TowerUpgrade } from "./TowerUpgrade";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
+const fortifiedUnitTypeId: number = FourCC('u004');
+const invisibilityUnitTypeId: number = FourCC('u003');
 const abominationUnitTypeId: number = FourCC('h007');
 const obsidianStatueUnitTypeId: number = FourCC('h008');
 
@@ -136,6 +139,34 @@ export class TowerController {
 
                         unitCount++;
                         UnitDamageTargetBJ(tower.unit, u, realDamageAmount, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
+                    });
+                    group.destroy();
+                    RemoveLocation(loc);
+                };
+            case obsidianStatueUnitTypeId:
+                return (tower: Tower) => {
+                    const { range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasColdSnap, hasReFreeze } = tower.customData as ObsidianStatueCustomData;
+                    const loc = GetUnitLoc(tower.unit);
+                    const group = new GroupInRange(range, loc);
+
+                    let unitCount = 0;
+                    group.for((u: unit) => {
+                        if (unitCount >= maxUnitCount)
+                            return;
+
+                        if (!UnitAlive(u))
+                            return;
+
+                        if (GetPlayerId(GetOwningPlayer(u)) !== 23)
+                            return;
+
+                        const unitTypeId: number = GetUnitTypeId(u);
+                        if (!hasColdSnap && (unitTypeId === fortifiedUnitTypeId || unitTypeId === invisibilityUnitTypeId))
+                                return;
+
+                        unitCount++;
+                        UnitDamageTargetBJ(tower.unit, u, damageAmount, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL);
+                        this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze);
                     });
                     group.destroy();
                     RemoveLocation(loc);
