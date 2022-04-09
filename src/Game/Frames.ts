@@ -199,7 +199,7 @@ export class TowerSystem {
 
     private createUpgradePathButtonTrigger(buttonFrame: framehandle, path: number, tier: number): void {
         const buttonTrig: Trigger = new Trigger();
-        buttonTrig.addCondition(() => this.upgradePathEnabled[path][tier] && this.selectedTower?.pathUpgrades[path] === tier);
+        buttonTrig.addCondition(() => this.upgradePathEnabled[path][tier] && this.selectedTower && this.selectedTower.pathUpgrades[path] === tier);
         buttonTrig.addAction(() => {
             BlzFrameSetVisible(buttonFrame, false);
             BlzFrameSetVisible(buttonFrame, true);

@@ -1,6 +1,7 @@
 import { Log, LogLevel } from './lib/Serilog/Serilog';
 import { StringSink } from './lib/Serilog/Sinks/StringSink';
 import { Game } from './Game/Game';
+import { addScriptHook, W3TS_HOOK } from "w3ts/hooks";
 
 export class Initialiser {
     public static run(): void {
@@ -26,10 +27,10 @@ export class Initialiser {
     }
 }
 
-ceres.suppressDefaultMain();
-ceres.oldMain();
-Initialiser.run();
-
+// ceres.suppressDefaultMain();
+// ceres.oldMain();
+// Initialiser.run();
+addScriptHook(W3TS_HOOK.MAIN_AFTER, () => Initialiser.run());
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 function createQuests(): void {
 
