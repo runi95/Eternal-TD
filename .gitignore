@@ -10,3 +10,6 @@ maps/map/war3map.lua
 /backups
 /logo
 settings.json
+config.json
+project.log
+/dist
