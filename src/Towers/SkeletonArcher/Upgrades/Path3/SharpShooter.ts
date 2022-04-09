@@ -1,3 +1,4 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class SharpShooter extends TowerUpgrade {
@@ -8,9 +9,9 @@ export class SharpShooter extends TowerUpgrade {
 
     private readonly sharpShooterAbilityId: number = FourCC('A002');
 
-    public applyUpgrade(unit: unit): void {
-        BlzSetUnitAttackCooldown(unit, BlzGetUnitAttackCooldown(unit, 0) * 0.2133, 0);
-        BlzSetUnitBaseDamage(unit, BlzGetUnitBaseDamage(unit, 0) + 3, 0);
-        UnitAddAbility(unit, this.sharpShooterAbilityId);
+    public applyUpgrade(tower: Tower): void {
+        BlzSetUnitAttackCooldown(tower.unit, BlzGetUnitAttackCooldown(tower.unit, 0) * 0.2133, 0);
+        BlzSetUnitBaseDamage(tower.unit, BlzGetUnitBaseDamage(tower.unit, 0) + 3, 0);
+        UnitAddAbility(tower.unit, this.sharpShooterAbilityId);
     }
 }

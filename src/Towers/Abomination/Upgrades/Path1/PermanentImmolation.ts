@@ -1,4 +1,6 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
+import { AbominationCustomData } from "../../Abomination";
 
 const diseaseCloudAbilityId: number = FourCC('A006');
 const permanentImmolationAbilityId: number = FourCC('A007');
@@ -8,10 +10,10 @@ export class PermanentImmolation extends TowerUpgrade {
     public cost = 650;
     public description = "TODO: Write description";
 
-    public applyUpgrade(unit: unit): void {
-        UnitRemoveAbility(unit, diseaseCloudAbilityId);
-        UnitAddAbility(unit, permanentImmolationAbilityId);
+    public applyUpgrade(tower: Tower): void {
+        UnitRemoveAbility(tower.unit, diseaseCloudAbilityId);
+        UnitAddAbility(tower.unit, permanentImmolationAbilityId);
 
-        // NOTE: The rest of the effects of this upgrade happens in Abomination.ts
+        (tower.customData as AbominationCustomData).damageAmount += 1;
     }
 }

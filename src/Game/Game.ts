@@ -40,9 +40,9 @@ export class Game {
         this.roundCreepController = new RoundCreepController();
         this.stunUtils = new StunUtils(this.timerUtils);
         this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils);
-        this.towerSystem = new TowerSystem(this.towers);
+        this.towerController = new TowerController(this.timerUtils, this.stunUtils, this.towers);
+        this.towerSystem = new TowerSystem(this.towerController, this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
-        this.towerController = new TowerController(this.timerUtils, this.towers);
 
         this.checkpoints = [
             // RED

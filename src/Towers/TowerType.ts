@@ -1,9 +1,14 @@
-import { Tower } from "./Tower";
 import { TowerUpgrade } from "./TowerUpgrade";
 
 export abstract class TowerType {
     public abstract unitTypeId: number;
     public abstract upgrades: TowerUpgrade[][];
+    
+    public initializeCustomData(): unknown {
+        return;
+    }
 
-    public tick: ((tower: Tower) => void) | null = null;
+    public applyInitialUnitValues(_unit: unit): void {
+        return;
+    }
 }

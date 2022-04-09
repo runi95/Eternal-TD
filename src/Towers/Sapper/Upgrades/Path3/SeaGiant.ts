@@ -1,3 +1,4 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class SeaGiant extends TowerUpgrade {
@@ -7,7 +8,7 @@ export class SeaGiant extends TowerUpgrade {
     public description = "TODO: Write description";
     public newUnitTypeId: number = FourCC('h004');
 
-    public applyUpgrade(_unit: unit): void {
+    public applyUpgrade(_tower: Tower): void {
         return;
     }
 }

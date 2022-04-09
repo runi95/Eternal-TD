@@ -1,3 +1,4 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class VeryQuickShots extends TowerUpgrade {
@@ -6,7 +7,7 @@ export class VeryQuickShots extends TowerUpgrade {
     public cost = 205;
     public description = "TODO: Write description";
 
-    public applyUpgrade(unit: unit): void {
-        BlzSetUnitAttackCooldown(unit, BlzGetUnitAttackCooldown(unit, 0) * 0.745, 0);
+    public applyUpgrade(tower: Tower): void {
+        BlzSetUnitAttackCooldown(tower.unit, BlzGetUnitAttackCooldown(tower.unit, 0) * 0.745, 0);
     }
 }

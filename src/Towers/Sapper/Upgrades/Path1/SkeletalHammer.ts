@@ -1,3 +1,4 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class SkeletalHammer extends TowerUpgrade {
@@ -8,7 +9,10 @@ export class SkeletalHammer extends TowerUpgrade {
     public newUnitTypeId: number = FourCC('h006');
 
     // TODO: Make sure this upgrade does allow for infinite stuns!
-    public applyUpgrade(_unit: unit): void {
-        return;
+    public applyUpgrade(tower: Tower): void {
+        SetUnitAcquireRange(tower.unit, GetUnitAcquireRange(tower.unit) + 30);
+
+        // NOTE: For some reason index starts at 1 for the UNIT_WEAPON_RF_ATTACK_RANGE field and it adds range instead of setting it.
+        BlzSetUnitWeaponRealField(tower.unit, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 30);
     }
 }

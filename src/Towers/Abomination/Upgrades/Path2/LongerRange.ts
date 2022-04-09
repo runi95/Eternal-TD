@@ -1,4 +1,6 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
+import { AbominationCustomData } from "../../Abomination";
 
 export class LongerRange extends TowerUpgrade {
     public name = "Longer Range";
@@ -6,9 +8,8 @@ export class LongerRange extends TowerUpgrade {
     public cost = 110;
     public description = "TODO: Write description";
 
-    public applyUpgrade(unit: unit): void {
-        SetUnitAcquireRange(unit, GetUnitAcquireRange(unit) + 40);
-
-        // NOTE: The rest of the effects of this upgrade happens in Abomination.ts
+    public applyUpgrade(tower: Tower): void {
+        (tower.customData as AbominationCustomData).range += 40;
+        (tower.customData as AbominationCustomData).greaterPermanentImmolationAdditionalUnitCount += 3;
     }
 }

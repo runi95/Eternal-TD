@@ -1,3 +1,4 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class TripleShot extends TowerUpgrade {
@@ -8,7 +9,7 @@ export class TripleShot extends TowerUpgrade {
 
     private readonly tripleShotAbilityId: number = FourCC('A001');
 
-    public applyUpgrade(unit: unit): void {
-        UnitAddAbility(unit, this.tripleShotAbilityId);
+    public applyUpgrade(tower: Tower): void {
+        UnitAddAbility(tower.unit, this.tripleShotAbilityId);
     }
 }

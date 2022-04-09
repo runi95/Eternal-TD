@@ -1,4 +1,6 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
+import { AbominationCustomData } from "../../Abomination";
 
 export class IncreasedEffectiveness extends TowerUpgrade {
     public name = "Increased Effectiveness";
@@ -6,7 +8,8 @@ export class IncreasedEffectiveness extends TowerUpgrade {
     public cost = 110;
     public description = "TODO: Write description";
 
-    public applyUpgrade(_unit: unit): void {
-        // NOTE: This function is purposefully left empty because the upgrades happen in Abomination.ts
+    public applyUpgrade(tower: Tower): void {
+        (tower.customData as AbominationCustomData).nonGreaterPermanentImmolationAdditionalUnitCount += 2;
+        (tower.customData as AbominationCustomData).greaterPermanentImmolationAdditionalDamageAmount += 2;
     }
 }

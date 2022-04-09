@@ -1,8 +1,10 @@
 import { Trigger } from "../JassOverrides/Trigger";
 import { Tower } from "../Towers/Tower";
+import { TowerController } from "../Towers/TowerController";
 import { TowerUpgrade } from "../Towers/TowerUpgrade";
 
 export class TowerSystem {
+    private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower>;
     private selectedTower: Tower | null = null;
 
@@ -15,7 +17,8 @@ export class TowerSystem {
     // private readonly towerIconFrame: framehandle;
     // private readonly sellText: framehandle;
 
-    constructor(towers: Map<number, Tower>) {
+    constructor(towerController: TowerController, towers: Map<number, Tower>) {
+        this.towerController = towerController;
         this.towers = towers;
         this.originFrameGameUi = BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0);
 
@@ -218,31 +221,11 @@ export class TowerSystem {
             SetPlayerState(GetTriggerPlayer(), PLAYER_STATE_RESOURCE_GOLD, playerCurrentGold - upgrade.cost);
 
             tower.pathUpgrades[path]++;
-
-            let towerUnit: unit = tower.unit;
-            if (upgrade.newUnitTypeId !== undefined) {
-                const pathUpgrades = tower.pathUpgrades;
-                const unit = ReplaceUnitBJ(tower.unit, upgrade.newUnitTypeId, bj_UNIT_STATE_METHOD_DEFAULTS);
-                towerUnit = unit;
-                const newTower = new Tower(unit, tower.towerType, pathUpgrades);
-                this.selectedTower = newTower;
-                this.towers.set(GetHandleId(unit), newTower);
-                for (let i = 0; i < pathUpgrades.length; i++) {
-                    if (i !== path) {
-                        for (let j = 0; j < pathUpgrades[i]; j++) {
-                            newTower.towerType.upgrades[i][j].applyUpgrade(unit);
-                        }
-                    }
-                }
-
-                SelectUnitForPlayerSingle(unit, GetTriggerPlayer());
+            if (this.towerController.upgradeTower(tower, upgrade)) {
+                SelectUnitForPlayerSingle(tower.unit, GetTriggerPlayer());
             } else {
                 this.renderSelectedTowerUpgrades();
             }
-
-            upgrade.applyUpgrade(towerUnit);
-
-            
         });
         buttonTrig.registerFrameEvent(buttonFrame, FRAMEEVENT_CONTROL_CLICK);
     }

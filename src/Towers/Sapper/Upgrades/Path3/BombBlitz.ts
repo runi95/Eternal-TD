@@ -1,3 +1,4 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 const clusterBombsAbilityId: number = FourCC('A005');
@@ -7,7 +8,7 @@ export class BombBlitz extends TowerUpgrade {
     public cost = 37800;
     public description = "TODO: Write description";
 
-    public applyUpgrade(unit: unit): void {
-        SetUnitAbilityLevel(unit, clusterBombsAbilityId, 3);
+    public applyUpgrade(tower: Tower): void {
+        SetUnitAbilityLevel(tower.unit, clusterBombsAbilityId, 3);
     }
 }

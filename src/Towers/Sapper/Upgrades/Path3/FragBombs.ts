@@ -1,3 +1,4 @@
+import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class FragBombs extends TowerUpgrade {
@@ -6,7 +7,7 @@ export class FragBombs extends TowerUpgrade {
     public cost = 325;
     public description = "TODO: Write description";
 
-    public applyUpgrade(unit: unit): void {
-        BlzSetUnitBaseDamage(unit, BlzGetUnitBaseDamage(unit, 0) + 1, 0);
+    public applyUpgrade(tower: Tower): void {
+        BlzSetUnitBaseDamage(tower.unit, BlzGetUnitBaseDamage(tower.unit, 0) + 1, 0);
     }
 }
