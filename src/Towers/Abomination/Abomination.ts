@@ -121,6 +121,9 @@ export class Abomination extends TowerType {
             if (!UnitAlive(u))
                 return;
 
+            if (GetPlayerId(GetOwningPlayer(u)) !== 23)
+                return;
+
             unitCount++;
             UnitDamageTargetBJ(tower.unit, u, damageAmount, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
         });
