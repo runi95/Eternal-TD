@@ -57,6 +57,7 @@ export class TowerController {
             isTowerUnitReplaced = true;
             const pathUpgrades = tower.pathUpgrades;
             const unit = ReplaceUnitBJ(tower.unit, upgrade.newUnitTypeId, bj_UNIT_STATE_METHOD_DEFAULTS);
+            BlzUnitDisableAbility(unit, attackAbilityId, false, true);
             tower.unit = unit;
 
             // TODO: What happens if an attack / missile is mid-air while unit replace happens?
