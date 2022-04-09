@@ -1,4 +1,5 @@
 import { Abomination } from "./Abomination/Abomination";
+import { Gargoyle } from "./Gargoyle/Gargoyle";
 import { ObsidianStatue } from "./ObsidianStatue/ObsidianStatue";
 import { Sapper } from "./Sapper/Sapper";
 import { SkeletonArcher } from "./SkeletonArcher/SkeletonArcher";
@@ -10,6 +11,7 @@ const towers: Map<number, TowerType> = new Map();
     new Sapper(),
     new Abomination(),
     new ObsidianStatue(),
+    new Gargoyle(),
 ].forEach((tower: TowerType) => {
     towers.set(tower.unitTypeId, tower);
     tower.upgrades.forEach((upgradePath) => {
