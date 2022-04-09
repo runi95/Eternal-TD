@@ -9,6 +9,11 @@ import { Inferno } from "./Upgrades/Path1/Inferno";
 import { PermanentImmolation } from "./Upgrades/Path1/PermanentImmolation";
 import { EvenLongerRange } from "./Upgrades/Path2/EvenLongerRange";
 import { LongerRange } from "./Upgrades/Path2/LongerRange";
+import { MaximizeEffectiveness } from "./Upgrades/Path3/MaximizeEffectiveness";
+import { FurtherIncreasedEffectiveness } from "./Upgrades/Path3/FurtherIncreasedEffectiveness";
+import { IncreasedEffectiveness } from "./Upgrades/Path3/IncreasedEffectiveness";
+import { Overdrive } from "./Upgrades/Path3/Overdrive";
+import { ContaminationZone } from "./Upgrades/Path3/ContaminationZone";
 
 export class Abomination extends TowerType {
     public upgrades: TowerUpgrade[][] = [
@@ -24,6 +29,11 @@ export class Abomination extends TowerType {
             new EvenLongerRange(),
         ],
         [
+            new IncreasedEffectiveness(),
+            new FurtherIncreasedEffectiveness(),
+            new MaximizeEffectiveness(),
+            new Overdrive(),
+            new ContaminationZone(),
         ]
     ];
     public unitTypeId: number = FourCC('h007');
@@ -60,6 +70,38 @@ export class Abomination extends TowerType {
 
         if (tower.pathUpgrades[1] > 1) {
             maxUnitCount += 1;
+        }
+
+        if (tower.pathUpgrades[2] > 0) {
+            if (tower.pathUpgrades[0] > 3) {
+                damageAmount += 1;
+            } else {
+                maxUnitCount += 2;
+            }
+        }
+
+        if (tower.pathUpgrades[2] > 1) {
+            if (tower.pathUpgrades[0] > 3) {
+                damageAmount += 1;
+            } else {
+                maxUnitCount += 2;
+            }
+        }
+
+        if (tower.pathUpgrades[2] > 2) {
+            maxUnitCount += 4;
+            tickModifier -= 3;
+        }
+
+        if (tower.pathUpgrades[2] > 3) {
+            maxUnitCount += 1;
+            tickModifier -= 3;
+        }
+
+        if (tower.pathUpgrades[2] > 4) {
+            maxUnitCount += 16;
+            tickModifier -= 1;
+            damageAmount += 1;
         }
 
         const userData: number = (GetUnitUserData(tower.unit) + 1) % tickModifier;

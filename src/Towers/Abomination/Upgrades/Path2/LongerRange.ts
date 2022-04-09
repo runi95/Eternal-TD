@@ -2,7 +2,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class LongerRange extends TowerUpgrade {
     public name = "Longer Range";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNBansheeMaster.blp";
+    public icon = "ReplaceableTextures\\CommandButtons\\BTNBansheeAdept.blp";
     public cost = 110;
     public description = "TODO: Write description";
 

@@ -1,9 +1,9 @@
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
-export class EvenFasterSpread extends TowerUpgrade {
-    public name = "Even Faster Spread";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNLocustSwarm.blp";
-    public cost = 325;
+export class FurtherIncreasedEffectiveness extends TowerUpgrade {
+    public name = "Further Increased Effectiveness";
+    public icon = "ReplaceableTextures\\CommandButtons\\BTNImprovedUnholyStrength.blp";
+    public cost = 110;
     public description = "TODO: Write description";
 
     public applyUpgrade(_unit: unit): void {

@@ -1,7 +1,7 @@
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class GreaterPermanentImmolation extends TowerUpgrade {
-    public name = "Permanent Immolation";
+    public name = "Greater Permanent Immolation";
     public icon = "ReplaceableTextures\\CommandButtons\\BTNDeathCoil.blp";
     public cost = 3780;
     public description = "TODO: Write description";
