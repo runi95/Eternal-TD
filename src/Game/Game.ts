@@ -275,6 +275,7 @@ export class Game {
                 }
 
                 const creep: unit = CreateUnit(Player(23), initializedCreepType.unitTypeId, -3296, 2049, 0);
+                SetUnitExploded(creep, true);
                 const handleId: number = GetHandleId(creep);
                 initializedCreepType.apply(creep);
                 for (let i = 0; creepSpawnDetails.modifiers !== undefined && i < creepSpawnDetails.modifiers.length; i++) {
