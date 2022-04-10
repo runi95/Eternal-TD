@@ -114,6 +114,12 @@ STRING 32
 (Barrage)
 }
 
+STRING 35
+// Units: h00A (Meat Wagon), Name (Name)
+{
+Meat Wagon
+}
+
 STRING 36
 // Units: h002 (Burning Archer), Name (Name)
 {
@@ -534,26 +540,8 @@ STRING 130
 TODO: Write description
 }
 
-STRING 131
-// Units: h00A (Skeleton Archer), Name (Name)
-{
-Skeleton Archer
-}
-
-STRING 132
-// Units: h00A (Skeleton Archer), Hotkey (Hotkey)
-{
-Q
-}
-
-STRING 133
-// Units: h00A (Skeleton Archer), Tip (Tooltip - Basic)
-{
-Build Skeleton Archer
-}
-
 STRING 134
-// Units: h00A (Skeleton Archer), Ubertip (Tooltip - Extended)
+// Units: h00A (Meat Wagon), Ubertip (Tooltip - Extended)
 {
 TODO: Write description
 }
@@ -562,5 +550,41 @@ STRING 135
 // Units: h001 (Black Dragon Whelp), Name (Name)
 {
 Black Dragon Whelp
+}
+
+STRING 136
+// Units: h00A (Meat Wagon), Tip (Tooltip - Basic)
+{
+Build Meat Wagon
+}
+
+STRING 137
+// Units: h00A (Meat Wagon), Hotkey (Hotkey)
+{
+S
+}
+
+STRING 138
+// Abilities: A00B (Attack Ground), Name (Name)
+{
+Attack Ground
+}
+
+STRING 140
+// Abilities: A00B (Attack Ground), Tip (Tooltip - Normal)
+{
+Attack Ground
+}
+
+STRING 141
+// Abilities: A00B (Attack Ground), Hotkey (Hotkey - Normal)
+{
+G
+}
+
+STRING 142
+// Abilities: A00B (Attack Ground), Ubertip (Tooltip - Normal - Extended)
+{
+Orders your units to fire at the targeted area of ground until they're told to stop or are given another order.
 }
 

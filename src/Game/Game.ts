@@ -190,6 +190,27 @@ export class Game {
         // EVENT_UNIT_SELECTED
         // EVENT_PLAYER_UNIT_SELECTED
 
+        const meatWagonAutoAttackGroundTrigger: Trigger = new Trigger();
+        const meatWagonUnitTypeId: number = FourCC('h00A');
+        const attackAbilityId: number = FourCC('Aatk');
+        meatWagonAutoAttackGroundTrigger.addCondition(() => GetUnitTypeId(GetAttacker()) === meatWagonUnitTypeId);
+        meatWagonAutoAttackGroundTrigger.addAction(() => {
+            const trig: unit = GetTriggerUnit();
+            const attacker: unit = GetAttacker();
+            const x: number = GetUnitX(trig);
+            const y: number = GetUnitY(trig);
+
+            // Not allowed to attack ground if attack is hidden
+            BlzUnitDisableAbility(attacker, attackAbilityId, false, false);
+            
+            // Issue order to attack ground
+            IssuePointOrderById(attacker, 851984, x, y);
+
+            // Hide attack again
+            BlzUnitDisableAbility(attacker, attackAbilityId, false, true);
+        });
+        meatWagonAutoAttackGroundTrigger.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_ATTACKED);
+
         for (let i = 0; i < this.checkpoints.length; i++) {
             const trig: Trigger = new Trigger();
             trig.addCondition(() => GetPlayerId(GetOwningPlayer(GetEnteringUnit())) === 23)
