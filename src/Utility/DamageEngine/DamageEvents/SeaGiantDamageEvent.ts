@@ -1,9 +1,11 @@
 import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { GroupInRange } from "../../../JassOverrides/GroupInRange";
 import { TimerUtils } from "../../TimerUtils";
-import { Timer } from "../../../JassOverrides/Timer";
 import { ATTACK_TYPE_SIEGE } from "../GameSettings";
+import {Effect, Timer, Unit} from "w3ts";
+import {GroupInRange} from "../../GroupInRange";
+import {Point} from "w3ts/handles/point";
+import {Group} from "../../Group";
 
 const seaGiantUnitTypeId: number = FourCC('h004');
 const clusterBombsAbilityId: number = FourCC('A005');
@@ -45,35 +47,35 @@ export class SeaGiantDamageEvent implements DamageEvent {
             ticks--;
 
             if (ticks > 12) {
-                const loc: location = Location(x + 150 * CosBJ(45 * ticks), y + 150 * SinBJ(45 * ticks));
-                DestroyEffect(AddSpecialEffectLoc('Objects\\Spawnmodels\\Human\\FragmentationShards\\FragBoomSpawn.mdl', loc));
-                const grp: GroupInRange = new GroupInRange(150, loc);
-                grp.for((u: unit) => {
-                    if (GetPlayerId(GetOwningPlayer(u)) !== 23) {
+                const loc: Point = new Point(x + 150 * CosBJ(45 * ticks), y + 150 * SinBJ(45 * ticks));
+                const effect = new Effect('Objects\\Spawnmodels\\Human\\FragmentationShards\\FragBoomSpawn.mdl',loc.x, loc.y )
+                effect.destroy()
+                const grp: Group = GroupInRange(150, loc);
+                grp.for((u: Unit) => {
+                    if (u.owner.id !== 23) {
                         return;
                     }
-
-                    UnitDamageTargetBJ(trig, u, explosiveDamage, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
+                    u.damageTarget(u.handle, explosiveDamage, true, false, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
                 });
                 grp.destroy();
-                RemoveLocation(loc);
+                loc.destroy();
             } else if (clusterBombsLevel === 1 || (clusterBombsLevel === 2 && userData < 1)) {
                 this.timerUtils.releaseTimer(t);
             } else if (ticks > 7) {
                 // Wait...
             } else {
-                const loc: location = Location(x + 200 * CosBJ(45 * ticks), y + 200 * SinBJ(45 * ticks));
-                DestroyEffect(AddSpecialEffectLoc('Abilities\\Weapons\\CannonTowerMissile\\CannonTowerMissile.mdl', loc));
-                const grp: GroupInRange = new GroupInRange(340, loc);
-                grp.for((u: unit) => {
-                    if (GetPlayerId(GetOwningPlayer(u)) !== 23) {
+                const loc: Point = new Point(x + 200 * CosBJ(45 * ticks), y + 200 * SinBJ(45 * ticks));
+                const effect = new Effect('Abilities\\Weapons\\CannonTowerMissile\\CannonTowerMissile.mdl',loc.x, loc.y )
+                effect.destroy()
+                const grp: Group = GroupInRange(340, loc);
+                grp.for((u: Unit) => {
+                    if (u.owner.id !== 23) {
                         return;
                     }
-
-                    UnitDamageTargetBJ(trig, u, explosiveDamage, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
+                    u.damageTarget(u.handle, explosiveDamage, true, false, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
                 });
                 grp.destroy();
-                RemoveLocation(loc);
+                loc.destroy();
             }
 
             if (ticks <= 0) {

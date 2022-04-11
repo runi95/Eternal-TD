@@ -1,4 +1,5 @@
 import { TowerUpgrade } from "./TowerUpgrade";
+import {Unit} from "w3ts";
 
 export abstract class TowerType {
     public abstract unitTypeId: number;
@@ -8,7 +9,7 @@ export abstract class TowerType {
         return;
     }
 
-    public applyInitialUnitValues(_unit: unit): void {
+    public applyInitialUnitValues(_unit: Unit): void {
         return;
     }
 }

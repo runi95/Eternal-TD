@@ -1,6 +1,3 @@
-import { GroupInRange } from "../JassOverrides/GroupInRange";
-import { Timer } from "../JassOverrides/Timer";
-import { Trigger } from "../JassOverrides/Trigger";
 import { StunUtils } from "../Utility/StunUtils";
 import { TimerUtils } from "../Utility/TimerUtils";
 import { AbominationCustomData } from "./Abomination/Abomination";
@@ -9,6 +6,8 @@ import { Tower } from "./Tower";
 import { TowerType } from "./TowerType";
 import towerTypeMap from "./TowerTypes";
 import { TowerUpgrade } from "./TowerUpgrade";
+import {Timer, Trigger, Unit} from "w3ts";
+import {GroupInRange} from "../Utility/GroupInRange";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
@@ -30,16 +29,16 @@ export class TowerController {
 
         const constTrig: Trigger = new Trigger();
         constTrig.addAction(() => {
-            const trig: unit = GetTriggerUnit();
+            const trig: Unit = Unit.fromEvent();
 
-            BlzUnitDisableAbility(trig, attackAbilityId, false, true);
-            const unitTypeId: number = GetUnitTypeId(trig);
+            trig.disableAbility(attackAbilityId, false, true);
+            const unitTypeId: number = trig.typeId;
             const towerType: TowerType | undefined = towerTypeMap.get(unitTypeId);
             if (towerType === undefined) {
                 throw new Error(`Invalid argument; no TowerType of unitTypeId ${unitTypeId} exists!`);
             }
 
-            const trigHandleId: number = GetHandleId(trig);
+            const trigHandleId: number = trig.id;
             const tower: Tower = new Tower(trig, towerType);
             tower.towerType.applyInitialUnitValues(trig);
             
@@ -47,22 +46,22 @@ export class TowerController {
             this.towers.set(trigHandleId, tower);
             this.addTickTower(tower);
         });
-        constTrig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_CONSTRUCT_START);
+        constTrig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_START);
     }
 
     public upgradeTower(tower: Tower, upgrade: TowerUpgrade): boolean {
         let isTowerUnitReplaced = false;
-        const originalHandleId: number = GetHandleId(tower.unit);
+        const originalHandleId: number = tower.unit.id;
         if (upgrade.newUnitTypeId !== undefined) {
             isTowerUnitReplaced = true;
             const pathUpgrades = tower.pathUpgrades;
-            const unit = ReplaceUnitBJ(tower.unit, upgrade.newUnitTypeId, bj_UNIT_STATE_METHOD_DEFAULTS);
-            BlzUnitDisableAbility(unit, attackAbilityId, false, true);
+            const unit = Unit.fromHandle(ReplaceUnitBJ(tower.unit.handle, upgrade.newUnitTypeId, bj_UNIT_STATE_METHOD_DEFAULTS));
+            unit.disableAbility(attackAbilityId, false, true);
             tower.unit = unit;
 
             // TODO: What happens if an attack / missile is mid-air while unit replace happens?
             this.towers.delete(originalHandleId);
-            this.towers.set(GetHandleId(unit), tower);
+            this.towers.set(unit.id, tower);
 
             tower.towerType.applyInitialUnitValues(unit);
             for (let i = 0; i < pathUpgrades.length; i++) {
@@ -71,7 +70,7 @@ export class TowerController {
                 }
             }
 
-            SelectUnitForPlayerSingle(unit, GetTriggerPlayer());
+            SelectUnitForPlayerSingle(unit.handle, GetTriggerPlayer());
         }
 
         upgrade.applyUpgrade(tower);
@@ -81,7 +80,7 @@ export class TowerController {
             this.tickTowers.delete(originalHandleId);
         }
 
-        if (GetUnitAbilityLevel(tower.unit, tickTowerAbilityId) > 0) {
+        if (tower.unit.getAbilityLevel(tickTowerAbilityId) > 0) {
             this.addTickTower(tower);
         }
 
@@ -89,13 +88,13 @@ export class TowerController {
     }
 
     private addTickTower(tower: Tower): void {
-        if (GetUnitAbilityLevel(tower.unit, tickTowerAbilityId) > 0) {
+        if (tower.unit.getAbilityLevel(tickTowerAbilityId) > 0) {
             // TODO: Remove towers from this map when the tower is sold
             const t: Timer = this.timerUtils.newTimer();
             const tickFunction = this.getTowerTickFunction(tower.towerType.unitTypeId);
-            t.start(BlzGetAbilityRealLevelField(BlzGetUnitAbility(tower.unit, tickTowerAbilityId), ABILITY_RLF_COOLDOWN, 0), true, () => tickFunction(tower));
+            t.start(BlzGetAbilityRealLevelField(tower.unit.getAbility(tickTowerAbilityId), ABILITY_RLF_COOLDOWN, 0), true, () => tickFunction(tower));
 
-            this.tickTowers.set(GetHandleId(tower.unit), t);
+            this.tickTowers.set(tower.unit.id, t);
         }
     }
 
@@ -124,53 +123,54 @@ export class TowerController {
                     if (hasGreaterPermanentImmolation)
                         realDamageAmount += greaterPermanentImmolationAdditionalDamageAmount;
 
-                    const loc = GetUnitLoc(tower.unit);
-                    const group = new GroupInRange(range, loc);
+                    const loc = tower.unit.point;
+                    const group = GroupInRange(range, loc);
 
                     let unitCount = 0;
-                    group.for((u: unit) => {
+                    group.for((u: Unit) => {
                         if (unitCount >= realMaxUnitCount)
                             return;
 
-                        if (!UnitAlive(u))
+                        if (!u.isAlive())
                             return;
 
-                        if (GetPlayerId(GetOwningPlayer(u)) !== 23)
+                        if (u.owner.id !== 23)
                             return;
 
                         unitCount++;
-                        UnitDamageTargetBJ(tower.unit, u, realDamageAmount, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL);
+                        tower.unit.damageTarget(u.handle, realDamageAmount, true, false, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
+
                     });
                     group.destroy();
-                    RemoveLocation(loc);
+                    loc.destroy();
                 };
             case obsidianStatueUnitTypeId:
                 return (tower: Tower) => {
                     const { range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasColdSnap, hasReFreeze } = tower.customData as ObsidianStatueCustomData;
-                    const loc = GetUnitLoc(tower.unit);
-                    const group = new GroupInRange(range, loc);
+                    const loc = tower.unit.point;
+                    const group = GroupInRange(range, loc);
 
                     let unitCount = 0;
-                    group.for((u: unit) => {
+                    group.for((u: Unit) => {
                         if (unitCount >= maxUnitCount)
                             return;
 
-                        if (!UnitAlive(u))
+                        if (!u.isAlive())
                             return;
 
-                        if (GetPlayerId(GetOwningPlayer(u)) !== 23)
+                        if (u.owner.id !== 23)
                             return;
 
-                        const unitTypeId: number = GetUnitTypeId(u);
+                        const unitTypeId: number = u.typeId;
                         if (!hasColdSnap && (unitTypeId === fortifiedUnitTypeId || unitTypeId === invisibilityUnitTypeId))
                                 return;
 
                         unitCount++;
-                        UnitDamageTargetBJ(tower.unit, u, damageAmount, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL);
+                        tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
                         this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze);
                     });
                     group.destroy();
-                    RemoveLocation(loc);
+                    loc.destroy();
                 };
             default:
                 throw new Error(`Invalid argument; no TickFunction exists for Tower of type ${unitTypeId}`);

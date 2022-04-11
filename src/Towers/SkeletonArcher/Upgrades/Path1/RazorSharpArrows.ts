@@ -8,6 +8,7 @@ export class RazorSharpArrows extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        BlzSetUnitBaseDamage(tower.unit, BlzGetUnitBaseDamage(tower.unit, 0) + 1, 0);
+        tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 1, 0);
+
     }
 }

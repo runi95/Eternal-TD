@@ -1,4 +1,4 @@
-import { Trigger } from '../JassOverrides/Trigger';
+import {Trigger} from "w3ts";
 
 export abstract class Spell {
     protected readonly abstract abilityId: number;
@@ -7,7 +7,7 @@ export abstract class Spell {
     constructor() {
         this.trig.addCondition(() => this.condition());
         this.trig.addAction(() => this.action());
-        this.trig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+        this.trig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
     }
 
     protected condition(): boolean {

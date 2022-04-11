@@ -10,8 +10,8 @@ export class SharpShooter extends TowerUpgrade {
     private readonly sharpShooterAbilityId: number = FourCC('A002');
 
     public applyUpgrade(tower: Tower): void {
-        BlzSetUnitAttackCooldown(tower.unit, BlzGetUnitAttackCooldown(tower.unit, 0) * 0.2133, 0);
-        BlzSetUnitBaseDamage(tower.unit, BlzGetUnitBaseDamage(tower.unit, 0) + 3, 0);
-        UnitAddAbility(tower.unit, this.sharpShooterAbilityId);
+        tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.2133, 0)
+        tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) * 0.3, 0)
+        tower.unit.addAbility(this.sharpShooterAbilityId);
     }
 }

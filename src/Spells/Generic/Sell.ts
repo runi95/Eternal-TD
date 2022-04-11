@@ -1,25 +1,24 @@
-import { Trigger } from '../../JassOverrides/Trigger';
+import {MapPlayer, Trigger, Unit} from "w3ts";
+import {OrderId} from "w3ts/globals/order";
 
 export class Sell {
     private readonly trig: Trigger = new Trigger();
-    private readonly orderId: number = String2OrderIdBJ('defend');
 
     constructor() {
         this.trig.addCondition(() => this.condition());
         this.trig.addAction(() => this.action());
-        this.trig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_ISSUED_ORDER);
+        this.trig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_ORDER);
     }
 
     protected condition(): boolean {
-        return GetIssuedOrderIdBJ() === this.orderId;
+        return GetIssuedOrderIdBJ() === OrderId.Defend;
     }
 
     private action(): void {
-        const trig: unit = GetTriggerUnit();
-        const owningPlayer: player = GetOwningPlayer(trig);
-        const cost: number = GetUnitGoldCost(GetUnitTypeId(trig));
-
-        SetPlayerState(owningPlayer, PLAYER_STATE_RESOURCE_GOLD, Math.ceil(GetPlayerState(owningPlayer, PLAYER_STATE_RESOURCE_GOLD) + 0.75 * cost));
-        RemoveUnit(trig);
+        const trig: Unit = Unit.fromEvent();
+        const owningPlayer: MapPlayer = trig.owner;
+        const cost: number = GetUnitGoldCost(trig.typeId); // Todo: submit pr to w3ts
+        owningPlayer.setState(PLAYER_STATE_RESOURCE_GOLD, Math.ceil(owningPlayer.getState(PLAYER_STATE_RESOURCE_GOLD) + 0.75 * cost))
+        trig.destroy();
     }
 }

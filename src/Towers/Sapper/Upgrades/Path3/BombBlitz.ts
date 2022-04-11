@@ -9,6 +9,6 @@ export class BombBlitz extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        SetUnitAbilityLevel(tower.unit, clusterBombsAbilityId, 3);
+        tower.unit.setAbilityLevel(clusterBombsAbilityId, 3);
     }
 }

@@ -9,7 +9,7 @@ export class FasterSpread extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        const abil: ability = BlzGetUnitAbility(tower.unit, tickTowerAbilityId);
+        const abil: ability = tower.unit.getAbility(tickTowerAbilityId);
         BlzSetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0, BlzGetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0) * 0.75);
     }
 }

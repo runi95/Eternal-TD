@@ -1,7 +1,8 @@
-import { StunnedUnit } from './StunnedUnit';
-import { TimerUtils } from './TimerUtils';
-import { Timer } from '../JassOverrides/Timer';
-import { FrozenUnit } from './FrozenUnit';
+import {StunnedUnit} from './StunnedUnit';
+import {TimerUtils} from './TimerUtils';
+import {FrozenUnit} from './FrozenUnit';
+import {MapPlayer, Timer, Unit} from "w3ts";
+import {OrderId} from "w3ts/globals/order";
 
 const dummyUnitTypeId: number = FourCC('u007');
 const timedLifeBuffId: number = FourCC('BTLF');
@@ -59,8 +60,8 @@ export class StunUtils {
      * @param u - The unit to freeze
      * @param duration - The duration (in seconds) to freeze the unit for
      */
-     public freezeUnit(u: unit, duration: number, permafrost: boolean, refreeze: boolean): void {
-        const handleId: number = GetHandleIdBJ(u);
+     public freezeUnit(u: Unit, duration: number, permafrost: boolean, refreeze: boolean): void {
+        const handleId: number = u.id;
         if (this.frozenUnits.has(handleId)) {
             if (refreeze) {
                 const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost);
@@ -78,20 +79,20 @@ export class StunUtils {
 
         const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost);
         this.frozenUnits.set(handleId, frozenUnit);
-        UnitAddAbility(frozenUnit.getUnit(), this.freezeAbilityId);
-        BlzPauseUnitEx(frozenUnit.getUnit(), true);
+        frozenUnit.getUnit().addAbility(this.freezeAbilityId);
+        frozenUnit.getUnit().pauseEx(true);
         const t: Timer = this.timerUtils.newTimer();
         t.start(0.05, true, () => {
             frozenUnit.addDuration(-0.05);
             if (frozenUnit.getDuration() <= 0) {
                 if (frozenUnit.permafrost) {
-                    const dummy: unit = CreateUnit(Player(0), dummyUnitTypeId, GetUnitX(frozenUnit.getUnit()), GetUnitY(frozenUnit.getUnit()), bj_UNIT_FACING);
-                    UnitAddAbilityBJ(permafrostAbilityId, dummy);
-                    UnitApplyTimedLifeBJ(1, timedLifeBuffId, dummy);
-                    IssueTargetOrder(dummy, 'slow', frozenUnit.getUnit());
+                    const dummy: Unit = new Unit(MapPlayer.fromIndex(0), dummyUnitTypeId, frozenUnit.getUnit().x, frozenUnit.getUnit().y, bj_UNIT_FACING)
+                    dummy.addAbility(permafrostAbilityId);
+                    dummy.applyTimedLife(timedLifeBuffId, 1);
+                    dummy.issueTargetOrder(OrderId.Slow, frozenUnit.getUnit())
                 }
-                UnitRemoveAbility(frozenUnit.getUnit(), this.freezeAbilityId);
-                BlzPauseUnitEx(frozenUnit.getUnit(), false);
+                frozenUnit.getUnit().removeAbility(this.freezeAbilityId);
+                frozenUnit.getUnit().pauseEx(false);
                 this.frozenUnits.delete(handleId);
                 this.timerUtils.releaseTimer(t);
             }

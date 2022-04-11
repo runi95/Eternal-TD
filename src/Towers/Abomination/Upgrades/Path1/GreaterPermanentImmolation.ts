@@ -14,7 +14,7 @@ export class GreaterPermanentImmolation extends TowerUpgrade {
         (tower.customData as AbominationCustomData).maxUnitCount += 7;
         (tower.customData as AbominationCustomData).hasGreaterPermanentImmolation = true;
 
-        const abil: ability = BlzGetUnitAbility(tower.unit, tickTowerAbilityId);
+        const abil: ability = tower.unit.getAbility(tickTowerAbilityId);
         BlzSetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0, BlzGetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0) * 0.74604);
     }
 }

@@ -1,15 +1,17 @@
+import {Unit} from "w3ts";
+
 export class FrozenUnit {
     public readonly permafrost: boolean;
-    private readonly unit: unit;
+    private readonly unit: Unit;
     private duration: number;
 
-    constructor(unit: unit, duration: number, permafrost: boolean) {
+    constructor(unit: Unit, duration: number, permafrost: boolean) {
         this.permafrost = permafrost;
         this.unit = unit;
         this.duration = duration;
     }
 
-    public getUnit(): unit {
+    public getUnit(): Unit {
         return this.unit;
     }
 

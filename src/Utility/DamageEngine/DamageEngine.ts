@@ -1,10 +1,9 @@
 /* eslint-disable */
-import { Trigger } from '../../JassOverrides/Trigger';
 import * as settings from './GameSettings';
 import { DamageEngineGlobals } from './DamageEngineGlobals';
 import { DamageEvent } from './DamageEvent';
-import { Timer } from '../../JassOverrides/Timer';
 import { TimerUtils } from '../TimerUtils';
+import {Timer, Trigger} from "w3ts";
 
 interface Damage {
     type: number;
@@ -81,10 +80,10 @@ export class DamageEngine {
         this.damageEngineGlobals = damageEngineGlobals;
         this.alarm = this.timerUtils.newTimer();
 
-        this.t1.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_DAMAGING);
+        this.t1.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGING);
         this.t1.addCondition(() => this.t1Condition());
 
-        this.t2.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_DAMAGED);
+        this.t2.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGED);
         this.t2.addCondition(() => this.t2Condition());
     }
 

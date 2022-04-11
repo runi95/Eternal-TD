@@ -1,4 +1,4 @@
-import { Trigger } from "../JassOverrides/Trigger";
+import { Frame, Trigger, MapPlayer } from "w3ts";
 import { Tower } from "../Towers/Tower";
 import { TowerController } from "../Towers/TowerController";
 import { TowerUpgrade } from "../Towers/TowerUpgrade";
@@ -8,10 +8,10 @@ export class TowerSystem {
     private readonly towers: Map<number, Tower>;
     private selectedTower: Tower | null = null;
 
-    private readonly originFrameGameUi: framehandle;
-    private readonly menu: framehandle;
-    private readonly upgradePathIconFrames: framehandle[][];
-    private readonly upgradePathTextFrames: framehandle[][];
+    private readonly originFrameGameUi: Frame;
+    private readonly menu: Frame;
+    private readonly upgradePathIconFrames: Frame[][];
+    private readonly upgradePathTextFrames: Frame[][];
     private readonly upgradePathEnabled: boolean[][];
 
     // private readonly towerIconFrame: framehandle;
@@ -20,12 +20,12 @@ export class TowerSystem {
     constructor(towerController: TowerController, towers: Map<number, Tower>) {
         this.towerController = towerController;
         this.towers = towers;
-        this.originFrameGameUi = BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0);
+        this.originFrameGameUi = Frame.fromOrigin(ORIGIN_FRAME_GAME_UI, 0);
 
-        this.menu = BlzCreateFrame('EscMenuPopupMenuTemplate', this.originFrameGameUi, -1, 0);
-        BlzFrameSetVisible(this.menu, false);
-        BlzFrameSetSize(this.menu, 0.14, 0.19);
-        BlzFrameSetPoint(this.menu, FRAMEPOINT_BOTTOMRIGHT, this.originFrameGameUi, FRAMEPOINT_BOTTOMRIGHT, -0.007, 0.16);
+        this.menu = new Frame('EscMenuPopupMenuTemplate', this.originFrameGameUi, -1, 0)
+        this.menu.setVisible(false);
+        this.menu.setSize(0.14, 0.19);
+        this.menu.setPoint(FRAMEPOINT_BOTTOMRIGHT, this.originFrameGameUi, FRAMEPOINT_BOTTOMRIGHT, -0.007, 0.16);
 
         const x = -0.046875;
         const y = -0.075;
@@ -36,9 +36,10 @@ export class TowerSystem {
             }
         }
         
-        const menuBackdrop: framehandle = BlzCreateFrameByType('BACKDROP', 'menuBackdrop', this.menu, '', 0);
-        BlzFrameSetTexture(menuBackdrop, "war3mapImported\\TowerUpgradePanel.dds", 0, true);
-        BlzFrameSetAllPoints(menuBackdrop, this.menu);
+        const menuBackdrop: Frame = new Frame('menuBackdrop', this.menu, -1, 0, 'BACKDROP', '');
+
+        menuBackdrop.setTexture("war3mapImported\\TowerUpgradePanel.dds", 0, true)
+        menuBackdrop.setAllPoints(this.menu);
 
         this.upgradePathEnabled = [[], [], []];
         this.upgradePathTextFrames = [[], [], []];
@@ -134,18 +135,16 @@ export class TowerSystem {
             const tower: Tower | undefined = this.towers.get(unitHandleId);
             if (tower === undefined) {
                 this.selectedTower = null;
-                BlzFrameSetVisible(this.menu, false);
+                this.menu.setVisible(false);
                 return;
             }
             this.selectedTower = tower;
 
             this.renderSelectedTowerUpgrades();
-
-            BlzFrameSetVisible(this.menu, true);
+            this.menu.setVisible(true)
         });
-        selectUnitTrig.registerPlayerUnitEvent(Player(0), EVENT_PLAYER_UNIT_SELECTED);
-
-        BlzFrameSetFocus(this.menu, false);
+        selectUnitTrig.registerPlayerUnitEvent(MapPlayer.fromIndex(1), EVENT_PLAYER_UNIT_SELECTED, undefined);
+        this.menu.setFocus(false);
     }
 
     private renderSelectedTowerUpgrades(): void {
@@ -164,45 +163,44 @@ export class TowerSystem {
                     if (!isEnabled) {
                         icon = icon.replace("CommandButtons\\BTN", "CommandButtonsDisabled\\DISBTN");
                     }
-
-                    BlzFrameSetTexture(this.upgradePathIconFrames[i][j], icon, 0, true);
-                    BlzFrameSetText(this.upgradePathTextFrames[i][j], `${this.selectedTower.towerType.upgrades[i][j].name} |cFFFFCC00(${this.selectedTower.towerType.upgrades[i][j].cost})|r|n|n` + this.selectedTower.towerType.upgrades[i][j].description);
+                    this.upgradePathIconFrames[i][j].setTexture(icon, 0, true)
+                    this.upgradePathTextFrames[i][j].setText(`${this.selectedTower.towerType.upgrades[i][j].name} |cFFFFCC00(${this.selectedTower.towerType.upgrades[i][j].cost})|r|n|n` + this.selectedTower.towerType.upgrades[i][j].description)
                     this.upgradePathEnabled[i][j] = isEnabled;
                 }
             }
         }
     }
 
-    private createUpgradePathIconFrame(parent: framehandle, offsetX: number, offsetY: number): framehandle {
-        const iconFrame = BlzCreateFrameByType('BACKDROP', 'iconFrame', parent, '', 0);
-        BlzFrameSetSize(iconFrame, 0.02625, 0.02625);
-        BlzFrameSetPoint(iconFrame, FRAMEPOINT_CENTER, parent, FRAMEPOINT_CENTER, offsetX, offsetY);
-        BlzFrameSetTexture(iconFrame, "UI\\Widgets\\EscMenu\\Human\\Quest-Unknown.dds", 0, true);
+    private createUpgradePathIconFrame(parent: Frame, offsetX: number, offsetY: number): Frame {
+        const iconFrame = new Frame( 'iconFrame', parent, -1, 0, 'BACKDROP', '');
+        iconFrame.setSize(0.02625, 0.02625)
+        iconFrame.setPoint(FRAMEPOINT_CENTER, parent, FRAMEPOINT_CENTER, offsetX, offsetY)
+        iconFrame.setTexture("UI\\Widgets\\EscMenu\\Human\\Quest-Unknown.dds", 0, true)
 
         return iconFrame;
     }
 
-    private createUpgradePathButtonFrame(parent: framehandle): [framehandle, framehandle] {
-        const buttonFrame = BlzCreateFrameByType("BUTTON", "", parent, "buttonFrame", 0);
-        BlzFrameSetAllPoints(buttonFrame, parent);
+    private createUpgradePathButtonFrame(parent: Frame): [Frame, Frame] {
+        const buttonFrame = new Frame("buttonFrame", parent, -1, 0, 'BUTTON', '');
+        buttonFrame.setAllPoints(parent);
         // const tooltipFrame = BlzCreateFrame("StandardDecoratedEditBoxBackdropTemplate", buttonFrame, 0, 0);
-        const tooltipFrame = BlzCreateFrame("BoxedText", buttonFrame, 0, 0);
-        const textFrame = BlzCreateFrameByType("TEXT", "textFrame", tooltipFrame, "", 0);
-        BlzFrameSetSize(textFrame, 0.25, 0);
-        BlzFrameSetPoint(tooltipFrame, FRAMEPOINT_BOTTOMLEFT, textFrame, FRAMEPOINT_BOTTOMLEFT, -0.01, -0.01);
-        BlzFrameSetPoint(tooltipFrame, FRAMEPOINT_TOPRIGHT, textFrame, FRAMEPOINT_TOPRIGHT, 0.01, 0.01);
-        BlzFrameSetTooltip(buttonFrame, tooltipFrame);
-        BlzFrameSetPoint(textFrame, FRAMEPOINT_BOTTOM, buttonFrame, FRAMEPOINT_TOP, 0, 0.01);
+        const tooltipFrame = new Frame("BoxedText", buttonFrame, 0, 0);
+        const textFrame = new Frame("textFrame", tooltipFrame, -1, 0, "TEXT", '');
+        textFrame.setSize(0.25, 0)
+        tooltipFrame.setPoint(FRAMEPOINT_BOTTOMLEFT, textFrame, FRAMEPOINT_BOTTOMLEFT, -0.01, -0.01)
+        tooltipFrame.setPoint(FRAMEPOINT_TOPRIGHT, textFrame, FRAMEPOINT_TOPRIGHT, 0.01, 0.01)
+        buttonFrame.setTooltip(tooltipFrame)
+        textFrame.setPoint(FRAMEPOINT_BOTTOM, buttonFrame, FRAMEPOINT_TOP, 0, 0.01)
 
         return [buttonFrame, textFrame];
     }
 
-    private createUpgradePathButtonTrigger(buttonFrame: framehandle, path: number, tier: number): void {
+    private createUpgradePathButtonTrigger(buttonFrame: Frame, path: number, tier: number): void {
         const buttonTrig: Trigger = new Trigger();
         buttonTrig.addCondition(() => this.upgradePathEnabled[path][tier] && this.selectedTower && this.selectedTower.pathUpgrades[path] === tier);
         buttonTrig.addAction(() => {
-            BlzFrameSetVisible(buttonFrame, false);
-            BlzFrameSetVisible(buttonFrame, true);
+            buttonFrame.setVisible(false);
+            buttonFrame.setVisible(true);
             const tower: Tower = (this.selectedTower as Tower);
             const upgrade: TowerUpgrade = tower.towerType.upgrades[path][tier];
             const playerCurrentGold: number = GetPlayerState(GetTriggerPlayer(), PLAYER_STATE_RESOURCE_GOLD);
@@ -222,11 +220,11 @@ export class TowerSystem {
 
             tower.pathUpgrades[path]++;
             if (this.towerController.upgradeTower(tower, upgrade)) {
-                SelectUnitForPlayerSingle(tower.unit, GetTriggerPlayer());
+                SelectUnitForPlayerSingle(tower.unit.handle, GetTriggerPlayer());
             } else {
                 this.renderSelectedTowerUpgrades();
             }
         });
-        buttonTrig.registerFrameEvent(buttonFrame, FRAMEEVENT_CONTROL_CLICK);
+        buttonTrig.triggerRegisterFrameEvent(buttonFrame, FRAMEEVENT_CONTROL_CLICK);
     }
 }

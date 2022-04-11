@@ -8,6 +8,6 @@ export class IncreasedDamage extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        BlzSetUnitBaseDamage(tower.unit, BlzGetUnitBaseDamage(tower.unit, 0) + 2, 0);
+        tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 2, 0);
     }
 }

@@ -8,6 +8,7 @@ export class VeryQuickShots extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        BlzSetUnitAttackCooldown(tower.unit, BlzGetUnitAttackCooldown(tower.unit, 0) * 0.745, 0);
+        tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.745, 0);
+
     }
 }

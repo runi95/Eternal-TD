@@ -12,6 +12,7 @@ import { FurtherIncreasedEffectiveness } from "./Upgrades/Path3/FurtherIncreased
 import { IncreasedEffectiveness } from "./Upgrades/Path3/IncreasedEffectiveness";
 import { Overdrive } from "./Upgrades/Path3/Overdrive";
 import { ContaminationZone } from "./Upgrades/Path3/ContaminationZone";
+import {Unit} from "w3ts";
 
 export interface AbominationCustomData {
     range: number;
@@ -59,8 +60,8 @@ export class Abomination extends TowerType {
         };
     }
 
-    public applyInitialUnitValues(unit: unit): void {
+    public applyInitialUnitValues(unit: Unit): void {
         // Sets the initial tick cooldown to 1.4
-        BlzSetAbilityRealLevelField(BlzGetUnitAbility(unit, tickTowerAbilityId), ABILITY_RLF_COOLDOWN, 0, 1.4);
+        BlzSetAbilityRealLevelField(unit.getAbility(tickTowerAbilityId), ABILITY_RLF_COOLDOWN, 0, 1.4);
     }
 }
