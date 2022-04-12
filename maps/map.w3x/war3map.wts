@@ -588,3 +588,27 @@ STRING 142
 Orders your units to fire at the targeted area of ground until they're told to stop or are given another order.
 }
 
+STRING 143
+// Units: h00B (Skeletal Mage), Name (Name)
+{
+Skeletal Mage
+}
+
+STRING 144
+// Units: h00B (Skeletal Mage), Hotkey (Hotkey)
+{
+D
+}
+
+STRING 145
+// Units: h00B (Skeletal Mage), Tip (Tooltip - Basic)
+{
+Build Skeleton Archer
+}
+
+STRING 146
+// Units: h00B (Skeletal Mage), Ubertip (Tooltip - Extended)
+{
+TODO: Write description
+}
+

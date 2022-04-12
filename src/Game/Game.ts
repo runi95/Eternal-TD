@@ -252,7 +252,7 @@ export class Game {
 
     private spawnRounds(): void {
         const t: Timer = this.timerUtils.newTimer();
-        let roundIndex = 0;
+        let roundIndex = 15;
         let creepCount = 0;
         let creepIndex = 0;
         let tick = 0;

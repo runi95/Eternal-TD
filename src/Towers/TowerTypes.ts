@@ -3,6 +3,7 @@ import { Gargoyle } from "./Gargoyle/Gargoyle";
 import { MeatWagon } from "./MeatWagon/MeatWagon";
 import { ObsidianStatue } from "./ObsidianStatue/ObsidianStatue";
 import { Sapper } from "./Sapper/Sapper";
+import { SkeletalMage } from "./SkeletalMage/SkeletalMage";
 import { SkeletonArcher } from "./SkeletonArcher/SkeletonArcher";
 import { TowerType } from "./TowerType";
 
@@ -14,6 +15,7 @@ const towers: Map<number, TowerType> = new Map();
     new ObsidianStatue(),
     new Gargoyle(),
     new MeatWagon(),
+    new SkeletalMage(),
 ].forEach((tower: TowerType) => {
     towers.set(tower.unitTypeId, tower);
     tower.upgrades.forEach((upgradePath) => {
