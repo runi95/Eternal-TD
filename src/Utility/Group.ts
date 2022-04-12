@@ -1,7 +1,6 @@
 import * as grp from "w3ts/handles/group";
 import {Unit} from "w3ts";
 import {Point} from "w3ts/handles/point";
-import {GroupInRange} from "./GroupInRange";
 
 
 // TODO: PR to w3ts to add this
@@ -24,6 +23,6 @@ export class Group extends grp.Group {
     }
 
     public static fromRange(radius: number, point: Point) {
-        return GroupInRange(radius, point);
+        return Group.fromHandle(GetUnitsInRangeOfLocAll(radius, point.handle));
     }
 }

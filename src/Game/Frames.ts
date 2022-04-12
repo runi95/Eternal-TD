@@ -143,7 +143,7 @@ export class TowerSystem {
             this.renderSelectedTowerUpgrades();
             this.menu.setVisible(true)
         });
-        selectUnitTrig.registerPlayerUnitEvent(MapPlayer.fromIndex(1), EVENT_PLAYER_UNIT_SELECTED, undefined);
+        selectUnitTrig.registerPlayerUnitEvent(MapPlayer.fromIndex(0), EVENT_PLAYER_UNIT_SELECTED, undefined);
         this.menu.setFocus(false);
     }
 

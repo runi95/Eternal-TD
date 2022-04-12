@@ -3,5 +3,6 @@ import {Group} from "./Group";
 
 // TODO: PR to w3ts to add this
 export function GroupInRange(radius: number, point: Point) {
-    return Group.fromHandle(GetUnitsInRangeOfLocAll(radius, point.handle));
+    print("disabled function!")
+    return Group.fromRange(radius, point);
 }
