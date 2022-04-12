@@ -60,7 +60,6 @@ export class TowerController {
             BlzUnitDisableAbility(unit, attackAbilityId, false, true);
             tower.unit = unit;
 
-            // TODO: What happens if an attack / missile is mid-air while unit replace happens?
             this.towers.delete(originalHandleId);
             this.towers.set(GetHandleId(unit), tower);
 
