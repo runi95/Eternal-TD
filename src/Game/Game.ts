@@ -18,6 +18,7 @@ import {Effect, Point, Timer, Trigger, Unit} from "w3ts";
 import {GroupInRange} from "../Utility/GroupInRange";
 import {Group} from "../Utility/Group";
 import {OrderId} from "w3ts/globals/order";
+import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 
 export class Game {
     private readonly timerUtils: TimerUtils;
@@ -30,6 +31,7 @@ export class Game {
     private readonly checkpoints: Checkpoint[];
     private readonly spells: Spells;
     private readonly towerSystem: TowerSystem;
+    private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower> = new Map();
 
@@ -41,7 +43,8 @@ export class Game {
         this.roundCreepController = new RoundCreepController();
         this.stunUtils = new StunUtils(this.timerUtils);
         this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils);
-        this.towerController = new TowerController(this.timerUtils, this.stunUtils, this.towers);
+        this.randomNumberGenerator = new RandomNumberGenerator();
+        this.towerController = new TowerController(this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
         this.towerSystem = new TowerSystem(this.towerController, this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
 

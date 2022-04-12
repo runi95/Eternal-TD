@@ -8,6 +8,8 @@ import towerTypeMap from "./TowerTypes";
 import { TowerUpgrade } from "./TowerUpgrade";
 import {Timer, Trigger, Unit} from "w3ts";
 import {GroupInRange} from "../Utility/GroupInRange";
+import { VoidwalkerCustomData } from "./Voidwalker/Voidwalker";
+import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
@@ -15,16 +17,20 @@ const fortifiedUnitTypeId: number = FourCC('u004');
 const invisibilityUnitTypeId: number = FourCC('u003');
 const abominationUnitTypeId: number = FourCC('h007');
 const obsidianStatueUnitTypeId: number = FourCC('h008');
-
+const voidwalkerUnitTypeId: number = FourCC('h00C');
+const lesserVoidwalkerUnitTypeId: number = FourCC('o000');
+const timedLifeBuffId: number = FourCC('BTLF');
 export class TowerController {
     private readonly towers: Map<number, Tower>;
     private readonly timerUtils: TimerUtils;
     private readonly stunUtils: StunUtils;
+    private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly tickTowers: Map<number, Timer> = new Map();
 
-    constructor(timerUtils: TimerUtils, stunUtils: StunUtils, towers: Map<number, Tower>) {
+    constructor(timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>) {
         this.timerUtils = timerUtils;
         this.stunUtils = stunUtils;
+        this.randomNumberGenerator = randomNumberGenerator;
         this.towers = towers;
 
         const constTrig: Trigger = new Trigger();
@@ -170,6 +176,15 @@ export class TowerController {
                     });
                     group.destroy();
                     loc.destroy();
+                };
+            case voidwalkerUnitTypeId:
+                return (tower: Tower) => {
+                    const { duration, range } = tower.customData as VoidwalkerCustomData;
+                    const x: number = tower.unit.x + this.randomNumberGenerator.random(-range, range);
+                    const y: number = tower.unit.y + this.randomNumberGenerator.random(-range, range);
+
+                    const lesserVoidwalker = new Unit(tower.unit.owner, lesserVoidwalkerUnitTypeId, x, y, bj_UNIT_FACING);
+                    lesserVoidwalker.applyTimedLife(timedLifeBuffId, duration);
                 };
             default:
                 throw new Error(`Invalid argument; no TickFunction exists for Tower of type ${unitTypeId}`);

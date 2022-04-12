@@ -612,3 +612,45 @@ STRING 146
 TODO: Write description
 }
 
+STRING 150
+// Units: h00C (Voidwalker), Ubertip (Tooltip - Extended)
+{
+TODO: Write description
+}
+
+STRING 151
+// Units: h00C (Voidwalker), Hotkey (Hotkey)
+{
+F
+}
+
+STRING 152
+// Units: h00C (Voidwalker), Tip (Tooltip - Basic)
+{
+Build Unbroken Darkhunter
+}
+
+STRING 153
+// Units: h00C (Voidwalker), Name (Name)
+{
+Voidwalker
+}
+
+STRING 154
+// Units: h00D (Voidwalker), Name (Name)
+{
+Voidwalker
+}
+
+STRING 157
+// Units: h00D (Voidwalker), Ubertip (Tooltip - Extended)
+{
+TODO: Write description
+}
+
+STRING 158
+// Units: o000 (Lesser Voidwalker), Name (Name)
+{
+Lesser Voidwalker
+}
+
