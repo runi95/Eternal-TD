@@ -1,22 +1,23 @@
-import { Timer } from "../JassOverrides/Timer";
-import { Trigger } from "../JassOverrides/Trigger";
-import { TimerUtils } from "../Utility/TimerUtils";
-import { Spells } from "../Spells/Spells";
-import { getRoundCreeps } from "./Rounds";
-import { DamageEngineGlobals } from "../Utility/DamageEngine/DamageEngineGlobals";
-import { DamageEngine } from "../Utility/DamageEngine/DamageEngine";
-import { DamageEventController } from "../Utility/DamageEngine/DamageEventController";
-import { RoundCreepController } from "./RoundCreepController";
-import { SpawnedCreep } from "../Creeps/SpawnedCreep";
-import { Checkpoint } from "./Checkpoint";
-import { GroupInRange } from "../JassOverrides/GroupInRange";
-import { TowerSystem } from "./Frames";
-import { Tower } from "../Towers/Tower";
-import { Modifier } from "../Creeps/Modifier";
-import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
-import { regenUnitMap } from "../Creeps/Modifiers/RegenModifier"
-import { StunUtils } from "../Utility/StunUtils";
-import { TowerController } from "../Towers/TowerController";
+import {TimerUtils} from "../Utility/TimerUtils";
+import {Spells} from "../Spells/Spells";
+import {getRoundCreeps} from "./Rounds";
+import {DamageEngineGlobals} from "../Utility/DamageEngine/DamageEngineGlobals";
+import {DamageEngine} from "../Utility/DamageEngine/DamageEngine";
+import {DamageEventController} from "../Utility/DamageEngine/DamageEventController";
+import {RoundCreepController} from "./RoundCreepController";
+import {SpawnedCreep} from "../Creeps/SpawnedCreep";
+import {Checkpoint} from "./Checkpoint";
+import {TowerSystem} from "./Frames";
+import {Tower} from "../Towers/Tower";
+import {Modifier} from "../Creeps/Modifier";
+import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
+import {regenUnitMap} from "../Creeps/Modifiers/RegenModifier"
+import {StunUtils} from "../Utility/StunUtils";
+import {TowerController} from "../Towers/TowerController";
+import {Effect, Point, Timer, Trigger, Unit} from "w3ts";
+import {GroupInRange} from "../Utility/GroupInRange";
+import {Group} from "../Utility/Group";
+import {OrderId} from "w3ts/globals/order";
 
 export class Game {
     private readonly timerUtils: TimerUtils;
@@ -108,27 +109,27 @@ export class Game {
             regenUnitMap.delete(trigHandleId);
             this.roundCreepController.delete(trigHandleId);
         });
-        deathTrig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_DEATH);
+        deathTrig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
 
         const trig: Trigger = new Trigger();
         let disableTrig = false;
-        let eff: effect;
-        let eff2: effect;
+        let eff: Effect;
+        let eff2: Effect;
         trig.addCondition(() => !disableTrig);
         trig.addAction(() => {
-            const trig: unit = GetAttacker();
-            const targ: widget = GetTriggerUnit();
-            const loc: location = GetUnitLoc(trig);
-            const range: number = BlzGetUnitWeaponRealField(trig, UNIT_WEAPON_RF_ATTACK_RANGE, 0);
-            const group: GroupInRange = new GroupInRange(range, loc);
-            let first: unit | null = null;
+            const trig: Unit = Unit.fromHandle(GetAttacker());
+            const targ: Unit = Unit.fromEvent();
+            const loc: Point = trig.point;
+            const range: number = BlzGetUnitWeaponRealField(trig.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 0);
+            const group: Group = GroupInRange(range, loc);
+            let first: Unit | null = null;
             let index = 0;
-            group.for((u: unit) => {
-                if (GetPlayerId(GetOwningPlayer(u)) !== 23 || !UnitAlive(u)) {
+            group.for((u: Unit) => {
+                if (u.owner.id !== 23 || !u.isAlive()) {
                     return;
                 }
 
-                const creep: SpawnedCreep = this.roundCreepController.get(GetHandleId(u)) as SpawnedCreep;
+                const creep: SpawnedCreep = this.roundCreepController.get(u.id) as SpawnedCreep;
                 const creepCheckpointIndex = creep.currentCheckpointIndex;
                 if (creepCheckpointIndex < index) {
                     return;
@@ -151,10 +152,10 @@ export class Game {
                 }
 
                 const checkpoint: Checkpoint = this.checkpoints[index];
-                const x: number = GetUnitX(u);
-                const y: number = GetUnitY(u);
-                const fX: number = GetUnitX(first);
-                const fY: number = GetUnitY(first);
+                const x: number = u.x;
+                const y: number = u.y;
+                const fX: number = first.x;
+                const fY: number = first.y;
                 const d: number = Math.sqrt(Pow(x - checkpoint.x, 2) + Pow(y - checkpoint.y, 2));
                 const fD: number = Math.sqrt(Pow(fX - checkpoint.x, 2) + Pow(fY - checkpoint.y, 2));
 
@@ -163,17 +164,16 @@ export class Game {
                 }
             });
             group.destroy();
-            RemoveLocation(loc);
+            loc.destroy()
 
             if (first === null) {
                 DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 3, `first === null... :c`);
                 return;
             }
-
-            DestroyEffect(eff);
-            DestroyEffect(eff2);
-            eff = AddSpecialEffectTarget('Abilities\\Spells\\Undead\\Curse\\CurseTarget.mdl', first, 'overhead');
-            eff2 = AddSpecialEffectTarget('Units\\Undead\\PlagueCloud\\PlagueCloudtarget.mdl', targ, 'overhead');
+            eff?.destroy() // <-- set as optional in case it doesnt exist yet
+            eff2?.destroy()
+            eff = new Effect('Abilities\\Spells\\Undead\\Curse\\CurseTarget.mdl', first, 'overhead')
+            eff2 = new Effect('Units\\Undead\\PlagueCloud\\PlagueCloudtarget.mdl', targ, 'overhead')
 
             if (first === targ) {
                 return;
@@ -181,7 +181,7 @@ export class Game {
 
             // Issue new attack
             disableTrig = true;
-            IssueTargetOrderById(trig, 851983, first as unknown as unit);
+            trig.issueTargetOrder(OrderId.Attack, first)
             disableTrig = false;
         });
         // trig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_ATTACKED);
@@ -209,7 +209,7 @@ export class Game {
             // Hide attack again
             BlzUnitDisableAbility(attacker, attackAbilityId, false, true);
         });
-        meatWagonAutoAttackGroundTrigger.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_ATTACKED);
+        meatWagonAutoAttackGroundTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED)
 
         for (let i = 0; i < this.checkpoints.length; i++) {
             const trig: Trigger = new Trigger();
@@ -231,7 +231,8 @@ export class Game {
                 spawnedCreep.currentCheckpointIndex = nextCheckpointIndex;
                 IssuePointOrder(enteringUnit, 'move', nextCheckpoint.x, nextCheckpoint.y);
             });
-            trig.registerEnterRectSimple(Rect(checkpoint.x - 32, checkpoint.y - 32, checkpoint.x + 32, checkpoint.y + 32));
+            // TODO: PR to w3ts to add this
+            TriggerRegisterEnterRectSimple(trig.handle, Rect(checkpoint.x - 32, checkpoint.y - 32, checkpoint.x + 32, checkpoint.y + 32));
         }
     }
 

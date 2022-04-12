@@ -11,6 +11,6 @@ export class NightVision extends TowerUpgrade {
         // TODO: Increase damage done to invisible units by +2
 
         // Allows targetting (wards) units with the invisiblity modifier
-        BlzSetUnitWeaponIntegerField(tower.unit, UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED, 0, 22);
+        BlzSetUnitWeaponIntegerField(tower.unit.handle, UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED, 0, 22);
     }
 }

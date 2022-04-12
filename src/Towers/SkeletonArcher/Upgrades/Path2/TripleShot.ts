@@ -10,6 +10,6 @@ export class TripleShot extends TowerUpgrade {
     private readonly tripleShotAbilityId: number = FourCC('A001');
 
     public applyUpgrade(tower: Tower): void {
-        UnitAddAbility(tower.unit, this.tripleShotAbilityId);
+        tower.unit.addAbility(this.tripleShotAbilityId);
     }
 }

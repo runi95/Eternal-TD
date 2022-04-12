@@ -5,6 +5,7 @@ import { Permafrost } from "./Upgrades/Path1/Permafrost";
 import { EnhancedFreeze } from "./Upgrades/Path2/EnhancedFreeze";
 import { LargerRadius } from "./Upgrades/Path3/LargerRadius";
 import { ReFreeze } from "./Upgrades/Path3/ReFreeze";
+import {Unit} from "w3ts";
 
 export interface ObsidianStatueCustomData {
     range: number;
@@ -45,8 +46,8 @@ export class ObsidianStatue extends TowerType {
         };
     }
 
-    public applyInitialUnitValues(unit: unit): void {
+    public applyInitialUnitValues(unit: Unit): void {
         // Sets the initial tick cooldown to 2.4
-        BlzSetAbilityRealLevelField(BlzGetUnitAbility(unit, tickTowerAbilityId), ABILITY_RLF_COOLDOWN, 0, 2.4);
+        BlzSetAbilityRealLevelField(unit.getAbility(tickTowerAbilityId), ABILITY_RLF_COOLDOWN, 0, 2.4);
     }
 }

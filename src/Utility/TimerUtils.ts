@@ -1,6 +1,6 @@
 import { LinkedList } from './LinkedList';
-import { Timer } from '../JassOverrides/Timer';
 import { Node } from './Node';
+import {Timer} from "w3ts";
 
 export class TimerUtils {
 
@@ -13,7 +13,7 @@ export class TimerUtils {
 
     constructor() {
         for (let i = 0; i < this.QUANTITY; i++) {
-            this.timerQueue.add(new Timer(CreateTimer()));
+            this.timerQueue.add(new Timer());
         }
     }
 
@@ -21,7 +21,7 @@ export class TimerUtils {
         const t: Node<Timer> | undefined = this.timerQueue.pop();
         if (t === undefined) {
             BJDebugMsg('Warning: Exceeded timer QUANTITY, make sure all timers are getting recycled correctly!');
-            return new Timer(CreateTimer());
+            return new Timer();
         }
 
         return t.value;
@@ -34,7 +34,8 @@ export class TimerUtils {
 
         if (this.timerQueue.getSize() === this.MAX_SIZE) {
             BJDebugMsg('Warning: Timer stack is full, destroying timer!!');
-            return t.destroy();
+            t.destroy();
+            return;
         }
 
         t.pause();

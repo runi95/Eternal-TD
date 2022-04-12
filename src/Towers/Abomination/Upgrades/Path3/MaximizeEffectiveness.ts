@@ -11,8 +11,8 @@ export class MaximizeEffectiveness extends TowerUpgrade {
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as AbominationCustomData).maxUnitCount += 4;
-        
-        const abil: ability = BlzGetUnitAbility(tower.unit, tickTowerAbilityId);
+
+        const abil: ability = tower.unit.getAbility(tickTowerAbilityId);
         BlzSetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0, BlzGetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0) * 0.75);
     }
 }

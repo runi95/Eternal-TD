@@ -1,7 +1,7 @@
 import { RoundCreepController } from "../Game/RoundCreepController";
-import { Timer } from "../JassOverrides/Timer";
 import { TimerUtils } from "../Utility/TimerUtils";
 import { RegenUnit, regenUnitMap } from "./Modifiers/RegenModifier";
+import { Timer } from "w3ts";
 
 export class CreepRegenSystem {
     constructor(timerUtils: TimerUtils, roundCreepController: RoundCreepController) {

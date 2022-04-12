@@ -13,7 +13,7 @@ export class Inferno extends TowerUpgrade {
         (tower.customData as AbominationCustomData).range += 120;
         (tower.customData as AbominationCustomData).damageAmount += 1;
 
-        const abil: ability = BlzGetUnitAbility(tower.unit, tickTowerAbilityId);
+        const abil: ability = tower.unit.getAbility(tickTowerAbilityId);
         BlzSetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0, BlzGetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0) * 0.2128);
     }
 }

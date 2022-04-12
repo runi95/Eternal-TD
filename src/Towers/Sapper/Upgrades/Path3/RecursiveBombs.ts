@@ -9,6 +9,6 @@ export class RecursiveBombs extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        SetUnitAbilityLevel(tower.unit, clusterBombsAbilityId, 2);
+        tower.unit.setAbilityLevel(clusterBombsAbilityId, 2);
     }
 }

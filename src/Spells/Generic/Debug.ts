@@ -1,4 +1,4 @@
-import { Trigger } from '../../JassOverrides/Trigger';
+import {Trigger} from "w3ts";
 
 export class Debug {
     private readonly cast_trig: Trigger = new Trigger();
@@ -9,19 +9,19 @@ export class Debug {
 
     constructor() {
         this.cast_trig.addAction(() => this.castAction());
-        this.cast_trig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_CAST);
+        this.cast_trig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_CAST);
 
         this.channel_trig.addAction(() => this.channelAction());
-        this.channel_trig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_CHANNEL);
+        this.channel_trig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_CHANNEL);
 
         this.effect_trig.addAction(() => this.effectAction());
-        this.effect_trig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_EFFECT);
+        this.effect_trig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_EFFECT);
 
         this.endcast_trig.addAction(() => this.endcastAction());
-        this.endcast_trig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_ENDCAST);
+        this.endcast_trig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_ENDCAST);
 
         this.finish_trig.addAction(() => this.finishAction());
-        this.finish_trig.registerAnyUnitEventBJ(EVENT_PLAYER_UNIT_SPELL_FINISH);
+        this.finish_trig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SPELL_FINISH);
     }
 
     private castAction(): void {

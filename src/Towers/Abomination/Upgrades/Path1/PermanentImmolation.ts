@@ -11,8 +11,8 @@ export class PermanentImmolation extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        UnitRemoveAbility(tower.unit, diseaseCloudAbilityId);
-        UnitAddAbility(tower.unit, permanentImmolationAbilityId);
+        tower.unit.removeAbility(diseaseCloudAbilityId);
+        tower.unit.addAbility(permanentImmolationAbilityId);
 
         (tower.customData as AbominationCustomData).damageAmount += 1;
     }
