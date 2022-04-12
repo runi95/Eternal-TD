@@ -10,7 +10,7 @@ export class Archmage extends TowerUpgrade {
     public applyUpgrade(tower: Tower): void {
         // TODO: Increase damage against zeppelins
         // TODO: Add Dragon's Breath and Shimmer attacks?
-        BlzSetUnitBaseDamage(tower.unit, BlzGetUnitBaseDamage(tower.unit, 0) + 2, 0);
-        BlzSetUnitAttackCooldown(tower.unit, BlzGetUnitAttackCooldown(tower.unit, 0) * 0.5, 0);
+        tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 2, 0);
+        tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.5, 0);
     }
 }
