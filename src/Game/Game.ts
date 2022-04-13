@@ -296,7 +296,7 @@ export class Game {
                 for (let i = 0; creepSpawnDetails.modifiers !== undefined && i < creepSpawnDetails.modifiers.length; i++) {
                     (creepSpawnDetails.modifiers as Modifier[])[i].apply(creep);
                 }
-                this.roundCreepController.set(handleId, new SpawnedCreep(initializedCreepType, this.checkpoints[0], 0));
+                this.roundCreepController.set(handleId, new SpawnedCreep(initializedCreepType, creepSpawnDetails.modifiers, this.checkpoints[0], 0));
                 IssuePointOrder(creep, 'move', this.checkpoints[0].x, this.checkpoints[0].y);
 
                 if (creepCount >= creepSpawnDetails.amount) {
