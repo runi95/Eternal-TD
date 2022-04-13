@@ -34,7 +34,7 @@ const rounds: Rounds = [
     [
         {
             creepType: RedVillager,
-            amount: 20,
+            amount: 1,
             delay: 0.9,
         }
     ],
@@ -44,7 +44,7 @@ const rounds: Rounds = [
         {
             creepType: RedVillager,
             amount: 35,
-            delay: 0.9
+            delay:  10000000
         }
     ],
 

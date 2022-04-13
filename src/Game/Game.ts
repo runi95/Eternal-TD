@@ -6,7 +6,7 @@ import {DamageEngine} from "../Utility/DamageEngine/DamageEngine";
 import {DamageEventController} from "../Utility/DamageEngine/DamageEventController";
 import {RoundCreepController} from "./RoundCreepController";
 import {SpawnedCreep} from "../Creeps/SpawnedCreep";
-import {Checkpoint} from "./Checkpoint";
+import {Checkpoint} from "../Utility/Checkpoint";
 import {TowerSystem} from "./Frames";
 import {Tower} from "../Towers/Tower";
 import {Modifier} from "../Creeps/Modifier";
@@ -14,13 +14,16 @@ import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
 import {regenUnitMap} from "../Creeps/Modifiers/RegenModifier"
 import {StunUtils} from "../Utility/StunUtils";
 import {TowerController} from "../Towers/TowerController";
-import {Effect, Point, Timer, Trigger, Unit} from "w3ts";
+import {Effect, MapPlayer, Point, Timer, Trigger, Unit} from "w3ts";
 import {GroupInRange} from "../Utility/GroupInRange";
 import {Group} from "../Utility/Group";
 import {OrderId} from "w3ts/globals/order";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
+import {Commands} from "../Utility/Commands";
+import {MapRegionController} from "./MapRegionController";
 
 export class Game {
+    private readonly debugEnabled: boolean;
     private readonly timerUtils: TimerUtils;
     private readonly damageEngineGlobals: DamageEngineGlobals;
     private readonly damageEngine: DamageEngine;
@@ -28,14 +31,19 @@ export class Game {
     private readonly roundCreepController: RoundCreepController;
     private readonly creepRegenSystem: CreepRegenSystem;
     private readonly stunUtils: StunUtils;
-    private readonly checkpoints: Checkpoint[];
     private readonly spells: Spells;
     private readonly towerSystem: TowerSystem;
     private readonly randomNumberGenerator: RandomNumberGenerator;
+    private readonly commandHandler: Commands;
     private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower> = new Map();
+    private readonly checkpoints: Checkpoint[];
+    private readonly creepSpawn: Checkpoint;
+    private readonly mapRegionController: MapRegionController;
+
 
     constructor() {
+        this.debugEnabled = "Local Player" === MapPlayer.fromIndex(0).name;
         this.timerUtils = new TimerUtils();
         this.spells = new Spells();
         this.damageEngineGlobals = new DamageEngineGlobals();
@@ -47,7 +55,8 @@ export class Game {
         this.towerController = new TowerController(this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
         this.towerSystem = new TowerSystem(this.towerController, this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
-
+        this.commandHandler = new Commands(this);
+        this.creepSpawn = {x: -3328, y: 2048}
         this.checkpoints = [
             // RED
             {x: -1792, y: 2048},
@@ -102,8 +111,10 @@ export class Game {
             {x: 1024, y: 2048},
             
             // END
-            {x: 2528, y: 2048},
+            {x: 2560, y: 2048},
         ];
+
+        this.mapRegionController = new MapRegionController(this.creepSpawn, this.checkpoints, this.roundCreepController, this.debugEnabled);
 
         const deathTrig: Trigger = new Trigger();
         deathTrig.addAction(() => {
@@ -255,7 +266,7 @@ export class Game {
 
     private spawnRounds(): void {
         const t: Timer = this.timerUtils.newTimer();
-        let roundIndex = 15;
+        let roundIndex = 0;
         let creepCount = 0;
         let creepIndex = 0;
         let tick = 0;
