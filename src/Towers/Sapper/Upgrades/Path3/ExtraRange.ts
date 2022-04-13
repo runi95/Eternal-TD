@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ExtraRange extends TowerUpgrade {
     public name = "Extra Range";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNDwarvenLongRifle.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNDwarvenLongRifle.blp";
     public cost = 215;
     public description = "TODO: Write description";
 

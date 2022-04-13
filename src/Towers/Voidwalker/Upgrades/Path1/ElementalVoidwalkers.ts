@@ -10,7 +10,7 @@ const newVoidwalkerUnitTypeIds = [
 ];
 export class ElementalVoidwalkers extends TowerUpgrade {
     public name = "Elemental Voidwalkers";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNStormEarth&Fire.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNStormEarth&Fire.blp";
     public cost = 2700;
     public description = "TODO: Write description";
 

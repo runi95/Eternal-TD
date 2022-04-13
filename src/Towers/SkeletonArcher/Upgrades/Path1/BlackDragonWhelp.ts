@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class BlackDragonWhelp extends TowerUpgrade {
     public name = "Black Dragon Whelp";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNVorpalBlades.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNVorpalBlades.blp";
     public cost = 325;
     public description = "TODO: Write description";
     public newUnitTypeId = FourCC('h001');

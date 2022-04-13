@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class LongRangeArrows extends TowerUpgrade {
     public name = "Long Range Arrows";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNSentinel.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNSentinel.blp";
     public cost = 95;
     public description = "TODO: Write description";
 

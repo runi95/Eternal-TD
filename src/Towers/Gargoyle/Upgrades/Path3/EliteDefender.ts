@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class EliteDefender extends TowerUpgrade {
     public name = "Elite Defender";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNLocustSwarm.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
     public cost = 15120;
     public description = "TODO: Write description";
 

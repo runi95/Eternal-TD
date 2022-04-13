@@ -4,7 +4,7 @@ import { AbominationCustomData } from "../../Abomination";
 
 export class IncreasedEffectiveness extends TowerUpgrade {
     public name = "Increased Effectiveness";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNUnholyStrength.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNUnholyStrength.blp";
     public cost = 110;
     public description = "TODO: Write description";
 

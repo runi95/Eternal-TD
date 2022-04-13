@@ -175,8 +175,8 @@ export class Game {
             }
             eff?.destroy() // <-- set as optional in case it doesnt exist yet
             eff2?.destroy()
-            eff = new Effect('Abilities\\Spells\\Undead\\Curse\\CurseTarget.mdl', first, 'overhead')
-            eff2 = new Effect('Units\\Undead\\PlagueCloud\\PlagueCloudtarget.mdl', targ, 'overhead')
+            eff = new Effect('Abilities/Spells/Undead/Curse/CurseTarget.mdl', first, 'overhead')
+            eff2 = new Effect('Units/Undead/PlagueCloud/PlagueCloudtarget.mdl', targ, 'overhead')
 
             if (first === targ) {
                 return;

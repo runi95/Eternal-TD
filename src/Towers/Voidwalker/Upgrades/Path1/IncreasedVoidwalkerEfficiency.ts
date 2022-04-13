@@ -4,7 +4,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class IncreasedVoidwalkerEfficiency extends TowerUpgrade {
     public name = "Increased Voidwalker Efficiency";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNEngineeringUpgrade.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNEngineeringUpgrade.blp";
     public cost = 620;
     public description = "TODO: Write description";
 

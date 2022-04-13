@@ -38,7 +38,7 @@ export class TowerSystem {
         
         const menuBackdrop: Frame = new Frame('menuBackdrop', this.menu, -1, 0, 'BACKDROP', '');
 
-        menuBackdrop.setTexture("war3mapImported\\TowerUpgradePanel.dds", 0, true)
+        menuBackdrop.setTexture("war3mapImported/TowerUpgradePanel.dds", 0, true)
         menuBackdrop.setAllPoints(this.menu);
 
         this.upgradePathEnabled = [[], [], []];
@@ -54,7 +54,7 @@ export class TowerSystem {
 
         // BlzFrameSetSize(path1Tier1ButtonFrame, 0.02625, 0.02625);
 
-        // BlzFrameSetTexture(this.path2Tier1IconFrame, "war3mapImported\\TowerUpgradePanel.dds", 0, true);
+        // BlzFrameSetTexture(this.path2Tier1IconFrame, "war3mapImported/TowerUpgradePanel.dds", 0, true);
 
         // this.menu = BlzCreateSimpleFrame('SimpleObserverPanel', this.originFrameGameUi, 0);
         // BlzFrameSetSize(this.menu, 0.22, 0.48);
@@ -161,7 +161,7 @@ export class TowerSystem {
                     const isEnabled: boolean = j === this.selectedTower.pathUpgrades[i] && isPathAvailable;
                     let icon: string = this.selectedTower.towerType.upgrades[i][j].icon;
                     if (!isEnabled) {
-                        icon = icon.replace("CommandButtons\\BTN", "CommandButtonsDisabled\\DISBTN");
+                        icon = icon.replace("CommandButtons/BTN", "CommandButtonsDisabled/DISBTN");
                     }
                     this.upgradePathIconFrames[i][j].setTexture(icon, 0, true)
                     this.upgradePathTextFrames[i][j].setText(`${this.selectedTower.towerType.upgrades[i][j].name} |cFFFFCC00(${this.selectedTower.towerType.upgrades[i][j].cost})|r|n|n` + this.selectedTower.towerType.upgrades[i][j].description)
@@ -175,7 +175,7 @@ export class TowerSystem {
         const iconFrame = new Frame( 'iconFrame', parent, -1, 0, 'BACKDROP', '');
         iconFrame.setSize(0.02625, 0.02625)
         iconFrame.setPoint(FRAMEPOINT_CENTER, parent, FRAMEPOINT_CENTER, offsetX, offsetY)
-        iconFrame.setTexture("UI\\Widgets\\EscMenu\\Human\\Quest-Unknown.dds", 0, true)
+        iconFrame.setTexture("UI/Widgets/EscMenu/Human/Quest-Unknown.dds", 0, true)
 
         return iconFrame;
     }

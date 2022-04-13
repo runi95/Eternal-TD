@@ -5,7 +5,7 @@ import { AbominationCustomData } from "../../Abomination";
 const tickTowerAbilityId: number = FourCC('A008');
 export class Overdrive extends TowerUpgrade {
     public name = "Overdrive";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNRegenerationAura.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNRegenerationAura.blp";
     public cost = 3455;
     public description = "TODO: Write description";
 

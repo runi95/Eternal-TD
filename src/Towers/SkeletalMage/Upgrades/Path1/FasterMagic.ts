@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class FasterMagic extends TowerUpgrade {
     public name = "Faster Magic";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNAnimalWarTraining.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNAnimalWarTraining.blp";
     public cost = 160;
     public description = "TODO: Write description";
 

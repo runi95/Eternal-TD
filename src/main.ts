@@ -15,7 +15,7 @@ export class Initialiser {
 
         xpcall(
             () => {
-                BlzLoadTOCFile('war3mapImported\\Templates.toc');
+                BlzLoadTOCFile('war3mapImported/Templates.toc');
                 createQuests();
                 const game = new Game();
                 game.start();

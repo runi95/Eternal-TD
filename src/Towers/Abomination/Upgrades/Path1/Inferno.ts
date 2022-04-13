@@ -5,7 +5,7 @@ import { AbominationCustomData } from "../../Abomination";
 const tickTowerAbilityId: number = FourCC('A008');
 export class Inferno extends TowerUpgrade {
     public name = "Inferno";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNInfernal.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNInfernal.blp";
     public cost = 49140;
     public description = "TODO: Write description";
 

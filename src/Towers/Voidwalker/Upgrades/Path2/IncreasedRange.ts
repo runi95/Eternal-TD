@@ -4,7 +4,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class IncreasedRange extends TowerUpgrade {
     public name = "Increased Range";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNROBOGOBLIN.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNROBOGOBLIN.blp";
     public cost = 270;
     public description = "TODO: Write description";
 

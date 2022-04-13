@@ -4,7 +4,7 @@ import { AbominationCustomData } from "../../Abomination";
 
 export class EvenLongerRange extends TowerUpgrade {
     public name = "Even Longer Range";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNBansheeMaster.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNBansheeMaster.blp";
     public cost = 245;
     public description = "TODO: Write description";
 
