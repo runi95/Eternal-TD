@@ -654,3 +654,27 @@ STRING 158
 Lesser Voidwalker
 }
 
+STRING 159
+// Units: o001 (Frozen Lesser Voidwalker), Name (Name)
+{
+Frozen Lesser Voidwalker
+}
+
+STRING 160
+// Units: o002 (Enchanted Lesser Voidwalker), Name (Name)
+{
+Enchanted Lesser Voidwalker
+}
+
+STRING 161
+// Units: o003 (Strengthened Lesser Voidwalker), Name (Name)
+{
+Strengthened Lesser Voidwalker
+}
+
+STRING 163
+// Units: o004 (Improved Lesser Voidwalker), Name (Name)
+{
+Improved Lesser Voidwalker
+}
+
