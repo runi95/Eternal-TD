@@ -7,6 +7,7 @@ export interface CreepDamageEvent {
 }
 
 const defaultCreepUnitTypeId: number = FourCC('u000');
+const creepBaseSpeed = 280.0;
 export class Creep {
     public health = 1;
     public speed = 1;
@@ -18,7 +19,7 @@ export class Creep {
 
     public apply(unit: unit): void {
         SetUnitVertexColor(unit, this.color.r, this.color.g, this.color.b, this.color.a);
-        SetUnitMoveSpeed(unit, GetUnitMoveSpeed(unit) * this.speed);
+        SetUnitMoveSpeed(unit, creepBaseSpeed * this.speed);
 
         if (this.health > 1) {
             BlzSetUnitMaxHP(unit, this.health);
