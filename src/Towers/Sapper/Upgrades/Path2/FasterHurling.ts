@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class FasterHurling extends TowerUpgrade {
     public name = "Faster Hurling";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNDispelMagic.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNDispelMagic.blp";
     public cost = 270;
     public description = "TODO: Write description";
 

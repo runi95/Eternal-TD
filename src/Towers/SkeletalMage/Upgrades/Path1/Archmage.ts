@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class Archmage extends TowerUpgrade {
     public name = "Archmage";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNSorceressMaster.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNSorceressMaster.blp";
     public cost = 34560;
     public description = "TODO: Write description";
 

@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ExcessiveHurling extends TowerUpgrade {
     public name = "Excessive Hurling";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNFlakCannons.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNFlakCannons.blp";
     public cost = 430;
     public description = "TODO: Write description";
 

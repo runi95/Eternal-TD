@@ -48,7 +48,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
 
             if (ticks > 12) {
                 const loc: Point = new Point(x + 150 * CosBJ(45 * ticks), y + 150 * SinBJ(45 * ticks));
-                const effect = new Effect('Objects\\Spawnmodels\\Human\\FragmentationShards\\FragBoomSpawn.mdl',loc.x, loc.y )
+                const effect = new Effect('Objects/Spawnmodels/Human/FragmentationShards/FragBoomSpawn.mdl',loc.x, loc.y )
                 effect.destroy()
                 const grp: Group = GroupInRange(150, loc);
                 grp.for((u: Unit) => {
@@ -65,7 +65,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
                 // Wait...
             } else {
                 const loc: Point = new Point(x + 200 * CosBJ(45 * ticks), y + 200 * SinBJ(45 * ticks));
-                const effect = new Effect('Abilities\\Weapons\\CannonTowerMissile\\CannonTowerMissile.mdl',loc.x, loc.y )
+                const effect = new Effect('Abilities/Weapons/CannonTowerMissile/CannonTowerMissile.mdl',loc.x, loc.y )
                 effect.destroy()
                 const grp: Group = GroupInRange(340, loc);
                 grp.for((u: Unit) => {

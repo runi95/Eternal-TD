@@ -5,7 +5,7 @@ import { ObsidianStatueCustomData } from "../../ObsidianStatue";
 const tickTowerAbilityId: number = FourCC('A008');
 export class EnhancedFreeze extends TowerUpgrade {
     public name = "Enhanced Freeze";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNCloudOfFog.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNCloudOfFog.blp";
     public cost = 245;
     public description = "TODO: Write description";
 

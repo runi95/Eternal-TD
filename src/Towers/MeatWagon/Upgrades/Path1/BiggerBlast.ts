@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class BiggerBlast extends TowerUpgrade {
     public name = "Bigger Blast";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNSmash.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNSmash.blp";
     public cost = 540;
     public description = "TODO: Write description";
 

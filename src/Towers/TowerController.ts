@@ -179,12 +179,30 @@ export class TowerController {
                 };
             case voidwalkerUnitTypeId:
                 return (tower: Tower) => {
-                    const { duration, range } = tower.customData as VoidwalkerCustomData;
-                    const x: number = tower.unit.x + this.randomNumberGenerator.random(-range, range);
-                    const y: number = tower.unit.y + this.randomNumberGenerator.random(-range, range);
+                    const { duration, spread, cooldown, additionalRange, voidwalkerUnitTypeIds } = tower.customData as VoidwalkerCustomData;
+                    const x: number = tower.unit.x + this.randomNumberGenerator.random(-spread, spread);
+                    const y: number = tower.unit.y + this.randomNumberGenerator.random(-spread, spread);
 
-                    const lesserVoidwalker = new Unit(tower.unit.owner, lesserVoidwalkerUnitTypeId, x, y, bj_UNIT_FACING);
+                    let lesserVoidwalker: Unit;
+                    if (voidwalkerUnitTypeIds !== null) {
+                        const { voidwalkerUnitTypeIndex } = tower.customData as VoidwalkerCustomData;
+                        (tower.customData as VoidwalkerCustomData).voidwalkerUnitTypeIndex = (voidwalkerUnitTypeIndex + 1) % voidwalkerUnitTypeIds.length;
+                        lesserVoidwalker = new Unit(tower.unit.owner, voidwalkerUnitTypeIds[voidwalkerUnitTypeIndex], x, y, bj_UNIT_FACING);
+                    } else {
+                        lesserVoidwalker = new Unit(tower.unit.owner, lesserVoidwalkerUnitTypeId, x, y, bj_UNIT_FACING);
+                        if (cooldown > 0.95) {
+                            lesserVoidwalker.setAttackCooldown(cooldown, 0);
+                        }
+                    }
+
                     lesserVoidwalker.applyTimedLife(timedLifeBuffId, duration);
+                    
+                    if (additionalRange > 0) {
+                        lesserVoidwalker.acquireRange = 450 + additionalRange;
+    
+                        // NOTE: For some reason index starts at 1 for the UNIT_WEAPON_RF_ATTACK_RANGE field and it adds range instead of setting it.
+                        BlzSetUnitWeaponRealField(lesserVoidwalker.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, additionalRange);
+                    }
                 };
             default:
                 throw new Error(`Invalid argument; no TickFunction exists for Tower of type ${unitTypeId}`);

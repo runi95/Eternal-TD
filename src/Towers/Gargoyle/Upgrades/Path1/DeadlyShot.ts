@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class DeadlyShot extends TowerUpgrade {
     public name = "Deadly Shot";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNLocustSwarm.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
     public cost = 3240;
     public description = "TODO: Write description";
 

@@ -4,7 +4,7 @@ import { ObsidianStatueCustomData } from "../../ObsidianStatue";
 
 export class ReFreeze extends TowerUpgrade {
     public name = "Re-Freeze";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNFrost.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNFrost.blp";
     public cost = 245;
     public description = "TODO: Write description";
 

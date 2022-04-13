@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ReallyBigRocks extends TowerUpgrade {
     public name = "Really Big Rocks";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNHumanMissileUpThree.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNHumanMissileUpThree.blp";
     public cost = 1295;
     public description = "TODO: Write description";
 

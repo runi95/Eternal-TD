@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class VeryQuickShots extends TowerUpgrade {
     public name = "Very Quick Shots";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNImprovedStrengthOfTheMoon.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNImprovedStrengthOfTheMoon.blp";
     public cost = 205;
     public description = "TODO: Write description";
 

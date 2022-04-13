@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class FragBombs extends TowerUpgrade {
     public name = "Frag Bombs";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNFlare.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNFlare.blp";
     public cost = 325;
     public description = "TODO: Write description";
 

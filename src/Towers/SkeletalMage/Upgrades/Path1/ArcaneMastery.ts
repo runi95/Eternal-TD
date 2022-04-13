@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ArcaneMastery extends TowerUpgrade {
     public name = "Arcane Mastery";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNSorceressAdept.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNSorceressAdept.blp";
     public cost = 1405;
     public description = "TODO: Write description";
 

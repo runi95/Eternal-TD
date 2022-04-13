@@ -5,7 +5,7 @@ import { AbominationCustomData } from "../../Abomination";
 const tickTowerAbilityId: number = FourCC('A008');
 export class ContaminationZone extends TowerUpgrade {
     public name = "Contamination Zone";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNDeathAndDecay.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNDeathAndDecay.blp";
     public cost = 21600;
     public description = "TODO: Write description";
 

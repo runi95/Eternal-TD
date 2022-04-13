@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ArcaneSpike extends TowerUpgrade {
     public name = "Arcane Spike";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNPriestAdept.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNPriestAdept.blp";
     public cost = 10800;
     public description = "TODO: Write description";
 

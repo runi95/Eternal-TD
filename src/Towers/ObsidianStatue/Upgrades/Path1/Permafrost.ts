@@ -4,7 +4,7 @@ import { ObsidianStatueCustomData } from "../../ObsidianStatue";
 
 export class Permafrost extends TowerUpgrade {
     public name = "Permafrost";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNSlow.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNSlow.blp";
     public cost = 110;
     public description = "TODO: Write description";
 

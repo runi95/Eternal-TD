@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class BowMaster extends TowerUpgrade {
     public name = "Bow Master";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNAmbush.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNAmbush.blp";
     public cost = 25380;
     public description = "TODO: Write description";
 

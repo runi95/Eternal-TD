@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class CorrosiveAmmo extends TowerUpgrade {
     public name = "Corrosive Ammo";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNCorrosiveBreath.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNCorrosiveBreath.blp";
     public cost = 1945;
     public description = "TODO: Write description";
 
@@ -19,7 +19,7 @@ export class CorrosiveAmmo extends TowerUpgrade {
         BlzSetUnitWeaponRealField(tower.unit.handle, UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_FULL_DAMAGE, 0, 200);
         tower.unit.setAttackCooldown(currentCooldown, 0)
         tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 1, 0);
-        BlzSetUnitWeaponStringField(tower.unit.handle, UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART, 0, 'Abilities\\Weapons\\ChimaeraAcidMissile\\ChimaeraAcidMissile.mdl');
+        BlzSetUnitWeaponStringField(tower.unit.handle, UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART, 0, 'Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAcidMissile.mdl');
 
         // TODO: Increase damage against Large villagers
     }

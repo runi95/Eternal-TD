@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class EnhancedEyesight extends TowerUpgrade {
     public name = "Enhanced Eyesight";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNUltravision.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNUltravision.blp";
     public cost = 215;
     public description = "TODO: Write description";
 

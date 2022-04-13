@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class SharpShooter extends TowerUpgrade {
     public name = "Sharp Shooter";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNMarksmanship.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNMarksmanship.blp";
     public cost = 2160;
     public description = "TODO: Write description";
 

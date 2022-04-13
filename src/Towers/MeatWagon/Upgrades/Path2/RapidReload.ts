@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class RapidReload extends TowerUpgrade {
     public name = "Rapid Reload";
-    public icon = "ReplaceableTextures\\CommandButtons\\BTNBerserkForTrolls.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNBerserkForTrolls.blp";
     public cost = 540;
     public description = "TODO: Write description";
 
