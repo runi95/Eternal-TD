@@ -1,13 +1,16 @@
 import {CreepRegion} from "../Creeps/CreepRegion";
 import {Trigger, Unit} from "w3ts";
-import {Checkpoint, Direction, directionCP} from "../Utility/Checkpoint";
+import {Checkpoint, Direction, directionCP, distance2D} from "../Utility/Checkpoint";
 import {Region} from "w3ts/handles/region";
 import {Rectangle} from "w3ts/handles/rect";
 import {DrawPoint} from "../Utility/Rasterizer";
 import {RoundCreepController} from "./RoundCreepController";
 
+const DRAW_EVERY_REGION_DEBUG = false;
+
 export class MapRegionController {
     regionIds: Record<string, number> = {}
+    regionLookup: CreepRegion[] = []
     regions: Record<string, CreepRegion> = {}
     enterTrig: Trigger;
     constructor(creepSpawnCP: Checkpoint, checkpoints: Checkpoint[], roundCreepController: RoundCreepController, debugEnabled: boolean) {
@@ -19,7 +22,7 @@ export class MapRegionController {
             switch (direction) {
                 case Direction.SOUTH:
                     for (let i = lastCP.y; i > checkpoint.y; i=i-128) {
-                        if(debugEnabled) {
+                        if(debugEnabled && DRAW_EVERY_REGION_DEBUG) {
                             DrawPoint(lastCP.x, i)
                         }
                         const reg = new Region()
@@ -28,15 +31,15 @@ export class MapRegionController {
                         reg.addRect(rect);
                         rect.destroy();
                         this.regionIds[reg.id] = rId;
-                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg);
+                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg, {x: lastCP.x,y: i-64});
+                        this.regionLookup.push(this.regions[reg.id]);
                         rId++;
                         this.enterTrig.registerEnterRegion(reg.handle, null);
-
                     }
                     break;
                 case Direction.NORTH:
                     for (let i = lastCP.y+128; i < checkpoint.y; i=i+128) {
-                        if(debugEnabled) {
+                        if(debugEnabled && DRAW_EVERY_REGION_DEBUG) {
                             DrawPoint(lastCP.x, i)
                         }
                         const reg = new Region()
@@ -45,14 +48,15 @@ export class MapRegionController {
                         reg.addRect(rect);
                         rect.destroy();
                         this.regionIds[reg.id] = rId;
-                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg);
+                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg, {x: lastCP.x,y: i+64});
+                        this.regionLookup.push(this.regions[reg.id]);
                         rId++;
                         this.enterTrig.registerEnterRegion(reg.handle, null);
                     }
                     break;
                 case Direction.EAST:
                     for (let i = lastCP.x+128; i < checkpoint.x; i=i+128) {
-                        if(debugEnabled) {
+                        if(debugEnabled && DRAW_EVERY_REGION_DEBUG) {
                             DrawPoint(i, lastCP.y)
                         }
                         const reg = new Region()
@@ -61,14 +65,15 @@ export class MapRegionController {
                         reg.addRect(rect);
                         rect.destroy();
                         this.regionIds[reg.id] = rId;
-                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg);
+                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg, {x: i+64,y: lastCP.y});
+                        this.regionLookup.push(this.regions[reg.id]);
                         rId++;
                         this.enterTrig.registerEnterRegion(reg.handle, null);
                     }
                     break;
                 case Direction.WEST:
                     for (let i = lastCP.x-128; i > checkpoint.x; i=i-128) {
-                        if(debugEnabled) {
+                        if(debugEnabled && DRAW_EVERY_REGION_DEBUG) {
                             DrawPoint(i, lastCP.y)
                         }
                         const reg = new Region()
@@ -77,7 +82,8 @@ export class MapRegionController {
                         reg.addRect(rect);
                         rect.destroy();
                         this.regionIds[reg.id] = rId;
-                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg);
+                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg, {x: i-64,y: lastCP.y});
+                        this.regionLookup.push(this.regions[reg.id]);
                         rId++;
                         this.enterTrig.registerEnterRegion(reg.handle, null);
                     }
@@ -99,6 +105,13 @@ export class MapRegionController {
             r.creeps[u.id] = spawnedCreep;
             spawnedCreep.currentRegion = r;
             // print(`entred region ${r.regionId}`)
+        })
+    }
+
+    getVisibleRegions(unit: Unit): CreepRegion[] {
+        return this.regionLookup.filter((region) => {
+            const distance = distance2D({x: unit.x, y: unit.y}, region.center);
+            return (distance <= unit.acquireRange + 64)
         })
     }
 

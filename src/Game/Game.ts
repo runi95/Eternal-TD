@@ -22,6 +22,65 @@ import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import {Commands} from "../Utility/Commands";
 import {MapRegionController} from "./MapRegionController";
 
+const CREEP_SPAWN: Checkpoint = {x: -3328, y: 2048};
+const CHECK_POINTS = [
+    // RED
+    {x: -1792, y: 2048},
+    {x: -1792, y: 2560},
+    {x: -2304, y: 2560},
+    {x: -2304, y: 1152},
+    {x: -2816, y: 1152},
+    {x: -2816, y: 1664},
+    {x: -1408, y: 1664},
+    {x: -1408, y: 2304},
+    {x: -1024, y: 2304},
+    {x: -1024, y: 1280},
+    {x: -1920, y: 1280},
+
+    // BLUE
+    {x: -1920, y: -256},
+    {x: -2816, y: -256},
+    {x: -2816, y: -1280},
+    {x: -2432, y: -1280},
+    {x: -2432, y: -640},
+    {x: -1024, y: -640},
+    {x: -1024, y: -128},
+    {x: -1536, y: -128},
+    {x: -1536, y: -1536},
+    {x: -2048, y: -1536},
+    {x: -2048, y: -1024},
+
+    // Teal
+    {x: 1280, y: -1024},
+    {x: 1280, y: -1536},
+    {x: 768, y: -1536},
+    {x: 768, y: -128},
+    {x: 256, y: -128},
+    {x: 256, y: -640},
+    {x: 1664, y: -640},
+    {x: 1664, y: -1280},
+    {x: 2048, y: -1280},
+    {x: 2048, y: -256},
+    {x: 1152, y: -256},
+
+    // Purple
+    {x: 1152, y: 1280},
+    {x: 256, y: 1280},
+    {x: 256, y: 2304},
+    {x: 640, y: 2304},
+    {x: 640, y: 1664},
+    {x: 2048, y: 1664},
+    {x: 2048, y: 1152},
+    {x: 1536, y: 1152},
+    {x: 1536, y: 2560},
+    {x: 1024, y: 2560},
+    {x: 1024, y: 2048},
+
+    // END
+    {x: 2560, y: 2048},
+];
+
+
 export class Game {
     private readonly debugEnabled: boolean;
     private readonly timerUtils: TimerUtils;
@@ -37,8 +96,6 @@ export class Game {
     private readonly commandHandler: Commands;
     private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower> = new Map();
-    private readonly checkpoints: Checkpoint[];
-    private readonly creepSpawn: Checkpoint;
     private readonly mapRegionController: MapRegionController;
 
 
@@ -52,69 +109,11 @@ export class Game {
         this.stunUtils = new StunUtils(this.timerUtils);
         this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils);
         this.randomNumberGenerator = new RandomNumberGenerator();
-        this.towerController = new TowerController(this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
-        this.towerSystem = new TowerSystem(this.towerController, this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
-        this.commandHandler = new Commands(this);
-        this.creepSpawn = {x: -3328, y: 2048}
-        this.checkpoints = [
-            // RED
-            {x: -1792, y: 2048},
-            {x: -1792, y: 2560},
-            {x: -2304, y: 2560},
-            {x: -2304, y: 1152},
-            {x: -2816, y: 1152},
-            {x: -2816, y: 1664},
-            {x: -1408, y: 1664},
-            {x: -1408, y: 2304},
-            {x: -1024, y: 2304},
-            {x: -1024, y: 1280},
-            {x: -1920, y: 1280},
-
-            // BLUE
-            {x: -1920, y: -256},
-            {x: -2816, y: -256},
-            {x: -2816, y: -1280},
-            {x: -2432, y: -1280},
-            {x: -2432, y: -640},
-            {x: -1024, y: -640},
-            {x: -1024, y: -128},
-            {x: -1536, y: -128},
-            {x: -1536, y: -1536},
-            {x: -2048, y: -1536},
-            {x: -2048, y: -1024},
-            
-            // Teal
-            {x: 1280, y: -1024},
-            {x: 1280, y: -1536},
-            {x: 768, y: -1536},
-            {x: 768, y: -128},
-            {x: 256, y: -128},
-            {x: 256, y: -640},
-            {x: 1664, y: -640},
-            {x: 1664, y: -1280},
-            {x: 2048, y: -1280},
-            {x: 2048, y: -256},
-            {x: 1152, y: -256},
-
-            // Purple
-            {x: 1152, y: 1280},
-            {x: 256, y: 1280},
-            {x: 256, y: 2304},
-            {x: 640, y: 2304},
-            {x: 640, y: 1664},
-            {x: 2048, y: 1664},
-            {x: 2048, y: 1152},
-            {x: 1536, y: 1152},
-            {x: 1536, y: 2560},
-            {x: 1024, y: 2560},
-            {x: 1024, y: 2048},
-            
-            // END
-            {x: 2560, y: 2048},
-        ];
-
-        this.mapRegionController = new MapRegionController(this.creepSpawn, this.checkpoints, this.roundCreepController, this.debugEnabled);
+        this.mapRegionController = new MapRegionController(CREEP_SPAWN, CHECK_POINTS, this.roundCreepController, this.debugEnabled);
+        this.towerController = new TowerController(this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers, this.mapRegionController);
+        this.towerSystem = new TowerSystem(this.towerController, this.towers);
+        this.commandHandler = new Commands(this, this.mapRegionController, this.towers);
 
         const deathTrig: Trigger = new Trigger();
         deathTrig.addAction(() => {
@@ -165,7 +164,7 @@ export class Game {
                     return;
                 }
 
-                const checkpoint: Checkpoint = this.checkpoints[index];
+                const checkpoint: Checkpoint = CHECK_POINTS[index];
                 const x: number = u.x;
                 const y: number = u.y;
                 const fX: number = first.x;
@@ -225,13 +224,13 @@ export class Game {
         });
         meatWagonAutoAttackGroundTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED)
 
-        for (let i = 0; i < this.checkpoints.length; i++) {
+        for (let i = 0; i < CHECK_POINTS.length; i++) {
             const trig: Trigger = new Trigger();
             trig.addCondition(() => GetPlayerId(GetOwningPlayer(GetEnteringUnit())) === 23)
 
-            const checkpoint: Checkpoint = this.checkpoints[i];
+            const checkpoint: Checkpoint = CHECK_POINTS[i];
             const nextCheckpointIndex: number = i + 1;
-            const nextCheckpoint: Checkpoint | null = i === this.checkpoints.length - 1 ? null : this.checkpoints[nextCheckpointIndex];
+            const nextCheckpoint: Checkpoint | null = i === CHECK_POINTS.length - 1 ? null : CHECK_POINTS[nextCheckpointIndex];
             trig.addAction(() => {
                 const enteringUnit: unit = GetEnteringUnit();
 
@@ -296,8 +295,8 @@ export class Game {
                 for (let i = 0; creepSpawnDetails.modifiers !== undefined && i < creepSpawnDetails.modifiers.length; i++) {
                     (creepSpawnDetails.modifiers as Modifier[])[i].apply(creep);
                 }
-                this.roundCreepController.set(handleId, new SpawnedCreep(initializedCreepType, this.checkpoints[0], 0));
-                IssuePointOrder(creep, 'move', this.checkpoints[0].x, this.checkpoints[0].y);
+                this.roundCreepController.set(handleId, new SpawnedCreep(initializedCreepType, CHECK_POINTS[0], 0));
+                IssuePointOrder(creep, 'move', CHECK_POINTS[0].x, CHECK_POINTS[0].y);
 
                 if (creepCount >= creepSpawnDetails.amount) {
                     creepIndex++;

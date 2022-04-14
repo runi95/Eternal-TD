@@ -1,7 +1,9 @@
 import {Game} from "../Game/Game";
 import {MapPlayer, Trigger, Unit} from "w3ts";
 import {Players} from "w3ts/globals";
-import {DrawRect} from "./Rasterizer";
+import {DrawPoint, DrawRect, RemoveAllDrawings} from "./Rasterizer";
+import {MapRegionController} from "../Game/MapRegionController";
+import {Tower} from "../Towers/Tower";
 
 const COMMAND_PREFIX = '-';
 
@@ -10,9 +12,13 @@ export class Commands {
     private commandTrigger: Trigger;
     private selectedUnit: Unit | undefined;
     private utilityTriggers: Record<string, Trigger> = {};
-    constructor(game: Game) {
+    private mapRegionController: MapRegionController;
+    private readonly towers: Map<number, Tower>;
+    constructor(game: Game, mapRegionController: MapRegionController, towers: Map<number, Tower>) {
         this.game = game;
         this.commandTrigger = new Trigger();
+        this.mapRegionController = mapRegionController;
+        this.towers = towers;
 
         this.commandTrigger.addAction(() => this.handleCommand());
         Players.forEach((player) => this.commandTrigger.registerPlayerChatEvent(player, '', false))
@@ -39,9 +45,17 @@ export class Commands {
                 //     print(`${point.x} ${point.y}, ${point.z}`)
                 }
                 break;
+            case "clear":
+                RemoveAllDrawings()
+                break;
+
             case "coords":
                     if(this.selectedUnit) {
                         print(`${this.selectedUnit.x}, ${this.selectedUnit.y}`);
+                        const tower = this.towers.get(this.selectedUnit.id);
+                        if(tower) {
+                            tower.visibleRegions.forEach((reg) => DrawPoint(reg.center.x, reg.center.y));
+                        }
                         break;
                     }
                     if (!this.utilityTriggers[`${player.id}-selectTrigger`]) {
@@ -49,8 +63,8 @@ export class Commands {
                         t.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SELECTED);
                         t.addAction(() => {
                             this.selectedUnit = Unit.fromEvent();
-                            t.destroy();
-                            this.utilityTriggers[`${player.id}-selectTrigger`] = undefined;
+                            // t.destroy();
+                            // this.utilityTriggers[`${player.id}-selectTrigger`] = undefined;
                         })
                         this.utilityTriggers[`${player.id}-selectTrigger`] = t;
                         break;

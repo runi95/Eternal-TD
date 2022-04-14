@@ -10,6 +10,7 @@ import {Timer, Trigger, Unit} from "w3ts";
 import {GroupInRange} from "../Utility/GroupInRange";
 import { VoidwalkerCustomData } from "./Voidwalker/Voidwalker";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
+import {MapRegionController} from "../Game/MapRegionController";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
@@ -26,12 +27,14 @@ export class TowerController {
     private readonly stunUtils: StunUtils;
     private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly tickTowers: Map<number, Timer> = new Map();
+    private readonly mapRegionController: MapRegionController;
 
-    constructor(timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>) {
+    constructor(timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>, mapRegionController: MapRegionController) {
         this.timerUtils = timerUtils;
         this.stunUtils = stunUtils;
         this.randomNumberGenerator = randomNumberGenerator;
         this.towers = towers;
+        this.mapRegionController = mapRegionController;
 
         const constTrig: Trigger = new Trigger();
         constTrig.addAction(() => {
@@ -45,9 +48,9 @@ export class TowerController {
             }
 
             const trigHandleId: number = trig.id;
-            const tower: Tower = new Tower(trig, towerType);
+            const tower: Tower = new Tower(trig, towerType, mapRegionController.getVisibleRegions(trig));
             tower.towerType.applyInitialUnitValues(trig);
-            
+
             // TODO: Remove towers from this map when the tower is sold
             this.towers.set(trigHandleId, tower);
             this.addTickTower(tower);
