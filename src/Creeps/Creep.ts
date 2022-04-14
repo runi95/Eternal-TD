@@ -1,5 +1,7 @@
 import { Color } from "../Utility/Color";
 import { CreepType } from "./CreepType";
+import { DefenseTypes } from "./DefenseTypes";
+import { TargetFlags } from "./TargetFlags";
 
 export interface CreepDamageEvent {
     spawnedCreeps: Creep[];
@@ -8,11 +10,15 @@ export interface CreepDamageEvent {
 
 const defaultCreepUnitTypeId: number = FourCC('u000');
 const creepBaseSpeed = 280.0;
+const defaultTargetAsFlag = TargetFlags.GROUND;
+const defaultDefenseType = DefenseTypes.MEDIUM;
 export class Creep {
     public health = 1;
     public speed = 1;
     public unitTypeId: number = defaultCreepUnitTypeId;
     public color: Color = {r: 255, g: 255, b: 255, a: 255};
+    public defenseType: DefenseTypes = defaultDefenseType;
+    public targetAs: TargetFlags = defaultTargetAsFlag;
     public readonly creepType: CreepType | null = null;
     protected children: Creep[] = [];
     protected _parent: Creep | null = null;
@@ -24,6 +30,14 @@ export class Creep {
         if (this.health > 1) {
             BlzSetUnitMaxHP(unit, this.health);
             SetUnitLifePercentBJ(unit, 100);
+        }
+
+        if (this.defenseType !== defaultDefenseType) {
+            BlzSetUnitIntegerField(unit, UNIT_IF_DEFENSE_TYPE, this.defenseType);
+        }
+
+        if (this.targetAs !== defaultTargetAsFlag) {
+            BlzSetUnitIntegerField(unit, UNIT_IF_TARGETED_AS, this.targetAs);
         }
     }
 
