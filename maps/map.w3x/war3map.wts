@@ -600,12 +600,6 @@ STRING 144
 D
 }
 
-STRING 145
-// Units: h00B (Skeletal Mage), Tip (Tooltip - Basic)
-{
-Build Skeleton Archer
-}
-
 STRING 146
 // Units: h00B (Skeletal Mage), Ubertip (Tooltip - Extended)
 {
@@ -676,5 +670,11 @@ STRING 163
 // Units: o004 (Improved Lesser Voidwalker), Name (Name)
 {
 Improved Lesser Voidwalker
+}
+
+STRING 164
+// Units: h00B (Skeletal Mage), Tip (Tooltip - Basic)
+{
+Build Skeletal Mage
 }
 

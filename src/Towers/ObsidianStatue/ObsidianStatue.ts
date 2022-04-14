@@ -18,6 +18,8 @@ export interface ObsidianStatueCustomData {
 }
 
 const tickTowerAbilityId: number = FourCC('A008');
+
+// TODO: Should not be able to target invisible creeps
 export class ObsidianStatue extends TowerType {
     public upgrades: TowerUpgrade[][] = [
         [
