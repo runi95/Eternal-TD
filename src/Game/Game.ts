@@ -14,13 +14,14 @@ import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
 import {regenUnitMap} from "../Creeps/Modifiers/RegenModifier"
 import {StunUtils} from "../Utility/StunUtils";
 import {TowerController} from "../Towers/TowerController";
-import {Effect, MapPlayer, Point, Timer, Trigger, Unit} from "w3ts";
+import {Effect, Point, Timer, Trigger, Unit} from "w3ts";
 import {GroupInRange} from "../Utility/GroupInRange";
 import {Group} from "../Utility/Group";
 import {OrderId} from "w3ts/globals/order";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import {Commands} from "../Utility/Commands";
 import {MapRegionController} from "./MapRegionController";
+import {SetupPlayers, TDPlayer} from "../Utility/TDPlayer";
 
 const CREEP_SPAWN: Checkpoint = {x: -3328, y: 2048};
 const CHECK_POINTS = [
@@ -100,7 +101,8 @@ export class Game {
 
 
     constructor() {
-        this.debugEnabled = "Local Player" === MapPlayer.fromIndex(0).name;
+        SetupPlayers();
+        this.debugEnabled = "Local Player" === TDPlayer.fromIndex(0).name;
         this.timerUtils = new TimerUtils();
         this.spells = new Spells();
         this.damageEngineGlobals = new DamageEngineGlobals();
