@@ -76,6 +76,14 @@ export class Commands {
                     SetCameraField(CAMERA_FIELD_ANGLE_OF_ATTACK, amount, 1);
                 }
                 break;
+            case "round":
+            case "wave":
+            case "next":
+                if (args.length !== 1)
+                    break;
+                
+                this.game.roundIndex = parseInt(args[0]) - 1;
+                break;
         }
 
     }
