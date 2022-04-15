@@ -6,6 +6,8 @@ export class Tower {
     public pathUpgrades: number[];
     public unit: Unit;
     public customData: unknown;
+    public largeVillagerBonusDamage: number = 0;
+    public zeppelinVillagerBonusDamage: number = 0;
 
     constructor(unit: Unit, towerType: TowerType, pathUpgrades: number[] = [0, 0, 0]) {
         this.unit = unit;

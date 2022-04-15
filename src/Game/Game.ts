@@ -41,7 +41,6 @@ export class Game {
     private readonly creepSpawn: Checkpoint;
     private readonly mapRegionController: MapRegionController;
 
-
     constructor() {
         this.debugEnabled = "Local Player" === MapPlayer.fromIndex(0).name;
         this.timerUtils = new TimerUtils();
@@ -50,13 +49,13 @@ export class Game {
         this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
         this.roundCreepController = new RoundCreepController();
         this.stunUtils = new StunUtils(this.timerUtils);
-        this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils);
+        this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils, this.towers);
         this.randomNumberGenerator = new RandomNumberGenerator();
         this.towerController = new TowerController(this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
         this.towerSystem = new TowerSystem(this.towerController, this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
         this.commandHandler = new Commands(this);
-        this.creepSpawn = {x: -3328, y: 2048}
+        this.creepSpawn = {x: -3328, y: 2048};
         this.checkpoints = [
             // RED
             {x: -1792, y: 2048},
