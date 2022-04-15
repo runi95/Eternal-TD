@@ -83,6 +83,7 @@ const CHECK_POINTS = [
 
 
 export class Game {
+    public roundIndex: number = 0;
     private readonly debugEnabled: boolean;
     private readonly timerUtils: TimerUtils;
     private readonly damageEngineGlobals: DamageEngineGlobals;
@@ -267,15 +268,14 @@ export class Game {
 
     private spawnRounds(): void {
         const t: Timer = this.timerUtils.newTimer();
-        let roundIndex = 0;
         let creepCount = 0;
         let creepIndex = 0;
         let tick = 0;
         t.start(0.03, true, () => {
-            const round = getRoundCreeps(roundIndex);
+            const round = getRoundCreeps(this.roundIndex);
             if (creepIndex >= round.length) {
                 creepIndex = 0;
-                roundIndex++;
+                this.roundIndex++;
                 return;
             }
             

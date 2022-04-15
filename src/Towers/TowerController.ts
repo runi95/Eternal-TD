@@ -11,6 +11,7 @@ import {GroupInRange} from "../Utility/GroupInRange";
 import { VoidwalkerCustomData } from "./Voidwalker/Voidwalker";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import {MapRegionController} from "../Game/MapRegionController";
+import { DefenseTypes } from "Creeps/DefenseTypes";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
@@ -173,8 +174,11 @@ export class TowerController {
                         if (!hasColdSnap && (unitTypeId === fortifiedUnitTypeId || unitTypeId === invisibilityUnitTypeId))
                                 return;
 
+                        if (BlzGetUnitIntegerField(u.handle, UNIT_IF_DEFENSE_TYPE) === DefenseTypes.HEAVY)
+                            return;
+
                         unitCount++;
-                        tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
+                        tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
                         this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze);
                     });
                     group.destroy();

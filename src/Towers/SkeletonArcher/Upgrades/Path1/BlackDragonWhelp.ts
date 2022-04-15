@@ -14,7 +14,6 @@ export class BlackDragonWhelp extends TowerUpgrade {
 
         // NOTE: For some reason index starts at 1 for the UNIT_WEAPON_RF_ATTACK_RANGE field and it adds range instead of setting it.
         BlzSetUnitWeaponRealField(tower.unit.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, 680);
-
-        // TODO: Increase damage against Large villagers
+        tower.largeVillagerBonusDamage += 1;
     }
 }

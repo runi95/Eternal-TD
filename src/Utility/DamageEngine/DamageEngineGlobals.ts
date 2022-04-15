@@ -19,6 +19,7 @@ export class DamageEngineGlobals {
     public DamageEventSourceOwningPlayerId: number | undefined = undefined;
     public DamageEventTargetOwningPlayerId: number | undefined = undefined;
     public DamageEventTargetUnitId: number | undefined = undefined; // <- Custom Eternal TD code!
+    public DamageEventSourceUnitId: number | undefined = undefined; // <- Custom Eternal TD code!
     public DamageEventSourceUnitTypeId: number | undefined = undefined; // <- Custom Eternal TD code!
     public DamageEventSource: unit | undefined = undefined;
     public DamageEventTarget: unit | undefined = undefined;
