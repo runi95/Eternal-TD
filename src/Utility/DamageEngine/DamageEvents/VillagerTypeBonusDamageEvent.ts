@@ -31,6 +31,9 @@ export class VillagerTypeBonusDamageEvent implements DamageEvent {
         }
 
         switch (spawnedCreep.creep.creepType) {
+            case CreepType.FORTIFIED:
+                globals.DamageEventAmount += tower.fortifiedVillagerBonusDamage;
+                break;
             case CreepType.LARGE:
                 globals.DamageEventAmount += tower.largeVillagerBonusDamage;
                 break;

@@ -6,6 +6,7 @@ export class Tower {
     public pathUpgrades: number[];
     public unit: Unit;
     public customData: unknown;
+    public fortifiedVillagerBonusDamage: number = 0;
     public largeVillagerBonusDamage: number = 0;
     public zeppelinVillagerBonusDamage: number = 0;
 
