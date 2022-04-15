@@ -7,7 +7,7 @@ export class ImprovedArtillery extends TowerUpgrade {
     public cost = 215;
     public description = "TODO: Write description";
 
-    public applyUpgrade(_tower: Tower): void {
-        // TODO: Increase damage against purple enemies
+    public applyUpgrade(tower: Tower): void {
+        tower.purpleVillagerBonusDamage += 1;
     }
 }

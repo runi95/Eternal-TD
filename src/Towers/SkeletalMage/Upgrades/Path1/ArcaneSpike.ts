@@ -8,7 +8,7 @@ export class ArcaneSpike extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        // TODO: Increase damage against zeppelins
+        tower.zeppelinVillagerBonusDamage += 11;
         tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 2, 0);
         tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.5, 0);
     }

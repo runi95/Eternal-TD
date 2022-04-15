@@ -20,7 +20,6 @@ export class CorrosiveAmmo extends TowerUpgrade {
         tower.unit.setAttackCooldown(currentCooldown, 0)
         tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 1, 0);
         BlzSetUnitWeaponStringField(tower.unit.handle, UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART, 0, 'Abilities/Weapons/ChimaeraAcidMissile/ChimaeraAcidMissile.mdl');
-
-        // TODO: Increase damage against Large villagers
+        tower.largeVillagerBonusDamage += 2;
     }
 }

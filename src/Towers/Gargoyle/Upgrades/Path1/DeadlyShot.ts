@@ -8,7 +8,7 @@ export class DeadlyShot extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        // TODO: Increase damage dealt to Large villagers by +15
+        tower.largeVillagerBonusDamage += 15;
         tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 13, 0);
     }
 }

@@ -1,3 +1,4 @@
+import { AttackTypes } from "Towers/AttackTypes";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
@@ -7,7 +8,12 @@ export class HeavyShells extends TowerUpgrade {
     public cost = 970;
     public description = "TODO: Write description";
 
-    public applyUpgrade(_tower: Tower): void {
-        // TODO: Increase damage against Large, Fortified and stunned enemies
+    public applyUpgrade(tower: Tower): void {
+        BlzSetUnitWeaponIntegerField(GetEnumUnit(), UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, AttackTypes.CHAOS);
+        tower.largeVillagerBonusDamage += 3;
+        tower.fortifiedVillagerBonusDamage += 1;
+        tower.zeppelinVillagerBonusDamage += 1;
+
+        // TODO: Increase damage against stunned enemies by +2
     }
 }

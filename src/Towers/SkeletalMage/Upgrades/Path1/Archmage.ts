@@ -8,8 +8,8 @@ export class Archmage extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        // TODO: Increase damage against zeppelins
         // TODO: Add Dragon's Breath and Shimmer attacks?
+        tower.zeppelinVillagerBonusDamage += 6;
         tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 2, 0);
         tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.5, 0);
     }
