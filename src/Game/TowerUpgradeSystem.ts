@@ -3,7 +3,7 @@ import { Tower } from "../Towers/Tower";
 import { TowerController } from "../Towers/TowerController";
 import { TowerUpgrade } from "../Towers/TowerUpgrade";
 
-export class TowerSystem {
+export class TowerUpgradeSystem {
     private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower>;
     private selectedTower: Tower | null = null;

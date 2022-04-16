@@ -7,7 +7,7 @@ import {DamageEventController} from "../Utility/DamageEngine/DamageEventControll
 import {RoundCreepController} from "./RoundCreepController";
 import {SpawnedCreep} from "../Creeps/SpawnedCreep";
 import {Checkpoint} from "../Utility/Checkpoint";
-import {TowerSystem} from "./Frames";
+import {TowerUpgradeSystem} from "./TowerUpgradeSystem";
 import {Tower} from "../Towers/Tower";
 import {Modifier} from "../Creeps/Modifier";
 import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
@@ -33,7 +33,7 @@ export class Game {
     private readonly creepRegenSystem: CreepRegenSystem;
     private readonly stunUtils: StunUtils;
     private readonly spells: Spells;
-    private readonly towerSystem: TowerSystem;
+    private readonly towerSystem: TowerUpgradeSystem;
     private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly commandHandler: Commands;
     private readonly towerController: TowerController;
@@ -53,7 +53,7 @@ export class Game {
         this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils, this.towers);
         this.randomNumberGenerator = new RandomNumberGenerator();
         this.towerController = new TowerController(this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
-        this.towerSystem = new TowerSystem(this.towerController, this.towers);
+        this.towerSystem = new TowerUpgradeSystem(this.towerController, this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
         this.commandHandler = new Commands(this);
         this.creepSpawn = {x: -3328, y: 2048};
