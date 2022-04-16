@@ -21,6 +21,7 @@ import {OrderId} from "w3ts/globals/order";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import {Commands} from "../Utility/Commands";
 import {MapRegionController} from "./MapRegionController";
+import { TowerAbilitySystem } from "./TowerAbilitySystem";
 
 export class Game {
     public roundIndex: number = 0;
@@ -33,7 +34,8 @@ export class Game {
     private readonly creepRegenSystem: CreepRegenSystem;
     private readonly stunUtils: StunUtils;
     private readonly spells: Spells;
-    private readonly towerSystem: TowerUpgradeSystem;
+    private readonly towerUpgradeSystem: TowerUpgradeSystem;
+    private readonly towerAbilitySystem: TowerAbilitySystem;
     private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly commandHandler: Commands;
     private readonly towerController: TowerController;
@@ -53,7 +55,8 @@ export class Game {
         this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils, this.towers);
         this.randomNumberGenerator = new RandomNumberGenerator();
         this.towerController = new TowerController(this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
-        this.towerSystem = new TowerUpgradeSystem(this.towerController, this.towers);
+        this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController, this.towers);
+        this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
         this.commandHandler = new Commands(this);
         this.creepSpawn = {x: -3328, y: 2048};
