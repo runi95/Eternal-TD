@@ -22,7 +22,7 @@ export class TowerUpgradeSystem {
         this.towers = towers;
         this.originFrameGameUi = Frame.fromOrigin(ORIGIN_FRAME_GAME_UI, 0);
 
-        this.menu = new Frame('EscMenuPopupMenuTemplate', this.originFrameGameUi, -1, 0)
+        this.menu = new Frame('EscMenuPopupMenuTemplate', this.originFrameGameUi, -1, 0);
         this.menu.setVisible(false);
         this.menu.setSize(0.14, 0.19);
         this.menu.setPoint(FRAMEPOINT_BOTTOMRIGHT, this.originFrameGameUi, FRAMEPOINT_BOTTOMRIGHT, -0.007, 0.16);
