@@ -141,7 +141,7 @@ export class TowerAbilitySystem {
         this.render();
     }
 
-    private render(): void {
+    public render(): void {
         for(let i = 0; i < MAX_FRAME_COUNT; i++) {
             const playerIndex: number = GetPlayerId(GetLocalPlayer());
             const abilityCount: number = this.towerAbilities[playerIndex][i].length;
@@ -157,7 +157,7 @@ export class TowerAbilitySystem {
         }
     }
 
-    private removeTowerAbility(playerIndex: number, tower: Tower): void {
+    public removeTowerAbility(playerIndex: number, tower: Tower): void {
         for (let i = 0; i < this.towerAbilities[playerIndex].length; i++) {
             if (this.towerAbilities[playerIndex][i].length > 0) {
                 for (let j = 0; j < this.towerAbilities[playerIndex][i].length; j++) {

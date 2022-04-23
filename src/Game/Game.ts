@@ -47,7 +47,6 @@ export class Game {
     constructor() {
         this.debugEnabled = "Local Player" === MapPlayer.fromIndex(0).name;
         this.timerUtils = new TimerUtils();
-        this.spells = new Spells();
         this.damageEngineGlobals = new DamageEngineGlobals();
         this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
         this.roundCreepController = new RoundCreepController();
@@ -58,6 +57,7 @@ export class Game {
         this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
         this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController, this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
+        this.spells = new Spells(this.towerAbilitySystem, this.towers);
         this.commandHandler = new Commands(this);
         this.creepSpawn = {x: -3328, y: 2048};
         this.checkpoints = [
