@@ -1,6 +1,6 @@
 import { Tower } from "Towers/Tower";
 import { TimerUtils } from "Utility/TimerUtils";
-import { Timer, Trigger } from "w3ts";
+import { Frame, Timer, Trigger } from "w3ts";
 import { Players } from "w3ts/globals";
 import { TowerAbility } from "./TowerAbility";
 
@@ -21,9 +21,9 @@ export class TowerAbilitySystem {
     private readonly towerAbilities: ActiveTowerAbility[][][] = [];
     private readonly backdrops: framehandle[] = [];
     private readonly buttons: framehandle[] = [];
+    private readonly tooltips: framehandle[] = [];
     private readonly timerUtils: TimerUtils;
 
-    // TODO: Add tooltip
     // TODO: Check for desyncs
 
     constructor(timerUtils: TimerUtils) {
@@ -59,7 +59,16 @@ export class TowerAbilitySystem {
             BlzFrameSetValue(cooldownFrame, 0);
             BlzFrameSetModel(cooldownFrame, "ui/feedback/cooldown/ui-cooldown-indicator.mdx", 0);
             BlzFrameSetVisible(cooldownFrame, false);
-            
+
+            const tooltipFrame = BlzCreateFrame("BoxedText", button, 0, 0);
+            const textFrame = BlzCreateFrameByType("TEXT", "textFrame", tooltipFrame, '', 0);
+            BlzFrameSetSize(textFrame, 0.25, 0);
+            BlzFrameSetPoint(tooltipFrame, FRAMEPOINT_BOTTOMLEFT, textFrame, FRAMEPOINT_BOTTOMLEFT, -0.01, -0.01);
+            BlzFrameSetPoint(tooltipFrame, FRAMEPOINT_TOPRIGHT, textFrame, FRAMEPOINT_TOPRIGHT, 0.01, 0.01);
+            BlzFrameSetTooltip(button, tooltipFrame);
+            BlzFrameSetPoint(textFrame, FRAMEPOINT_BOTTOM, button, FRAMEPOINT_TOP, 0, 0.01);
+            this.tooltips.push(textFrame);
+
             BlzFrameSetVisible(button, false);
 
             const trig: Trigger = new Trigger();
@@ -147,13 +156,16 @@ export class TowerAbilitySystem {
             const abilityCount: number = this.towerAbilities[playerIndex][i].length;
             let abilityIcon: string = "";
             let isVisible: boolean = false;
+            let tooltipText: string = "";
             if (abilityCount > 0) {
                 isVisible = true;
                 abilityIcon = this.towerAbilities[playerIndex][i][0].ability.icon;
+                tooltipText = `${this.towerAbilities[playerIndex][i][0].ability.name}|n|n${this.towerAbilities[playerIndex][i][0].ability.description}`;
             }
 
             BlzFrameSetTexture(this.backdrops[i], abilityIcon, 0, true);
             BlzFrameSetVisible(this.buttons[i], isVisible);
+            BlzFrameSetText(this.tooltips[i], tooltipText);
         }
     }
 
