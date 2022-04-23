@@ -79,9 +79,12 @@ export class TowerAbilitySystem {
                     towerAbility.ability.applyAbilityEffect(towerAbility.tower);
 
                     const t: Timer = this.timerUtils.newTimer();
-                    t.start(towerAbility.cooldown, false, () => {
-                        towerAbility.cooldown = 0;
-                        this.timerUtils.releaseTimer(t);
+                    t.start(1, true, () => {
+                        towerAbility.cooldown--;
+
+                        if (towerAbility.cooldown <= 0) {
+                            this.timerUtils.releaseTimer(t);
+                        }
                     });
 
                     if (isLastAbility) {
