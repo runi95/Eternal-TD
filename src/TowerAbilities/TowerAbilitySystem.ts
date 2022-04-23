@@ -66,7 +66,7 @@ export class TowerAbilitySystem {
             const cooldownButtonIndex = i;
             trig.addAction(() => {
                 const abilityPlayerIndex = GetPlayerId(GetTriggerPlayer());
-                if (this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].length > cooldownButtonIndex) {
+                if (this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].length > 0) {
                     const availableTowerAbilities = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].filter((activeTowerAbility) => activeTowerAbility.cooldown === 0);
                     if (availableTowerAbilities.length === 0)
                         return;
