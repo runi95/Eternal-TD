@@ -213,6 +213,7 @@ export class TowerAbilitySystem {
         for (let i = 0; i < this.towerAbilities[playerIndex].length; i++) {
             for (let j = 0; j < this.towerAbilities[playerIndex][i].towers.length; j++) {
                 if (this.towerAbilities[playerIndex][i].towers[j].tower === tower) {
+                    const activeTower = this.towerAbilities[playerIndex][i].towers[j];
                     if (this.towerAbilities[playerIndex][i].towers.length > 1) {
                         this.towerAbilities[playerIndex][i].towers.splice(j, 1);
     
@@ -228,6 +229,7 @@ export class TowerAbilitySystem {
                         shift = i;
                     }
                     
+                    activeTower.cooldown = 0;
                     break;
                 }
             }
