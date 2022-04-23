@@ -16,7 +16,7 @@ interface AbilityTowerMeta {
     cooldown: number;
 }
 
-const BUTTON_SIZE = 0.025;
+const BUTTON_SIZE = 0.03;
 const COOLDOWN_FRAME_SIZE = BUTTON_SIZE / 0.04;
 const FRAME_START_POS_X = 0.24;
 const FRAME_END_POS_X = 0.5625 + BUTTON_SIZE;
