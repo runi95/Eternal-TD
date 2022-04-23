@@ -11,6 +11,8 @@ import {GroupInRange} from "../Utility/GroupInRange";
 import { VoidwalkerCustomData } from "./Voidwalker/Voidwalker";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import { DefenseTypes } from "Creeps/DefenseTypes";
+import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
+import { TowerAbility } from "TowerAbilities/TowerAbility";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
@@ -23,12 +25,14 @@ const lesserVoidwalkerUnitTypeId: number = FourCC('o000');
 const timedLifeBuffId: number = FourCC('BTLF');
 export class TowerController {
     private readonly towers: Map<number, Tower>;
+    private readonly towerAbilitySystem: TowerAbilitySystem;
     private readonly timerUtils: TimerUtils;
     private readonly stunUtils: StunUtils;
     private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly tickTowers: Map<number, Timer> = new Map();
 
-    constructor(timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>) {
+    constructor(towerAbilitySystem: TowerAbilitySystem, timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>) {
+        this.towerAbilitySystem = towerAbilitySystem;
         this.timerUtils = timerUtils;
         this.stunUtils = stunUtils;
         this.randomNumberGenerator = randomNumberGenerator;
@@ -88,6 +92,10 @@ export class TowerController {
 
         if (tower.unit.getAbilityLevel(tickTowerAbilityId) > 0) {
             this.addTickTower(tower);
+        }
+
+        if (upgrade.ability !== undefined) {
+            this.towerAbilitySystem.addTowerAbility(GetPlayerId(GetOwningPlayer(tower.unit.handle)), tower, upgrade.ability as TowerAbility);
         }
 
         return isTowerUnitReplaced;
