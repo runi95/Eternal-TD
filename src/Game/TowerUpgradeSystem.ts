@@ -3,6 +3,8 @@ import { Tower } from "../Towers/Tower";
 import { TowerController } from "../Towers/TowerController";
 import { TowerUpgrade } from "../Towers/TowerUpgrade";
 
+// FIXME: Upgrade menu is still visible after selling a tower
+
 export class TowerUpgradeSystem {
     private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower>;
