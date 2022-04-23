@@ -104,6 +104,7 @@ export class TowerAbilitySystem {
                     });
 
                     if (isLastAbility) {
+                        const activeAbility = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex];
                         let minCooldown = tower.cooldown;
                         for(let i = 0; i < this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers.length; i++) {
                             if (this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers[i].cooldown < minCooldown) {
@@ -111,16 +112,17 @@ export class TowerAbilitySystem {
                             }
                         }
 
-                        this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].visibleCooldown = minCooldown;
+                        
+                        activeAbility.visibleCooldown = minCooldown;
 
                         BlzFrameSetVisible(cooldownFrame, true);
                         const t: Timer = this.timerUtils.newTimer();
                         t.start(0.1, true, () => {
-                            this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].visibleCooldown -= 0.1;
-                            BlzFrameSetValue(this.cooldownFrames[this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].buttonIndex], ((this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.cooldown - this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].visibleCooldown) / this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.cooldown) * 100);
+                            activeAbility.visibleCooldown -= 0.1;
+                            BlzFrameSetValue(this.cooldownFrames[activeAbility.buttonIndex], ((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
 
-                            if (this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].visibleCooldown <= 0) {
-                                BlzFrameSetVisible(this.cooldownFrames[this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].buttonIndex], false);
+                            if (activeAbility.visibleCooldown <= 0) {
+                                BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], false);
                                 this.timerUtils.releaseTimer(t);
                             }
                         });
@@ -141,33 +143,33 @@ export class TowerAbilitySystem {
             cooldown: ability.cooldown
         };
 
-        let notExists = true;
+        let activeAbility: ActiveTowerAbility | undefined = undefined;
         for(let i = 0; i < this.towerAbilities[playerIndex].length; i++) {
             if (this.towerAbilities[playerIndex][i].ability.name === ability.name) {
-                notExists = false;
                 this.towerAbilities[playerIndex][i].towers.push(abilTower);
+                activeAbility = this.towerAbilities[playerIndex][i];
                 break;
             }
         }
 
-        if (notExists) {
-            const abilityIndex = this.towerAbilities[playerIndex].length;
-            this.towerAbilities[playerIndex].push({
+        if (activeAbility === undefined) {
+            activeAbility = {
                 ability,
                 towers: [abilTower],
                 buttonIndex: this.towerAbilities[playerIndex].length,
                 visibleCooldown: ability.cooldown,
-            });
+            }
+            this.towerAbilities[playerIndex].push(activeAbility);
 
-            BlzFrameSetVisible(this.cooldownFrames[this.towerAbilities[playerIndex][abilityIndex].buttonIndex], true);
+            BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], true);
 
             const t: Timer = this.timerUtils.newTimer();
             t.start(0.1, true, () => {
-                this.towerAbilities[playerIndex][abilityIndex].visibleCooldown -= 0.1;
-                BlzFrameSetValue(this.cooldownFrames[this.towerAbilities[playerIndex][abilityIndex].buttonIndex], ((this.towerAbilities[playerIndex][abilityIndex].ability.cooldown - this.towerAbilities[playerIndex][abilityIndex].visibleCooldown) / this.towerAbilities[playerIndex][abilityIndex].ability.cooldown) * 100);
+                activeAbility.visibleCooldown -= 0.1;
+                BlzFrameSetValue(this.cooldownFrames[activeAbility.buttonIndex], ((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
 
-                if (this.towerAbilities[playerIndex][abilityIndex].visibleCooldown <= 0) {
-                    BlzFrameSetVisible(this.cooldownFrames[this.towerAbilities[playerIndex][abilityIndex].buttonIndex], false);
+                if (activeAbility.visibleCooldown <= 0) {
+                    BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], false);
                     this.timerUtils.releaseTimer(t);
                 }
             });
@@ -191,15 +193,18 @@ export class TowerAbilitySystem {
             let abilityIcon: string = "";
             let isVisible: boolean = false;
             let tooltipText: string = "";
+            let isCooldownVisible: boolean = false;
             if (this.towerAbilities[playerIndex].length > i) {
                 isVisible = true;
                 abilityIcon = this.towerAbilities[playerIndex][i].ability.icon;
                 tooltipText = `${this.towerAbilities[playerIndex][i].ability.name}|n|n${this.towerAbilities[playerIndex][i].ability.description}`;
+                isCooldownVisible = this.towerAbilities[playerIndex][i].visibleCooldown > 0;
             }
 
             BlzFrameSetTexture(this.backdrops[i], abilityIcon, 0, true);
             BlzFrameSetVisible(this.buttons[i], isVisible);
             BlzFrameSetText(this.tooltips[i], tooltipText);
+            BlzFrameSetVisible(this.cooldownFrames[i], isCooldownVisible);
         }
     }
 
