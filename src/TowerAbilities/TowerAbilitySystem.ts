@@ -188,6 +188,14 @@ export class TowerAbilitySystem {
                 if (this.towerAbilities[playerIndex][i].towers[j].tower === tower) {
                     if (this.towerAbilities[playerIndex][i].towers.length > 1) {
                         this.towerAbilities[playerIndex][i].towers.splice(j, 1);
+    
+                        let minCooldown: number = this.towerAbilities[playerIndex][i].towers[0].cooldown;
+                        for (let k = 1; k < this.towerAbilities[playerIndex][i].towers.length; k++) {
+                            if (this.towerAbilities[playerIndex][i].towers[k].cooldown < minCooldown) {
+                                minCooldown = this.towerAbilities[playerIndex][i].towers[k].cooldown;
+                            }
+                        }
+                        this.towerAbilities[playerIndex][i].visibleCooldown = minCooldown;
                     } else {
                         this.towerAbilities[playerIndex].splice(i, 1);
                         shift = i;
