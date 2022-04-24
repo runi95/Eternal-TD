@@ -14,6 +14,7 @@ import { StarThrower } from "./Upgrades/Path1/StarThrower";
 import { SharpShooter } from "./Upgrades/Path3/SharpShooter";
 import { BowMaster } from "./Upgrades/Path3/BowMaster";
 import { HiredHarpyRogues } from "./Upgrades/Path2/HiredHarpyRogues";
+import { HiredGreaterHarpies } from "./Upgrades/Path2/HiredGreaterHarpies";
 
 export class SkeletonArcher extends TowerType {
     public upgrades: TowerUpgrade[][] = [
@@ -29,7 +30,7 @@ export class SkeletonArcher extends TowerType {
             new VeryQuickShots(),
             new TripleShot(),
             new HiredHarpyRogues(),
-            // TODO: Add Upgrade
+            new HiredGreaterHarpies(),
         ],
         [
             new LongRangeArrows(),

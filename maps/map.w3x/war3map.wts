@@ -690,3 +690,15 @@ STRING 167
 Harpy Rogue
 }
 
+STRING 168
+// Units: h00F (Greater Harpy), Name (Name)
+{
+Greater Harpy
+}
+
+STRING 169
+// Units: h00F (Greater Harpy), Ubertip (Tooltip - Extended)
+{
+TODO: Write description
+}
+
