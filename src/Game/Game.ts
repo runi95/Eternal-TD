@@ -53,7 +53,7 @@ export class Game {
         this.stunUtils = new StunUtils(this.timerUtils);
         this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils, this.towers);
         this.randomNumberGenerator = new RandomNumberGenerator();
-        this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils);
+        this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils, this.towers);
         this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
         this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController, this.towers);
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);

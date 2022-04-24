@@ -1,8 +1,10 @@
 import { Tower } from "Towers/Tower";
+import { Group } from "Utility/Group";
 import { TimerUtils } from "Utility/TimerUtils";
-import { Timer, Trigger } from "w3ts";
+import { Timer, Trigger, Unit } from "w3ts";
 import { Players } from "w3ts/globals";
 import { TowerAbility } from "./TowerAbility";
+import { TowerAbilityType } from "./TowerAbilityType";
 
 interface ActiveTowerAbility {
     towers: AbilityTowerMeta[];
@@ -15,6 +17,10 @@ interface AbilityTowerMeta {
     tower: Tower;
     cooldown: number;
 }
+
+const skeletonArcherUnitTypeId: number = FourCC('h000');
+const archerSquadUnitTypeId: number = FourCC('h00E');
+const attackAbilityId: number = FourCC('Aatk');
 
 const BUTTON_SIZE = 0.03;
 const COOLDOWN_FRAME_SIZE = BUTTON_SIZE / 0.04;
@@ -30,11 +36,13 @@ export class TowerAbilitySystem {
     private readonly tooltips: framehandle[] = [];
     private readonly cooldownFrames: framehandle[] = [];
     private readonly timerUtils: TimerUtils;
+    private readonly towers: Map<number, Tower>;
 
     // TODO: Check for desyncs
 
-    constructor(timerUtils: TimerUtils) {
+    constructor(timerUtils: TimerUtils, towers: Map<number, Tower>) {
         this.timerUtils = timerUtils;
+        this.towers = towers;
 
         Players.forEach(() => this.towerAbilities.push([]));
 
@@ -92,7 +100,7 @@ export class TowerAbilitySystem {
 
                     tower.cooldown = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.cooldown;
 
-                    this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.applyAbilityEffect(tower.tower);
+                    this.applyAbilityEffect(this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.abilityType, tower.tower);
 
                     const t: Timer = this.timerUtils.newTimer();
                     t.start(1, true, () => {
@@ -239,6 +247,74 @@ export class TowerAbilitySystem {
             for (let i = shift; i < this.towerAbilities[playerIndex].length; i++) {
                 this.towerAbilities[playerIndex][i].buttonIndex--;
             }
+        }
+    }
+
+    private applyAbilityEffect(towerAbilityType: TowerAbilityType, tower: Tower): void {
+        switch (towerAbilityType) {
+            case TowerAbilityType.ARCHER_SQUAD:
+                const units: Unit[] = [];
+                const dummyUnits: Unit[] = [];
+                const upgradeTower = (tower: Tower) => {
+                    // Hide previous tower
+                    tower.unit.show = false;
+                    units.push(tower.unit);
+                    
+                    // Create a dummy tower
+                    const dummyUnit = new Unit(tower.unit.owner, archerSquadUnitTypeId, tower.unit.x, tower.unit.y, tower.unit.facing, 0);
+                    dummyUnit.setAttackCooldown(0.06, 0);
+                    dummyUnits.push(dummyUnit);
+                    const dummyTower = new Tower(dummyUnit, tower.towerType, tower.pathUpgrades);
+                    const pathUpgrades = tower.pathUpgrades;
+                    dummyUnit.disableAbility(attackAbilityId, false, true);
+                    for (let i = 0; i < pathUpgrades.length; i++) {
+                        for (let j = 0; j < pathUpgrades[i] && j < 2; j++) {
+                            tower.towerType.upgrades[i][j].applyUpgrade(dummyTower);
+                        }
+                    }
+                };
+
+                DestroyEffect(AddSpecialEffect("Abilities/Spells/NightElf/BattleRoar/RoarCaster.mdl", tower.unit.x, tower.unit.y));
+
+                const grp: Group = Group.fromPlayerAndType(GetOwningPlayer(tower.unit.handle), skeletonArcherUnitTypeId);
+                let count = 0;
+                grp.for((u) => {
+                    if (count > 8)
+                        return;
+
+                    if (!u.show)
+                        return;
+
+                    const uTower = this.towers.get(u.id);
+                    if (uTower === undefined)
+                        return;
+
+                    if (uTower === tower)
+                        return;
+
+                    count++;
+                    upgradeTower(uTower);
+                });
+                grp.destroy();
+
+                upgradeTower(tower);
+
+                const t: Timer = this.timerUtils.newTimer();
+                t.start(15, false, () => {
+                    for (let i = 0; i < units.length; i++) {
+                        units[i].show = true;
+                    }
+
+                    for (let i = 0; i < dummyUnits.length; i++) {
+                        dummyUnits[i].destroy();
+                    }
+
+                    this.timerUtils.releaseTimer(t);
+                });
+                break;
+            default:
+                print(`ERROR: Unimplemented ability type '${towerAbilityType}'`);
+                break;
         }
     }
 }

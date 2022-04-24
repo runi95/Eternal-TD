@@ -13,7 +13,7 @@ import { CorrosiveAmmo } from "./Upgrades/Path1/CorrosiveAmmo";
 import { StarThrower } from "./Upgrades/Path1/StarThrower";
 import { SharpShooter } from "./Upgrades/Path3/SharpShooter";
 import { BowMaster } from "./Upgrades/Path3/BowMaster";
-import { GroupTogether } from "./Upgrades/Path2/GroupTogether";
+import { HiredHarpyRogues } from "./Upgrades/Path2/HiredHarpyRogues";
 
 export class SkeletonArcher extends TowerType {
     public upgrades: TowerUpgrade[][] = [
@@ -28,7 +28,7 @@ export class SkeletonArcher extends TowerType {
             new QuickShots(),
             new VeryQuickShots(),
             new TripleShot(),
-            new GroupTogether(),
+            new HiredHarpyRogues(),
             // TODO: Add Upgrade
         ],
         [

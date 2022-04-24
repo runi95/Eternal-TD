@@ -678,3 +678,15 @@ STRING 164
 Build Skeletal Mage
 }
 
+STRING 166
+// Units: h00E (Harpy Rogue), Ubertip (Tooltip - Extended)
+{
+TODO: Write description
+}
+
+STRING 167
+// Units: h00E (Harpy Rogue), Name (Name)
+{
+Harpy Rogue
+}
+

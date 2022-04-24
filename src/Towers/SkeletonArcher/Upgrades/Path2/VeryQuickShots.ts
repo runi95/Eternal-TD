@@ -9,6 +9,5 @@ export class VeryQuickShots extends TowerUpgrade {
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.745, 0);
-
     }
 }

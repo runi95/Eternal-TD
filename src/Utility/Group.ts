@@ -18,7 +18,11 @@ export class Group extends grp.Group {
         return handle ? this.getObject(handle) : undefined;
     }
 
-    public static fromRange(radius: number, point: Point) {
+    public static fromRange(radius: number, point: Point): Group {
         return Group.fromHandle(GetUnitsInRangeOfLocAll(radius, point.handle));
+    }
+
+    public static fromPlayerAndType(player: player, unitId: number): Group {
+        return Group.fromHandle(GetUnitsOfPlayerAndTypeId(player, unitId));
     }
 }
