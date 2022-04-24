@@ -252,7 +252,7 @@ export class TowerAbilitySystem {
 
     private applyAbilityEffect(towerAbilityType: TowerAbilityType, tower: Tower): void {
         switch (towerAbilityType) {
-            case TowerAbilityType.ARCHER_SQUAD:
+            case TowerAbilityType.HIRE_HARPY_ROGUES:
                 const units: Unit[] = [];
                 const dummyUnits: Unit[] = [];
                 const upgradeTower = (tower: Tower) => {

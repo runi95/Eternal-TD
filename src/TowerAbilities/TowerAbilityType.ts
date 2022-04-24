@@ -1,3 +1,3 @@
 export enum TowerAbilityType {
-    ARCHER_SQUAD
+    HIRE_HARPY_ROGUES
 }
