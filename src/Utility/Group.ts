@@ -9,13 +9,9 @@ export class Group extends grp.Group {
     constructor() {
         super();
     }
+
     public for(exp: (u: Unit) => void): void {
-        let u: Unit = this.first;
-        while (u) {
-            exp(u);
-            this.removeUnit(u)
-            u = this.first;
-        }
+        super.for(() => exp(Unit.fromEnum()));
     }
 
     public static fromHandle(handle: group | undefined): Group | undefined {
