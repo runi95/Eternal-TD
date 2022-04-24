@@ -19,7 +19,7 @@ interface AbilityTowerMeta {
 }
 
 const skeletonArcherUnitTypeId: number = FourCC('h000');
-const archerSquadUnitTypeId: number = FourCC('h00E');
+const harpyRogueUnitTypeId: number = FourCC('h00E');
 const greaterHarpyUnitTypeId: number = FourCC('h00F');
 const attackAbilityId: number = FourCC('Aatk');
 
@@ -263,7 +263,7 @@ export class TowerAbilitySystem {
                         units.push(tower.unit);
                         
                         // Create a dummy tower
-                        const dummyUnit = new Unit(tower.unit.owner, archerSquadUnitTypeId, tower.unit.x, tower.unit.y, tower.unit.facing, 0);
+                        const dummyUnit = new Unit(tower.unit.owner, harpyRogueUnitTypeId, tower.unit.x, tower.unit.y, tower.unit.facing, 0);
                         dummyUnit.setAttackCooldown(0.06, 0);
                         dummyUnits.push(dummyUnit);
                         const dummyTower = new Tower(dummyUnit, tower.towerType, tower.pathUpgrades);
