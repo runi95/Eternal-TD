@@ -13,8 +13,15 @@ import { SkeletalHammer } from "./Upgrades/Path1/SkeletalHammer";
 import { GreaterHammers } from "./Upgrades/Path1/GreaterHammers";
 import { RecursiveBombs } from "./Upgrades/Path3/RecursiveBombs";
 import { BombBlitz } from "./Upgrades/Path3/BombBlitz";
+import { WendigoSmash } from "./Upgrades/Path2/WendigoSmash";
+import { ZeppelinCrusher } from "./Upgrades/Path2/ZeppelinCrusher";
 
-// TODO: Update Sapper AOE to only be able to hit up to X units on every attack
+export interface SapperCustomData {
+    areaOfEffect: number;
+    maxUnitCount: number;
+    aoeDamage: number;
+}
+
 export class Sapper extends TowerType {
     public upgrades: TowerUpgrade[][] = [
         [
@@ -28,6 +35,8 @@ export class Sapper extends TowerType {
             new FasterHurling(),
             new ExcessiveHurling(),
             new Wendigo(),
+            new WendigoSmash(),
+            new ZeppelinCrusher(),
         ],
         [
             new ExtraRange(),
@@ -38,4 +47,12 @@ export class Sapper extends TowerType {
         ]
     ];
     public unitTypeId: number = FourCC('h003');
+
+    initializeCustomData(): SapperCustomData {
+        return {
+            areaOfEffect: 120,
+            maxUnitCount: 13,
+            aoeDamage: 1
+        };
+    }
 }

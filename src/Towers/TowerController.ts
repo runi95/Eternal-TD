@@ -7,12 +7,12 @@ import { TowerType } from "./TowerType";
 import towerTypeMap from "./TowerTypes";
 import { TowerUpgrade } from "./TowerUpgrade";
 import {Timer, Trigger, Unit} from "w3ts";
-import {GroupInRange} from "../Utility/GroupInRange";
 import { VoidwalkerCustomData } from "./Voidwalker/Voidwalker";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import { DefenseTypes } from "Creeps/DefenseTypes";
 import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
 import { TowerAbility } from "TowerAbilities/TowerAbility";
+import { Group } from "Utility/Group";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
@@ -138,7 +138,7 @@ export class TowerController {
                         realDamageAmount += greaterPermanentImmolationAdditionalDamageAmount;
 
                     const loc = tower.unit.point;
-                    const group = GroupInRange(range, loc);
+                    const group: Group = Group.fromRange(range, loc);
 
                     let unitCount = 0;
                     group.for((u: Unit) => {
@@ -162,7 +162,7 @@ export class TowerController {
                 return (tower: Tower) => {
                     const { range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasColdSnap, hasReFreeze } = tower.customData as ObsidianStatueCustomData;
                     const loc = tower.unit.point;
-                    const group = GroupInRange(range, loc);
+                    const group: Group = Group.fromRange(range, loc);
 
                     let unitCount = 0;
                     group.for((u: Unit) => {

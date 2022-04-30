@@ -15,7 +15,6 @@ import {regenUnitMap} from "../Creeps/Modifiers/RegenModifier"
 import {StunUtils} from "../Utility/StunUtils";
 import {TowerController} from "../Towers/TowerController";
 import {Effect, MapPlayer, Point, Timer, Trigger, Unit} from "w3ts";
-import {GroupInRange} from "../Utility/GroupInRange";
 import {Group} from "../Utility/Group";
 import {OrderId} from "w3ts/globals/order";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
@@ -138,7 +137,7 @@ export class Game {
             const targ: Unit = Unit.fromEvent();
             const loc: Point = trig.point;
             const range: number = BlzGetUnitWeaponRealField(trig.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 0);
-            const group: Group = GroupInRange(range, loc);
+            const group: Group = Group.fromRange(range, loc);
             let first: Unit | null = null;
             let index = 0;
             group.for((u: Unit) => {

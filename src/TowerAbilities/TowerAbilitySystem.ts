@@ -1,7 +1,7 @@
 import { Tower } from "Towers/Tower";
 import { Group } from "Utility/Group";
 import { TimerUtils } from "Utility/TimerUtils";
-import { Timer, Trigger, Unit } from "w3ts";
+import { Point, Timer, Trigger, Unit } from "w3ts";
 import { Players } from "w3ts/globals";
 import { TowerAbility } from "./TowerAbility";
 import { TowerAbilityType } from "./TowerAbilityType";
@@ -22,6 +22,7 @@ const skeletonArcherUnitTypeId: number = FourCC('h000');
 const harpyRogueUnitTypeId: number = FourCC('h00E');
 const greaterHarpyUnitTypeId: number = FourCC('h00F');
 const attackAbilityId: number = FourCC('Aatk');
+const zeppelinUnitTypeId: number = FourCC('u006');
 
 const BUTTON_SIZE = 0.03;
 const COOLDOWN_FRAME_SIZE = BUTTON_SIZE / 0.04;
@@ -101,7 +102,11 @@ export class TowerAbilitySystem {
 
                     tower.cooldown = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.cooldown;
 
-                    this.applyAbilityEffect(this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.abilityType, tower.tower);
+                    const abilityEffectResult = this.applyAbilityEffect(this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.abilityType, tower.tower);
+                    if (!abilityEffectResult) {
+                        tower.cooldown = 0;
+                        return;
+                    }
 
                     const t: Timer = this.timerUtils.newTimer();
                     t.start(1, true, () => {
@@ -251,7 +256,8 @@ export class TowerAbilitySystem {
         }
     }
 
-    private applyAbilityEffect(towerAbilityType: TowerAbilityType, tower: Tower): void {
+    private applyAbilityEffect(towerAbilityType: TowerAbilityType, tower: Tower): boolean {
+        let wendigoSmashDamage = 750;
         switch (towerAbilityType) {
             case TowerAbilityType.HIRE_HARPY_ROGUES:
                 const hireHarpyRogues = () => {
@@ -313,9 +319,10 @@ export class TowerAbilitySystem {
 
                         this.timerUtils.releaseTimer(t);
                     });
+
+                    return true;
                 }
-                hireHarpyRogues();
-                break;
+                return hireHarpyRogues();
             case TowerAbilityType.HIRE_GREATER_HARPIES:
                 const hireGreaterHarpies = () => {
                     const units: Unit[] = [];
@@ -376,12 +383,58 @@ export class TowerAbilitySystem {
 
                         this.timerUtils.releaseTimer(t);
                     });
+
+                    return true;
                 };
-                hireGreaterHarpies();
-                break;
+                return hireGreaterHarpies();
+            case TowerAbilityType.ZEPPELIN_CRUSH:
+                wendigoSmashDamage = 4500;
+            case TowerAbilityType.WENDIGO_SMASH:
+                const wendigoSmash = () => {
+                    let targ: Unit | undefined;
+                    let targLife = 0;
+                    const grp: Group = Group.fromPlayerAndType(Player(23), zeppelinUnitTypeId);
+                    grp.for((u: Unit) => {
+                        const uLife = u.life;
+                        if (targ === undefined || uLife > targLife) {
+                            targ = u,
+                            targLife = uLife;
+                        }
+                    });
+                    grp.destroy();
+
+                    if (targ === undefined) {
+                        return false;
+                    }
+
+                    tower.unit.damageTarget(targ.handle, wendigoSmashDamage, true, true, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+                    const x: number = targ.x;
+                    const y: number = targ.y;
+                    DestroyEffect(AddSpecialEffect("Abilities/Spells/Human/Thunderclap/ThunderClapCaster.mdl", x, y));
+
+                    const loc = new Point(x, y);
+                    let unitCount = 0;
+                    const thunderclapGroup: Group = Group.fromRange(120, loc);
+                    thunderclapGroup.for((u: Unit) => {
+                        if (unitCount > 99) {
+                            return;
+                        }
+
+                        if (u.owner.id !== 23) {
+                            return;
+                        }
+
+                        tower.unit.damageTarget(u.handle, 3, true, true, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+                    });
+                    thunderclapGroup.destroy();
+                    loc.destroy();
+
+                    return true;
+                };
+                return wendigoSmash();
             default:
                 print(`ERROR: Unimplemented ability type '${towerAbilityType}'`);
-                break;
+                return false;
         }
     }
 }
