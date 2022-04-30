@@ -81,9 +81,9 @@ export class TowerController {
             }
 
             SelectUnitForPlayerSingle(unit.handle, GetTriggerPlayer());
+        } else {
+            upgrade.applyUpgrade(tower);
         }
-
-        upgrade.applyUpgrade(tower);
 
         if (this.tickTowers.has(originalHandleId)) {
             this.timerUtils.releaseTimer(this.tickTowers.get(originalHandleId) as Timer);
