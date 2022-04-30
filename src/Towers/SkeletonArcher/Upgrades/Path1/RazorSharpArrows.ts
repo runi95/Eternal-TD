@@ -9,6 +9,5 @@ export class RazorSharpArrows extends TowerUpgrade {
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 1, 0);
-
     }
 }
