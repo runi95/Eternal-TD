@@ -183,7 +183,9 @@ export class TowerAbilitySystem {
                 BlzFrameSetValue(this.cooldownFrames[activeAbility.buttonIndex], ((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
 
                 if (activeAbility.visibleCooldown <= 0) {
-                    BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], false);
+                    if (this.towerAbilities[playerIndex][activeAbility.buttonIndex].visibleCooldown <= 0) {
+                        BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], false);
+                    }
                     this.timerUtils.releaseTimer(t);
                 }
             });
@@ -239,6 +241,7 @@ export class TowerAbilitySystem {
                         }
                         this.towerAbilities[playerIndex][i].visibleCooldown = minCooldown;
                     } else {
+                        this.towerAbilities[playerIndex][i].visibleCooldown = 0;
                         this.towerAbilities[playerIndex].splice(i, 1);
                         shift = i;
                     }
