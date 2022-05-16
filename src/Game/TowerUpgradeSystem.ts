@@ -88,8 +88,11 @@ export class TowerUpgradeSystem {
                         icon = icon.replace("CommandButtons/BTN", "CommandButtonsDisabled/DISBTN");
                     }
                     this.upgradePathIconFrames[i][j].setTexture(icon, 0, true)
-                    this.upgradePathTextFrames[i][j].setText(`${this.selectedTower.towerType.upgrades[i][j].name} |cFFFFCC00(${this.selectedTower.towerType.upgrades[i][j].cost})|r|n|n` + this.selectedTower.towerType.upgrades[i][j].description)
+                    this.upgradePathTextFrames[i][j].setText(`${this.selectedTower.towerType.upgrades[i][j].name} |cFFFFCC00(${this.selectedTower.towerType.upgrades[i][j].cost})|r|n|n` + this.selectedTower.towerType.upgrades[i][j].description);
                     this.upgradePathEnabled[i][j] = isEnabled;
+                } else {
+                    this.upgradePathIconFrames[i][j].setTexture("UI/Widgets/EscMenu/Human/Quest-Unknown.dds", 0, true)
+                    this.upgradePathTextFrames[i][j].setText("");
                 }
             }
         }
