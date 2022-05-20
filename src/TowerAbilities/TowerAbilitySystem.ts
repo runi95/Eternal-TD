@@ -261,6 +261,10 @@ export class TowerAbilitySystem {
 
     private applyAbilityEffect(towerAbilityType: TowerAbilityType, tower: Tower): boolean {
         let wendigoSmashDamage = 750;
+        let pandemicDamage = 1;
+        let pandemicDuration = 30;
+        let pandemicMaxUnitCount = 200;
+
         switch (towerAbilityType) {
             case TowerAbilityType.HIRE_HARPY_ROGUES:
                 const hireHarpyRogues = () => {
@@ -435,6 +439,44 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return wendigoSmash();
+            case TowerAbilityType.PLAGUE:
+                pandemicDamage = 2;
+                pandemicDuration = 90;
+                pandemicMaxUnitCount = 500;
+            case TowerAbilityType.PANDEMIC:
+                const pandemic = () => {
+                    const x = tower.unit.x;
+                    const y = tower.unit.y;
+                    let ticks = 0;
+                    let unitCount = 0;
+                    const t: Timer = this.timerUtils.newTimer();
+                    t.start(0.1, true, () => {
+                        ticks++;
+
+                        const loc = new Point(x, y);
+                        const pandemicGrp: Group = Group.fromRange(1500, loc);
+                        pandemicGrp.for((u) => {
+                            if (unitCount >= pandemicMaxUnitCount)
+                                return;
+
+                            if (u.owner.id !== 23) {
+                                return;
+                            }
+
+                            unitCount++;
+                            tower.unit.damageTarget(u.handle, pandemicDamage, true, true, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+                        });
+                        pandemicGrp.destroy();
+                        loc.destroy();
+
+                        if (ticks > pandemicDuration || unitCount >= pandemicMaxUnitCount) {
+                            this.timerUtils.releaseTimer(t);
+                        }
+                    });
+
+                    return true;
+                };
+                return pandemic();
             default:
                 print(`ERROR: Unimplemented ability type '${towerAbilityType}'`);
                 return false;

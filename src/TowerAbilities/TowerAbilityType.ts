@@ -3,4 +3,6 @@ export enum TowerAbilityType {
     HIRE_GREATER_HARPIES,
     WENDIGO_SMASH,
     ZEPPELIN_CRUSH,
+    PANDEMIC,
+    PLAGUE,
 }
