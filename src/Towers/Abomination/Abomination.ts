@@ -26,7 +26,6 @@ export interface AbominationCustomData {
 
 const tickTowerAbilityId: number = FourCC('A008');
 
-// TODO: Should not be able to target invisible creeps
 export class Abomination extends TowerType {
     public upgrades: TowerUpgrade[][] = [
         [

@@ -13,6 +13,7 @@ import { DefenseTypes } from "Creeps/DefenseTypes";
 import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
 import { TowerAbility } from "TowerAbilities/TowerAbility";
 import { Group } from "Utility/Group";
+import { TargetFlags } from "Creeps/TargetFlags";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
@@ -149,6 +150,9 @@ export class TowerController {
                             return;
 
                         if (u.owner.id !== 23)
+                            return;
+
+                        if (BlzGetUnitIntegerField(u.handle, UNIT_IF_TARGETED_AS) === TargetFlags.WARD)
                             return;
 
                         unitCount++;
