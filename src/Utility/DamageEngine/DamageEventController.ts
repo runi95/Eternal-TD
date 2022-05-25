@@ -26,6 +26,6 @@ export class DamageEventController {
         damageEngine.addAfterDamageEvent(new SkeletalOrcDamageEvent(stunUtils, roundCreepController));
 
         // Lethal damage events
-        damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent(roundCreepController));
+        damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent(roundCreepController, stunUtils));
     }
 }

@@ -3,12 +3,17 @@ import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { RoundCreepController } from "../../../Game/RoundCreepController";
 import { SpawnedCreep } from "../../../Creeps/SpawnedCreep";
 import { Modifier } from "Creeps/Modifier";
+import { FrozenUnit } from "Utility/FrozenUnit";
+import { StunUtils } from "Utility/StunUtils";
 
+const obsidianStatueUnitTypeId: number = FourCC('h008');
 export class VillagerLethalDamageEvent implements DamageEvent {
     private readonly roundCreepController: RoundCreepController;
+    private readonly stunUtils: StunUtils;
     
-    constructor(roundCreepController: RoundCreepController) {
+    constructor(roundCreepController: RoundCreepController, stunUtils: StunUtils) {
         this.roundCreepController = roundCreepController;
+        this.stunUtils = stunUtils;
     }
 
     public event(globals: DamageEngineGlobals): void {
@@ -26,6 +31,14 @@ export class VillagerLethalDamageEvent implements DamageEvent {
         if (spawnedCreeps.length > 0) {
             for (let i = 0; spawnedCreep.modifiers !== undefined && i < spawnedCreep.modifiers.length; i++) {
                 (spawnedCreep.modifiers as Modifier[])[i].transform(spawnedCreeps[0]);
+            }
+        }
+
+        this.stunUtils.removeStun(globals.DamageEventTargetUnitId);
+        const frozenUnit: FrozenUnit = this.stunUtils.getFrozenUnit(globals.DamageEventTargetUnitId);
+        if (frozenUnit !== undefined) {
+            if (globals.DamageEventSourceUnitTypeId !== obsidianStatueUnitTypeId) {
+                frozenUnit.setDuration(0);
             }
         }
 
