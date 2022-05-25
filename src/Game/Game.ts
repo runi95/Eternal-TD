@@ -14,7 +14,7 @@ import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
 import {regenUnitMap} from "../Creeps/Modifiers/RegenModifier"
 import {StunUtils} from "../Utility/StunUtils";
 import {TowerController} from "../Towers/TowerController";
-import {Effect, MapPlayer, Point, Timer, Trigger, Unit} from "w3ts";
+import {Effect, MapPlayer, Point, Rectangle, Region, Timer, Trigger, Unit} from "w3ts";
 import {Group} from "../Utility/Group";
 import {OrderId} from "w3ts/globals/order";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
@@ -41,6 +41,7 @@ export class Game {
     private readonly towers: Map<number, Tower> = new Map();
     private readonly checkpoints: Checkpoint[];
     private readonly creepSpawn: Checkpoint;
+    private readonly playerAreas: Rectangle[];
     private readonly mapRegionController: MapRegionController;
 
     constructor() {
@@ -58,6 +59,32 @@ export class Game {
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
         this.spells = new Spells(this.towerAbilitySystem, this.towers);
         this.commandHandler = new Commands(this);
+        this.playerAreas = [
+            new Rectangle(-3328, 512, -384, 3072),
+            new Rectangle(-3328, -2048, -384, 512),
+            new Rectangle(-384, -2048, 2560, 512),
+            new Rectangle(-384, 512, 2560, 3072),
+        ];
+
+        for (let i: number = 0; i < this.playerAreas.length; i++) {
+            const trig: Trigger = new Trigger();
+            const currentIndex = i;
+            trig.addAction(() => {
+                const trigUnit: unit = GetTriggerUnit();
+                const owningPlayerId = GetPlayerId(GetOwningPlayer(trigUnit));
+                if (owningPlayerId === 23 || owningPlayerId === currentIndex)
+                    return;
+
+                const owningPlayerArea = this.playerAreas[owningPlayerId];
+                SetUnitX(trigUnit, owningPlayerArea.centerX);
+                SetUnitY(trigUnit, owningPlayerArea.centerY);
+            });
+
+            const region = new Region();
+            region.addRect(this.playerAreas[i]);
+            trig.registerEnterRegion(region.handle, null);
+        }
+
         this.creepSpawn = {x: -3328, y: 2048};
         this.checkpoints = [
             // RED
