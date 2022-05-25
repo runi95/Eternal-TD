@@ -5,6 +5,8 @@ import { SpawnedCreep } from "../../../Creeps/SpawnedCreep";
 import { Modifier } from "Creeps/Modifier";
 import { FrozenUnit } from "Utility/FrozenUnit";
 import { StunUtils } from "Utility/StunUtils";
+import { Group } from "Utility/Group";
+import { Point, Unit } from "w3ts";
 
 const obsidianStatueUnitTypeId: number = FourCC('h008');
 export class VillagerLethalDamageEvent implements DamageEvent {
@@ -39,6 +41,24 @@ export class VillagerLethalDamageEvent implements DamageEvent {
         if (frozenUnit !== undefined) {
             if (globals.DamageEventSourceUnitTypeId !== obsidianStatueUnitTypeId) {
                 frozenUnit.setDuration(0);
+            }
+
+            if (frozenUnit.hasIceShards) {
+                const x = GetUnitX(globals.DamageEventTarget as unit);
+                const y = GetUnitY(globals.DamageEventTarget as unit);
+
+                let count = 0;
+                const group: Group = Group.fromRange(75, new Point(x, y));
+                group.for((u: Unit) => {
+                    if (count > 2)
+                        return;
+
+                    count++;
+
+                    UnitDamageTarget((globals.DamageEventTarget as unit), u.handle, 1, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+                });
+
+                group.destroy();
             }
         }
 

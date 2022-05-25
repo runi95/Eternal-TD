@@ -164,7 +164,7 @@ export class TowerController {
                 };
             case obsidianStatueUnitTypeId:
                 return (tower: Tower) => {
-                    const { range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasColdSnap, hasReFreeze } = tower.customData as ObsidianStatueCustomData;
+                    const { range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasColdSnap, hasReFreeze, hasIceShards } = tower.customData as ObsidianStatueCustomData;
                     const loc = tower.unit.point;
                     const group: Group = Group.fromRange(range, loc);
 
@@ -184,15 +184,15 @@ export class TowerController {
 
                         const unitTypeId: number = u.typeId;
                         if (!hasColdSnap && (unitTypeId === fortifiedUnitTypeId || unitTypeId === invisibilityUnitTypeId))
-                                return;
+                            return;
 
                         if (BlzGetUnitIntegerField(u.handle, UNIT_IF_DEFENSE_TYPE) === DefenseTypes.HEAVY)
                             return;
-
+    
                         unitCount++;
 
                         tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
-                        this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze);
+                        this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards);
                     });
                     group.destroy();
                     loc.destroy();
