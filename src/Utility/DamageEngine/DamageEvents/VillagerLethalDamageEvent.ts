@@ -40,7 +40,9 @@ export class VillagerLethalDamageEvent implements DamageEvent {
         const frozenUnit: FrozenUnit = this.stunUtils.getFrozenUnit(globals.DamageEventTargetUnitId);
         if (frozenUnit !== undefined) {
             if (globals.DamageEventSourceUnitTypeId !== obsidianStatueUnitTypeId) {
-                frozenUnit.setDuration(0);
+                if (!frozenUnit.hasDeepFreeze || globals.DamageEventAmount > 1) {
+                    frozenUnit.setDuration(0);
+                }
             }
 
             if (frozenUnit.hasIceShards) {
@@ -77,6 +79,10 @@ export class VillagerLethalDamageEvent implements DamageEvent {
                 (spawnedCreep.modifiers as Modifier[])[i].transform(spawnedCreeps[i]);
             }
             const newCreep: unit = CreateUnit(Player(23), spawnedCreeps[i].unitTypeId, x, y, face);
+            if (frozenUnit?.hasDeepFreeze && i > 0) {
+                this.stunUtils.freezeUnit(Unit.fromHandle(newCreep), frozenUnit.getDuration(), frozenUnit.permafrost, false, frozenUnit.hasIceShards, false);
+            }
+
             const newSpawnedCreep = new SpawnedCreep(spawnedCreeps[i], spawnedCreep.modifiers, spawnedCreep.currentCheckpoint, spawnedCreep.currentCheckpointIndex);
             this.roundCreepController.set(GetHandleId(newCreep), newSpawnedCreep);
             spawnedCreeps[i].apply(newCreep);

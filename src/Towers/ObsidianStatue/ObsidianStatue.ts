@@ -7,6 +7,7 @@ import { LargerRadius } from "./Upgrades/Path3/LargerRadius";
 import { ReFreeze } from "./Upgrades/Path3/ReFreeze";
 import {Unit} from "w3ts";
 import { IceShards } from "./Upgrades/Path1/IceShards";
+import { DeepFreeze } from "./Upgrades/Path2/DeepFreeze";
 
 export interface ObsidianStatueCustomData {
     range: number;
@@ -17,6 +18,7 @@ export interface ObsidianStatueCustomData {
     hasColdSnap: boolean;
     hasReFreeze: boolean;
     hasIceShards: boolean;
+    hasDeepFreeze: boolean;
 }
 
 const tickTowerAbilityId: number = FourCC('A008');
@@ -31,6 +33,7 @@ export class ObsidianStatue extends TowerType {
         ],
         [
             new EnhancedFreeze(),
+            new DeepFreeze(),
         ],
         [
             new LargerRadius(),
@@ -49,6 +52,7 @@ export class ObsidianStatue extends TowerType {
             hasColdSnap: false,
             hasReFreeze: false,
             hasIceShards: false,
+            hasDeepFreeze: false,
         };
     }
 

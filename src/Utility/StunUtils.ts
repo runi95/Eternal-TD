@@ -60,11 +60,11 @@ export class StunUtils {
      * @param u - The unit to freeze
      * @param duration - The duration (in seconds) to freeze the unit for
      */
-     public freezeUnit(u: Unit, duration: number, permafrost: boolean, refreeze: boolean, hasIceShards: boolean): void {
+     public freezeUnit(u: Unit, duration: number, permafrost: boolean, refreeze: boolean, hasIceShards: boolean, hasDeepFreeze: boolean): void {
         const handleId: number = u.id;
         if (this.frozenUnits.has(handleId)) {
             if (refreeze) {
-                const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost, hasIceShards);
+                const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost, hasIceShards, hasDeepFreeze);
                 if (frozenUnit.getDuration() < duration) {
                     frozenUnit.setDuration(duration);
                 }
@@ -77,7 +77,7 @@ export class StunUtils {
             this.stunnedUnits.get(handleId)?.setDuration(0);
         }
 
-        const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost, hasIceShards);
+        const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost, hasIceShards, hasDeepFreeze);
         this.frozenUnits.set(handleId, frozenUnit);
         frozenUnit.getUnit().addAbility(this.freezeAbilityId);
         frozenUnit.getUnit().pauseEx(true);

@@ -164,7 +164,7 @@ export class TowerController {
                 };
             case obsidianStatueUnitTypeId:
                 return (tower: Tower) => {
-                    const { range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasColdSnap, hasReFreeze, hasIceShards } = tower.customData as ObsidianStatueCustomData;
+                    const { range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasColdSnap, hasReFreeze, hasIceShards, hasDeepFreeze } = tower.customData as ObsidianStatueCustomData;
                     const loc = tower.unit.point;
                     const group: Group = Group.fromRange(range, loc);
 
@@ -192,7 +192,8 @@ export class TowerController {
                         unitCount++;
 
                         tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
-                        this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards);
+                        // this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
+                        this.stunUtils.freezeUnit(u, 10, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
                     });
                     group.destroy();
                     loc.destroy();
