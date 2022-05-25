@@ -179,6 +179,9 @@ export class TowerController {
                         if (u.owner.id !== 23)
                             return;
 
+                        if (this.stunUtils.getFrozenUnit(u.id) !== undefined && !hasReFreeze)
+                            return;
+
                         const unitTypeId: number = u.typeId;
                         if (!hasColdSnap && (unitTypeId === fortifiedUnitTypeId || unitTypeId === invisibilityUnitTypeId))
                                 return;
@@ -187,6 +190,7 @@ export class TowerController {
                             return;
 
                         unitCount++;
+
                         tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
                         this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze);
                     });

@@ -99,6 +99,10 @@ export class StunUtils {
         });
     }
 
+    public getFrozenUnit(handleId: number): FrozenUnit | undefined {
+        return this.frozenUnits.get(handleId);
+    }
+
     public clearAllStuns(): void {
         this.stunnedUnits.forEach((stunnedUnit: StunnedUnit) => stunnedUnit.setDuration(0));
     }
