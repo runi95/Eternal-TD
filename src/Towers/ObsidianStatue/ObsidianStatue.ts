@@ -10,6 +10,8 @@ import { IceShards } from "./Upgrades/Path1/IceShards";
 import { DeepFreeze } from "./Upgrades/Path2/DeepFreeze";
 import { FrostWyrm } from "./Upgrades/Path3/FrostWyrm";
 import { ArcticWind } from "./Upgrades/Path2/ArcticWind";
+import { Embrittlement } from "./Upgrades/Path1/Embrittlement";
+import { SuperBrittle } from "./Upgrades/Path1/SuperBrittle";
 
 export interface ObsidianStatueCustomData {
     range: number;
@@ -21,6 +23,8 @@ export interface ObsidianStatueCustomData {
     hasReFreeze: boolean;
     hasIceShards: boolean;
     hasDeepFreeze: boolean;
+    hasEmbrittlement: boolean;
+    hasSuperBrittle: boolean;
 }
 
 const tickTowerAbilityId: number = FourCC('A008');
@@ -32,6 +36,8 @@ export class ObsidianStatue extends TowerType {
             new Permafrost(),
             new ColdSnap(),
             new IceShards(),
+            new Embrittlement(),
+            new SuperBrittle(),
         ],
         [
             new EnhancedFreeze(),
@@ -57,6 +63,8 @@ export class ObsidianStatue extends TowerType {
             hasReFreeze: false,
             hasIceShards: false,
             hasDeepFreeze: false,
+            hasEmbrittlement: false,
+            hasSuperBrittle: false,
         };
     }
 

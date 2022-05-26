@@ -60,7 +60,14 @@ export class StunUtils {
      * @param u - The unit to freeze
      * @param duration - The duration (in seconds) to freeze the unit for
      */
-     public freezeUnit(u: Unit, duration: number, permafrost: boolean, refreeze: boolean, hasIceShards: boolean, hasDeepFreeze: boolean): void {
+     public freezeUnit(
+         u: Unit,
+         duration: number,
+         permafrost: boolean,
+         refreeze: boolean,
+         hasIceShards: boolean,
+         hasDeepFreeze: boolean,
+    ): void {
         const handleId: number = u.id;
         if (this.frozenUnits.has(handleId)) {
             if (refreeze) {

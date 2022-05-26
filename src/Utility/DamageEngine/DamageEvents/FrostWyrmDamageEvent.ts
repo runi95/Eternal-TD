@@ -43,7 +43,17 @@ export class FrostWyrmDamageEvent implements DamageEvent {
             return;
         }
 
-        const {range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze, hasColdSnap} = tower.customData as ObsidianStatueCustomData;
+        const {
+            range,
+            maxUnitCount,
+            damageAmount,
+            freezeDuration,
+            hasPermafrost,
+            hasReFreeze,
+            hasIceShards,
+            hasDeepFreeze,
+            hasColdSnap,
+        } = tower.customData as ObsidianStatueCustomData;
 
         const loc: Point = new Point(GetUnitX(targ), GetUnitY(targ));
         const grp: Group = Group.fromRange(range, loc);

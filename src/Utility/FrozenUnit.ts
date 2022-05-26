@@ -7,7 +7,13 @@ export class FrozenUnit {
     private readonly unit: Unit;
     private duration: number;
 
-    constructor(unit: Unit, duration: number, permafrost: boolean, hasIceShards: boolean, hasDeepFreeze: boolean) {
+    constructor(
+        unit: Unit,
+        duration: number,
+        permafrost: boolean,
+        hasIceShards: boolean,
+        hasDeepFreeze: boolean,
+    ) {
         this.permafrost = permafrost;
         this.hasIceShards = hasIceShards;
         this.hasDeepFreeze = hasDeepFreeze;

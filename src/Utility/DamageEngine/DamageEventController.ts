@@ -3,10 +3,12 @@ import { RoundCreepController } from "../../Game/RoundCreepController";
 import { StunUtils } from "../StunUtils";
 import { TimerUtils } from "../TimerUtils";
 import { DamageEngine } from "./DamageEngine";
+import { EmbrittlementDamageEvent } from "./DamageEvents/EmbrittlementDamageEvent";
 import { FrostWyrmDamageEvent } from "./DamageEvents/FrostWyrmDamageEvent";
 import { SapperDamageEvent } from "./DamageEvents/SapperDamageEvent";
 import { SeaGiantDamageEvent } from "./DamageEvents/SeaGiantDamageEvent";
 import { SkeletalOrcDamageEvent } from "./DamageEvents/SkeletalOrcDamageEvent";
+import { SuperBrittleDamageEvent } from "./DamageEvents/SuperBrittleDamageEvent";
 import { VillagerLethalDamageEvent } from "./DamageEvents/VillagerLethalDamageEvent";
 import { VillagerTypeBonusDamageEvent } from "./DamageEvents/VillagerTypeBonusDamageEvent";
 
@@ -16,6 +18,8 @@ export class DamageEventController {
         // damageEngine.addInitialDamageEvent(new MyInitialDamageEvent());
 
         // Initial damage modification events
+        damageEngine.addInitialDamageModificationEvent(new EmbrittlementDamageEvent());
+        damageEngine.addInitialDamageModificationEvent(new SuperBrittleDamageEvent());
         damageEngine.addInitialDamageModificationEvent(new VillagerTypeBonusDamageEvent(roundCreepController, towers));
 
         // Final damage modification events

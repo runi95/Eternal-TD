@@ -714,3 +714,75 @@ STRING 171
 TODO: Write description
 }
 
+STRING 172
+// Abilities: A00C (ArcticWind), Name (Name)
+{
+ArcticWind
+}
+
+STRING 173
+// Abilities: A00C (ArcticWind), EditorSuffix (Editor Suffix)
+{
+(Slow Aura)
+}
+
+STRING 174
+// Abilities: A00D (Embrittlement), Name (Name)
+{
+Embrittlement
+}
+
+STRING 175
+// Abilities: A00D (Embrittlement), EditorSuffix (Editor Suffix)
+{
+(Curse)
+}
+
+STRING 176
+// Buffs/Effects: B002 (), Bufftip (Tooltip)
+{
+Embrittlement
+}
+
+STRING 177
+// Buffs/Effects: B002 (), Buffubertip (Tooltip - Extended)
+{
+This unit is Embrittled; it receives more damage when attacked again.
+}
+
+STRING 178
+// Abilities: A00E (Super Brittle), Name (Name)
+{
+Super Brittle
+}
+
+STRING 179
+// Buffs/Effects: B003 (), Buffubertip (Tooltip - Extended)
+{
+This unit is Super Brittle; it receives even more damage when attacked again.
+}
+
+STRING 180
+// Abilities: A00E (Super Brittle), EditorSuffix (Editor Suffix)
+{
+(Slow)
+}
+
+STRING 181
+// Buffs/Effects: B003 (), Bufftip (Tooltip)
+{
+Super Brittle
+}
+
+STRING 182
+// Buffs/Effects: B004 (), Bufftip (Tooltip)
+{
+Super Brittle
+}
+
+STRING 183
+// Buffs/Effects: B004 (), Buffubertip (Tooltip - Extended)
+{
+This unit is slowed; its movement speed is reduced.
+}
+

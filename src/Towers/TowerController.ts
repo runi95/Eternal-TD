@@ -19,6 +19,10 @@ const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
 const fortifiedUnitTypeId: number = FourCC('u004');
 const invisibilityUnitTypeId: number = FourCC('u003');
+const zeppelinUnitTypeId: number = FourCC('u006');
+const dummyUnitTypeId: number = FourCC('u007');
+const embrittlementAbilityId: number = FourCC('A00D');
+const superBrittleAbilityId: number = FourCC('A00E');
 const abominationUnitTypeId: number = FourCC('h007');
 const obsidianStatueUnitTypeId: number = FourCC('h008');
 const voidwalkerUnitTypeId: number = FourCC('h00C');
@@ -164,7 +168,19 @@ export class TowerController {
                 };
             case obsidianStatueUnitTypeId:
                 return (tower: Tower) => {
-                    const { range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasColdSnap, hasReFreeze, hasIceShards, hasDeepFreeze } = tower.customData as ObsidianStatueCustomData;
+                    const {
+                        range,
+                        maxUnitCount,
+                        damageAmount,
+                        freezeDuration,
+                        hasPermafrost,
+                        hasColdSnap,
+                        hasReFreeze,
+                        hasIceShards,
+                        hasDeepFreeze,
+                        hasEmbrittlement,
+                        hasSuperBrittle,
+                     } = tower.customData as ObsidianStatueCustomData;
                     const loc = tower.unit.point;
                     const group: Group = Group.fromRange(range, loc);
 
@@ -190,6 +206,27 @@ export class TowerController {
                             return;
     
                         unitCount++;
+
+                        if (hasEmbrittlement) {
+                            const dummy = new Unit(tower.unit.owner, dummyUnitTypeId, u.x, u.y, bj_UNIT_FACING);
+                            dummy.addAbility(embrittlementAbilityId);
+
+                            if (hasSuperBrittle) {
+                                dummy.incAbilityLevel(embrittlementAbilityId);
+                            }
+
+                            dummy.issueTargetOrder("curse", u);
+                        }
+
+                        if (unitTypeId === zeppelinUnitTypeId) {
+                            if (hasSuperBrittle) {
+                                const dummy = new Unit(tower.unit.owner, dummyUnitTypeId, u.x, u.y, bj_UNIT_FACING);
+                                dummy.addAbility(superBrittleAbilityId);
+                                dummy.issueTargetOrder("slow", u);
+                            }
+
+                            return;
+                        }
 
                         tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
                         this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
