@@ -3,6 +3,7 @@ import { RoundCreepController } from "../../Game/RoundCreepController";
 import { StunUtils } from "../StunUtils";
 import { TimerUtils } from "../TimerUtils";
 import { DamageEngine } from "./DamageEngine";
+import { FrostWyrmDamageEvent } from "./DamageEvents/FrostWyrmDamageEvent";
 import { SapperDamageEvent } from "./DamageEvents/SapperDamageEvent";
 import { SeaGiantDamageEvent } from "./DamageEvents/SeaGiantDamageEvent";
 import { SkeletalOrcDamageEvent } from "./DamageEvents/SkeletalOrcDamageEvent";
@@ -24,6 +25,7 @@ export class DamageEventController {
         damageEngine.addAfterDamageEvent(new SapperDamageEvent(towers));
         damageEngine.addAfterDamageEvent(new SeaGiantDamageEvent(timerUtils, towers));
         damageEngine.addAfterDamageEvent(new SkeletalOrcDamageEvent(stunUtils, roundCreepController));
+        damageEngine.addAfterDamageEvent(new FrostWyrmDamageEvent(towers, stunUtils)); 
 
         // Lethal damage events
         damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent(roundCreepController, stunUtils));

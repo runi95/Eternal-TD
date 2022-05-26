@@ -702,3 +702,15 @@ STRING 169
 TODO: Write description
 }
 
+STRING 170
+// Units: h00G (Frost Wyrm), Name (Name)
+{
+Frost Wyrm
+}
+
+STRING 171
+// Units: h00G (Frost Wyrm), Ubertip (Tooltip - Extended)
+{
+TODO: Write description
+}
+
