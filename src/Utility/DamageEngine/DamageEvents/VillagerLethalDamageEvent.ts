@@ -50,7 +50,8 @@ export class VillagerLethalDamageEvent implements DamageEvent {
                 const y = GetUnitY(globals.DamageEventTarget as unit);
 
                 let count = 0;
-                const group: Group = Group.fromRange(75, new Point(x, y));
+                const loc = new Point(x, y);
+                const group: Group = Group.fromRange(75, loc);
                 group.for((u: Unit) => {
                     if (count > 2)
                         return;
@@ -59,8 +60,8 @@ export class VillagerLethalDamageEvent implements DamageEvent {
 
                     UnitDamageTarget((globals.DamageEventTarget as unit), u.handle, 1, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
                 });
-
                 group.destroy();
+                loc.destroy();
             }
         }
 
