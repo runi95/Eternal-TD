@@ -9,6 +9,7 @@ import {Unit} from "w3ts";
 import { IceShards } from "./Upgrades/Path1/IceShards";
 import { DeepFreeze } from "./Upgrades/Path2/DeepFreeze";
 import { FrostWyrm } from "./Upgrades/Path3/FrostWyrm";
+import { ArcticWind } from "./Upgrades/Path2/ArcticWind";
 
 export interface ObsidianStatueCustomData {
     range: number;
@@ -35,6 +36,7 @@ export class ObsidianStatue extends TowerType {
         [
             new EnhancedFreeze(),
             new DeepFreeze(),
+            new ArcticWind(),
         ],
         [
             new LargerRadius(),
