@@ -1,5 +1,6 @@
 import { Tower } from "Towers/Tower";
 import { Group } from "Utility/Group";
+import { StunUtils } from "Utility/StunUtils";
 import { TimerUtils } from "Utility/TimerUtils";
 import { Point, Timer, Trigger, Unit } from "w3ts";
 import { Players } from "w3ts/globals";
@@ -23,6 +24,7 @@ const harpyRogueUnitTypeId: number = FourCC('h00E');
 const greaterHarpyUnitTypeId: number = FourCC('h00F');
 const attackAbilityId: number = FourCC('Aatk');
 const zeppelinUnitTypeId: number = FourCC('u006');
+const invisibilityUnitTypeId: number = FourCC('u003');
 
 const BUTTON_SIZE = 0.03;
 const COOLDOWN_FRAME_SIZE = BUTTON_SIZE / 0.04;
@@ -39,12 +41,14 @@ export class TowerAbilitySystem {
     private readonly cooldownFrames: framehandle[] = [];
     private readonly timerUtils: TimerUtils;
     private readonly towers: Map<number, Tower>;
+    private readonly stunUtils: StunUtils;
 
     // TODO: Check for desyncs
 
-    constructor(timerUtils: TimerUtils, towers: Map<number, Tower>) {
+    constructor(timerUtils: TimerUtils, towers: Map<number, Tower>, stunUtils: StunUtils) {
         this.timerUtils = timerUtils;
         this.towers = towers;
+        this.stunUtils = stunUtils;
 
         Players.forEach(() => this.towerAbilities.push([]));
 
@@ -477,6 +481,35 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return pandemic();
+            case TowerAbilityType.SNOWSTORM:
+                const snowstorm = () => {
+                    const x = tower.unit.x;
+                    const y = tower.unit.y;
+
+                    const loc = new Point(x, y);
+                    const group: Group = Group.fromRange(1500, loc);
+                    group.for((u) => {
+                        if (u.owner.id !== 23) {
+                            return;
+                        }
+
+                        let duration = 6;
+                        const unitTypeId: number = u.typeId;
+                        switch (unitTypeId) {
+                            case invisibilityUnitTypeId:
+                            case zeppelinUnitTypeId:
+                                duration = 3;
+                        }
+
+                        tower.unit.damageTarget(u.handle, 1, true, true, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+                        this.stunUtils.freezeUnit(u, duration, false, false, false, false);
+                    });
+                    group.destroy();
+                    loc.destroy();
+
+                    return true;
+                };
+                return snowstorm();
             default:
                 print(`ERROR: Unimplemented ability type '${towerAbilityType}'`);
                 return false;

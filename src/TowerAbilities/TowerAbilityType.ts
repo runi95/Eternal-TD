@@ -5,4 +5,5 @@ export enum TowerAbilityType {
     ZEPPELIN_CRUSH,
     PANDEMIC,
     PLAGUE,
+    SNOWSTORM,
 }

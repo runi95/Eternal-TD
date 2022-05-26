@@ -12,6 +12,7 @@ import { FrostWyrm } from "./Upgrades/Path3/FrostWyrm";
 import { ArcticWind } from "./Upgrades/Path2/ArcticWind";
 import { Embrittlement } from "./Upgrades/Path1/Embrittlement";
 import { SuperBrittle } from "./Upgrades/Path1/SuperBrittle";
+import { Snowstorm } from "./Upgrades/Path2/Snowstorm";
 
 export interface ObsidianStatueCustomData {
     range: number;
@@ -43,6 +44,7 @@ export class ObsidianStatue extends TowerType {
             new EnhancedFreeze(),
             new DeepFreeze(),
             new ArcticWind(),
+            new Snowstorm(),
         ],
         [
             new LargerRadius(),
