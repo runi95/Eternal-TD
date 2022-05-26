@@ -192,8 +192,7 @@ export class TowerController {
                         unitCount++;
 
                         tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
-                        // this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
-                        this.stunUtils.freezeUnit(u, 10, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
+                        this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
                     });
                     group.destroy();
                     loc.destroy();
