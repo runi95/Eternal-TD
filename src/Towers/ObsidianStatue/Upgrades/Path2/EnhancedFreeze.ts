@@ -12,7 +12,7 @@ export class EnhancedFreeze extends TowerUpgrade {
     public applyUpgrade(tower: Tower): void {
         (tower.customData as ObsidianStatueCustomData).freezeDuration = 2.2;
 
-        if (tower.pathUpgrades[3] < 3) {
+        if (tower.pathUpgrades[2] < 3) {
             const abil: ability = tower.unit.getAbility(tickTowerAbilityId);
             BlzSetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0, BlzGetAbilityRealLevelField(abil, ABILITY_RLF_COOLDOWN, 0) * 0.75);
         } else {
