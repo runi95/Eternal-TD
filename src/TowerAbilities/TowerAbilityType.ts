@@ -6,4 +6,5 @@ export enum TowerAbilityType {
     PANDEMIC,
     PLAGUE,
     SNOWSTORM,
+    ABSOLUTE_ZERO,
 }

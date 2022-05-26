@@ -268,6 +268,8 @@ export class TowerAbilitySystem {
         let pandemicDamage = 1;
         let pandemicDuration = 30;
         let pandemicMaxUnitCount = 200;
+        let snowstormDuration = 6;
+        let snowstormBlizzard = false;
 
         switch (towerAbilityType) {
             case TowerAbilityType.HIRE_HARPY_ROGUES:
@@ -481,6 +483,9 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return pandemic();
+            case TowerAbilityType.ABSOLUTE_ZERO:
+                let snowstormDuration = 10;
+                let snowstormBlizzard = true
             case TowerAbilityType.SNOWSTORM:
                 const snowstorm = () => {
                     const x = tower.unit.x;
@@ -492,17 +497,18 @@ export class TowerAbilitySystem {
                         if (u.owner.id !== 23) {
                             return;
                         }
-
-                        let duration = 6;
-                        const unitTypeId: number = u.typeId;
-                        switch (unitTypeId) {
-                            case invisibilityUnitTypeId:
-                            case zeppelinUnitTypeId:
-                                duration = 3;
+                        
+                        if (!snowstormBlizzard) {
+                            const unitTypeId: number = u.typeId;
+                            switch (unitTypeId) {
+                                case invisibilityUnitTypeId:
+                                case zeppelinUnitTypeId:
+                                    snowstormDuration = 3;
+                            }
                         }
 
                         tower.unit.damageTarget(u.handle, 1, true, true, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
-                        this.stunUtils.freezeUnit(u, duration, false, false, false, false);
+                        this.stunUtils.freezeUnit(u, snowstormDuration, false, false, false, false);
                     });
                     group.destroy();
                     loc.destroy();
