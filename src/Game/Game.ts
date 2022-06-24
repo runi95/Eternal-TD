@@ -14,7 +14,7 @@ import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
 import {regenUnitMap} from "../Creeps/Modifiers/RegenModifier"
 import {StunUtils} from "../Utility/StunUtils";
 import {TowerController} from "../Towers/TowerController";
-import {Effect, MapPlayer, Rectangle, Region, Timer, Trigger} from "w3ts";
+import {Effect, Timer, Trigger} from "w3ts";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import {Commands} from "../Utility/Commands";
 import {MapRegionController} from "./MapRegionController";
