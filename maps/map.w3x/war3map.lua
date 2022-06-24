@@ -7,7 +7,7 @@ function CreateBuildingsForPlayer23()
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("h00H"), -3008.0, 2944.0, 270.000, FourCC("h00H"))
+    u = BlzCreateUnitWithSkin(p, FourCC("n000"), -672.0, 2784.0, 270.000, FourCC("n000"))
 end
 
 function CreatePlayerBuildings()
@@ -130,11 +130,11 @@ function config()
     SetPlayers(5)
     SetTeams(5)
     SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)
-    DefineStartLocation(0, -2048.0, 2304.0)
-    DefineStartLocation(1, -2048.0, 2304.0)
-    DefineStartLocation(2, -2048.0, 2304.0)
-    DefineStartLocation(3, -2048.0, 2304.0)
-    DefineStartLocation(4, -3008.0, 2880.0)
+    DefineStartLocation(0, -1536.0, 1792.0)
+    DefineStartLocation(1, -1536.0, 1792.0)
+    DefineStartLocation(2, -1536.0, 1792.0)
+    DefineStartLocation(3, -1536.0, 1792.0)
+    DefineStartLocation(4, -2560.0, 2368.0)
     InitCustomPlayerSlots()
     InitCustomTeams()
     InitAllyPriorities()

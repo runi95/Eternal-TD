@@ -41,7 +41,7 @@ export class Game {
     private readonly towers: Map<number, Tower> = new Map();
     private readonly mapRegionController: MapRegionController;
     private readonly builderUnitTypeId: number = FourCC('u001');
-    private readonly castleLocation: Checkpoint = {x: -3008, y: 2944};
+    private readonly castleLocation: Checkpoint = {x: -2560, y: 2368};
     private readonly castleUnitTypeId: number = FourCC('h00H');
     private readonly castleUnit: unit;
     private readonly gameOptions: GameOptions;
