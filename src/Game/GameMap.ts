@@ -21,5 +21,5 @@ export class GameMap {
         // END
         {x: -1920, y: 1152},
     ];
-    public static readonly PLAYABLE_AREA: Rectangle = new Rectangle(-3328, 1024, -768, 3584);
+    public readonly playableArea: Rectangle = new Rectangle(-3328, 1024, -768, 3584);
 }

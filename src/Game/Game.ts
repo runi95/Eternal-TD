@@ -21,6 +21,7 @@ import {MapRegionController} from "./MapRegionController";
 import { TowerAbilitySystem } from "../TowerAbilities/TowerAbilitySystem";
 import { Sounds } from "Utility/Sounds";
 import { GameMap } from "./GameMap";
+import { GameOptions } from "./GameOptions";
 
 export class Game {
     public roundIndex: number = 0;
@@ -43,9 +44,13 @@ export class Game {
     private readonly castleLocation: Checkpoint = {x: -3008, y: 2944};
     private readonly castleUnitTypeId: number = FourCC('h00H');
     private readonly castleUnit: unit;
+    private readonly gameOptions: GameOptions;
+    private readonly gameMap: GameMap;
 
     constructor() {
         this.timerUtils = new TimerUtils();
+        this.gameOptions = new GameOptions();
+        this.gameMap = new GameMap();
         this.damageEngineGlobals = new DamageEngineGlobals();
         this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
         this.roundCreepController = new RoundCreepController();
@@ -61,7 +66,7 @@ export class Game {
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 
-        this.mapRegionController = new MapRegionController(this.roundCreepController);
+        this.mapRegionController = new MapRegionController(this.roundCreepController, this.gameOptions);
 
         const deathTrig: Trigger = new Trigger();
         deathTrig.addAction(() => {
@@ -126,7 +131,7 @@ export class Game {
                 SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);
                 FogModifierStart(CreateFogModifierRect(Player(i), FOG_OF_WAR_VISIBLE, GetEntireMapRect(), false, false));
                 SetPlayerAlliance(Player(23), Player(i), ALLIANCE_PASSIVE, true);
-                const builder = CreateUnit(Player(i), this.builderUnitTypeId, GameMap.PLAYABLE_AREA.centerX, GameMap.PLAYABLE_AREA.centerY, bj_UNIT_FACING);
+                const builder = CreateUnit(Player(i), this.builderUnitTypeId, this.gameMap.playableArea.centerX,this.gameMap.playableArea.centerY, bj_UNIT_FACING);
                 SelectUnitForPlayerSingle(builder, Player(i));
             }
         }
