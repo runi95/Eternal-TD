@@ -14,11 +14,12 @@ import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
 import {regenUnitMap} from "../Creeps/Modifiers/RegenModifier"
 import {StunUtils} from "../Utility/StunUtils";
 import {TowerController} from "../Towers/TowerController";
-import {MapPlayer, Rectangle, Region, Timer, Trigger} from "w3ts";
+import {Effect, MapPlayer, Rectangle, Region, Timer, Trigger} from "w3ts";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import {Commands} from "../Utility/Commands";
 import {MapRegionController} from "./MapRegionController";
 import { TowerAbilitySystem } from "../TowerAbilities/TowerAbilitySystem";
+import { Sounds } from "Utility/Sounds";
 
 export class Game {
     public roundIndex: number = 0;
@@ -42,6 +43,9 @@ export class Game {
     private readonly mapRegionController: MapRegionController;
     private readonly playableArea: Rectangle = new Rectangle(-3328, 1024, -768, 3584);
     private readonly builderUnitTypeId: number = FourCC('u001');
+    private readonly castleLocation: Checkpoint = {x: -3008, y: 2944};
+    private readonly castleUnitTypeId: number = FourCC('h00H');
+    private readonly castleUnit: unit;
 
     constructor() {
         this.debugEnabled = "Local Player" === MapPlayer.fromIndex(0).name;
@@ -76,6 +80,8 @@ export class Game {
             // END
             {x: -1920, y: 1152},
         ];
+
+        this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 
         this.mapRegionController = new MapRegionController(this.creepSpawn, this.checkpoints, this.roundCreepController, this.debugEnabled);
 
@@ -120,7 +126,8 @@ export class Game {
                 const enteringUnit: unit = GetEnteringUnit();
 
                 if (nextCheckpoint === null) {
-                    // DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 3, `|cffff0000A life has been lost!|r`);
+                    DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 3, `|cffff0000A life has been lost!|r`);
+                    Sounds.LOSE_A_LIFE.start();
                     return RemoveUnit(enteringUnit);
                 }
 
@@ -147,8 +154,18 @@ export class Game {
         }
 
         const t: Timer = this.timerUtils.newTimer();
-        t.start(10, false, () => {
-            this.spawnRounds();
+        t.start(1, false, () => {
+            Sounds.START_OF_GAME.start();
+            t.start(7, false, () => {
+                const eff = new Effect("Units/Demon/Infernal/InfernalBirth.mdl", this.castleLocation.x, this.castleLocation.y);
+                eff.destroy();
+                t.start(0.5, false, () => {
+                    SetWidgetLife(this.castleUnit, 1);
+                    Sounds.START_OF_GAME_2.start();
+                    this.spawnRounds();
+                    this.timerUtils.releaseTimer(t);
+                });
+            });
         });
     }
 
