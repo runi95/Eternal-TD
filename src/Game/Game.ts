@@ -24,7 +24,6 @@ import { GameMap } from "./GameMap";
 
 export class Game {
     public roundIndex: number = 0;
-    private readonly debugEnabled: boolean;
     private readonly timerUtils: TimerUtils;
     private readonly damageEngineGlobals: DamageEngineGlobals;
     private readonly damageEngine: DamageEngine;
@@ -46,7 +45,6 @@ export class Game {
     private readonly castleUnit: unit;
 
     constructor() {
-        this.debugEnabled = "Local Player" === MapPlayer.fromIndex(0).name;
         this.timerUtils = new TimerUtils();
         this.damageEngineGlobals = new DamageEngineGlobals();
         this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
@@ -63,7 +61,7 @@ export class Game {
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 
-        this.mapRegionController = new MapRegionController(this.roundCreepController, this.debugEnabled);
+        this.mapRegionController = new MapRegionController(this.roundCreepController);
 
         const deathTrig: Trigger = new Trigger();
         deathTrig.addAction(() => {

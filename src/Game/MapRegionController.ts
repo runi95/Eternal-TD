@@ -1,17 +1,18 @@
 import {CreepRegion} from "../Creeps/CreepRegion";
 import {Trigger, Unit} from "w3ts";
-import {Checkpoint, Direction, directionCP} from "../Utility/Checkpoint";
+import {Direction, directionCP} from "../Utility/Checkpoint";
 import {Region} from "w3ts/handles/region";
 import {Rectangle} from "w3ts/handles/rect";
 import {DrawPoint} from "../Utility/Rasterizer";
 import {RoundCreepController} from "./RoundCreepController";
 import { GameMap } from "./GameMap";
+import { GameOptions } from "./GameOptions";
 
 export class MapRegionController {
     regionIds: Record<string, number> = {}
     regions: Record<string, CreepRegion> = {}
     enterTrig: Trigger;
-    constructor(roundCreepController: RoundCreepController, debugEnabled: boolean) {
+    constructor(roundCreepController: RoundCreepController) {
         let lastCP = GameMap.CHECKPOINTS[0];
         let rId = 0;
         this.enterTrig = new Trigger();
@@ -20,7 +21,7 @@ export class MapRegionController {
             switch (direction) {
                 case Direction.SOUTH:
                     for (let i = lastCP.y; i > GameMap.CHECKPOINTS[i].y; i=i-128) {
-                        if(debugEnabled) {
+                        if(GameOptions.IS_DEBUG_MODE_ENABLED) {
                             DrawPoint(lastCP.x, i)
                         }
                         const reg = new Region()
@@ -37,7 +38,7 @@ export class MapRegionController {
                     break;
                 case Direction.NORTH:
                     for (let i = lastCP.y+128; i < GameMap.CHECKPOINTS[i].y; i=i+128) {
-                        if(debugEnabled) {
+                        if(GameOptions.IS_DEBUG_MODE_ENABLED) {
                             DrawPoint(lastCP.x, i)
                         }
                         const reg = new Region()
@@ -53,7 +54,7 @@ export class MapRegionController {
                     break;
                 case Direction.EAST:
                     for (let i = lastCP.x+128; i < GameMap.CHECKPOINTS[i].x; i=i+128) {
-                        if(debugEnabled) {
+                        if(GameOptions.IS_DEBUG_MODE_ENABLED) {
                             DrawPoint(i, lastCP.y)
                         }
                         const reg = new Region()
@@ -69,7 +70,7 @@ export class MapRegionController {
                     break;
                 case Direction.WEST:
                     for (let i = lastCP.x-128; i > GameMap.CHECKPOINTS[i].x; i=i-128) {
-                        if(debugEnabled) {
+                        if(GameOptions.IS_DEBUG_MODE_ENABLED) {
                             DrawPoint(i, lastCP.y)
                         }
                         const reg = new Region()
