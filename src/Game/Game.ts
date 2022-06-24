@@ -136,12 +136,14 @@ export class Game {
 
     public start(): void {
         for (let i = 0; i < bj_MAX_PLAYERS; i++) {
-            // SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 650);
-            SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);
-            FogModifierStart(CreateFogModifierRect(Player(i), FOG_OF_WAR_VISIBLE, GetEntireMapRect(), false, false));
-            SetPlayerAlliance(Player(23), Player(i), ALLIANCE_PASSIVE, true);
-            const builder = CreateUnit(Player(i), this.builderUnitTypeId, this.playableArea.centerX, this.playableArea.centerY, bj_UNIT_FACING);
-            SelectUnitForPlayerSingle(builder, Player(i));
+            if (GetPlayerSlotState(Player(i)) === PLAYER_SLOT_STATE_PLAYING && GetPlayerController(Player(i)) === MAP_CONTROL_USER) {
+                // SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 650);
+                SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);
+                FogModifierStart(CreateFogModifierRect(Player(i), FOG_OF_WAR_VISIBLE, GetEntireMapRect(), false, false));
+                SetPlayerAlliance(Player(23), Player(i), ALLIANCE_PASSIVE, true);
+                const builder = CreateUnit(Player(i), this.builderUnitTypeId, this.playableArea.centerX, this.playableArea.centerY, bj_UNIT_FACING);
+                SelectUnitForPlayerSingle(builder, Player(i));
+            }
         }
 
         const t: Timer = this.timerUtils.newTimer();
