@@ -14,9 +14,7 @@ import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
 import {regenUnitMap} from "../Creeps/Modifiers/RegenModifier"
 import {StunUtils} from "../Utility/StunUtils";
 import {TowerController} from "../Towers/TowerController";
-import {Effect, MapPlayer, Point, Rectangle, Region, Timer, Trigger, Unit} from "w3ts";
-import {Group} from "../Utility/Group";
-import {OrderId} from "w3ts/globals/order";
+import {MapPlayer, Rectangle, Region, Timer, Trigger} from "w3ts";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import {Commands} from "../Utility/Commands";
 import {MapRegionController} from "./MapRegionController";
@@ -41,8 +39,9 @@ export class Game {
     private readonly towers: Map<number, Tower> = new Map();
     private readonly checkpoints: Checkpoint[];
     private readonly creepSpawn: Checkpoint;
-    private readonly playerAreas: Rectangle[];
     private readonly mapRegionController: MapRegionController;
+    private readonly playableArea: Rectangle = new Rectangle(-3328, 1024, -768, 3584);
+    private readonly builderUnitTypeId: number = FourCC('u001');
 
     constructor() {
         this.debugEnabled = "Local Player" === MapPlayer.fromIndex(0).name;
@@ -59,88 +58,23 @@ export class Game {
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
         this.spells = new Spells(this.towerAbilitySystem, this.towers);
         this.commandHandler = new Commands(this);
-        this.playerAreas = [
-            new Rectangle(-3328, 512, -384, 3072),
-            new Rectangle(-3328, -2048, -384, 512),
-            new Rectangle(-384, -2048, 2560, 512),
-            new Rectangle(-384, 512, 2560, 3072),
-        ];
 
-        for (let i: number = 0; i < this.playerAreas.length; i++) {
-            const trig: Trigger = new Trigger();
-            const currentIndex = i;
-            trig.addAction(() => {
-                const trigUnit: unit = GetTriggerUnit();
-                const owningPlayerId = GetPlayerId(GetOwningPlayer(trigUnit));
-                if (owningPlayerId === 23 || owningPlayerId === currentIndex)
-                    return;
-
-                const owningPlayerArea = this.playerAreas[owningPlayerId];
-                SetUnitX(trigUnit, owningPlayerArea.centerX);
-                SetUnitY(trigUnit, owningPlayerArea.centerY);
-            });
-
-            const region = new Region();
-            region.addRect(this.playerAreas[i]);
-            trig.registerEnterRegion(region.handle, null);
-        }
-
-        this.creepSpawn = {x: -3328, y: 2048};
+        this.creepSpawn = {x: -2944, y: 2560};
         this.checkpoints = [
-            // RED
-            {x: -1792, y: 2048},
             {x: -1792, y: 2560},
-            {x: -2304, y: 2560},
-            {x: -2304, y: 1152},
-            {x: -2816, y: 1152},
+            {x: -1792, y: 3072},
+            {x: -2304, y: 3072},
+            {x: -2304, y: 1664},
             {x: -2816, y: 1664},
-            {x: -1408, y: 1664},
-            {x: -1408, y: 2304},
-            {x: -1024, y: 2304},
-            {x: -1024, y: 1280},
-            {x: -1920, y: 1280},
-
-            // BLUE
-            {x: -1920, y: -256},
-            {x: -2816, y: -256},
-            {x: -2816, y: -1280},
-            {x: -2432, y: -1280},
-            {x: -2432, y: -640},
-            {x: -1024, y: -640},
-            {x: -1024, y: -128},
-            {x: -1536, y: -128},
-            {x: -1536, y: -1536},
-            {x: -2048, y: -1536},
-            {x: -2048, y: -1024},
-            
-            // Teal
-            {x: 1280, y: -1024},
-            {x: 1280, y: -1536},
-            {x: 768, y: -1536},
-            {x: 768, y: -128},
-            {x: 256, y: -128},
-            {x: 256, y: -640},
-            {x: 1664, y: -640},
-            {x: 1664, y: -1280},
-            {x: 2048, y: -1280},
-            {x: 2048, y: -256},
-            {x: 1152, y: -256},
-
-            // Purple
-            {x: 1152, y: 1280},
-            {x: 256, y: 1280},
-            {x: 256, y: 2304},
-            {x: 640, y: 2304},
-            {x: 640, y: 1664},
-            {x: 2048, y: 1664},
-            {x: 2048, y: 1152},
-            {x: 1536, y: 1152},
-            {x: 1536, y: 2560},
-            {x: 1024, y: 2560},
-            {x: 1024, y: 2048},
+            {x: -2816, y: 2176},
+            {x: -1408, y: 2176},
+            {x: -1408, y: 2816},
+            {x: -1024, y: 2816},
+            {x: -1024, y: 1792},
+            {x: -1920, y: 1792},
             
             // END
-            {x: 2560, y: 2048},
+            {x: -1920, y: 1152},
         ];
 
         this.mapRegionController = new MapRegionController(this.creepSpawn, this.checkpoints, this.roundCreepController, this.debugEnabled);
@@ -206,6 +140,7 @@ export class Game {
             SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);
             FogModifierStart(CreateFogModifierRect(Player(i), FOG_OF_WAR_VISIBLE, GetEntireMapRect(), false, false));
             SetPlayerAlliance(Player(23), Player(i), ALLIANCE_PASSIVE, true);
+            CreateUnit(Player(i), this.builderUnitTypeId, this.playableArea.centerX, this.playableArea.centerY, bj_UNIT_FACING);
         }
 
         const t: Timer = this.timerUtils.newTimer();
@@ -238,7 +173,7 @@ export class Game {
                     (creepSpawnDetails.modifiers as Modifier[])[i].transform(initializedCreepType);
                 }
 
-                const creep: unit = CreateUnit(Player(23), initializedCreepType.unitTypeId, -3296, 2049, 0);
+                const creep: unit = CreateUnit(Player(23), initializedCreepType.unitTypeId, this.creepSpawn.x, this.creepSpawn.y, 0);
                 SetUnitExploded(creep, true);
                 const handleId: number = GetHandleId(creep);
                 initializedCreepType.apply(creep);

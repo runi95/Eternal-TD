@@ -318,12 +318,6 @@ STRING 80
 Cluster Bombs
 }
 
-STRING 84
-// Destructibles: B000 (Human Keep), Name (Name)
-{
-Human Keep
-}
-
 STRING 85
 // Abilities: A005 (Cluster Bombs), Ubertip (Tooltip - Normal - Extended)
 {

@@ -1,20 +1,20 @@
 function InitGlobals()
 end
 
-function CreateUnitsForPlayer0()
-    local p = Player(0)
+function CreateBuildingsForPlayer23()
+    local p = Player(23)
     local u
     local unitID
     local t
     local life
-    u = BlzCreateUnitWithSkin(p, FourCC("u001"), -2357.1, 1979.3, 237.960, FourCC("u001"))
+    u = BlzCreateUnitWithSkin(p, FourCC("h00H"), -3008.0, 2944.0, 270.000, FourCC("h00H"))
 end
 
 function CreatePlayerBuildings()
+    CreateBuildingsForPlayer23()
 end
 
 function CreatePlayerUnits()
-    CreateUnitsForPlayer0()
 end
 
 function CreateAllUnits()
@@ -87,18 +87,22 @@ function InitCustomTeams()
 end
 
 function InitAllyPriorities()
-    SetStartLocPrioCount(0, 2)
+    SetStartLocPrioCount(0, 3)
     SetStartLocPrio(0, 0, 1, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(0, 1, 3, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(1, 2)
+    SetStartLocPrio(0, 1, 2, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(0, 2, 3, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrioCount(1, 3)
     SetStartLocPrio(1, 0, 0, MAP_LOC_PRIO_HIGH)
     SetStartLocPrio(1, 1, 2, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(2, 2)
-    SetStartLocPrio(2, 0, 1, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(2, 1, 3, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrioCount(3, 2)
+    SetStartLocPrio(1, 2, 3, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrioCount(2, 3)
+    SetStartLocPrio(2, 0, 0, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(2, 1, 1, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(2, 2, 3, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrioCount(3, 3)
     SetStartLocPrio(3, 0, 0, MAP_LOC_PRIO_HIGH)
-    SetStartLocPrio(3, 1, 2, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(3, 1, 1, MAP_LOC_PRIO_HIGH)
+    SetStartLocPrio(3, 2, 2, MAP_LOC_PRIO_HIGH)
     SetStartLocPrioCount(4, 2)
     SetStartLocPrio(4, 0, 1, MAP_LOC_PRIO_LOW)
     SetStartLocPrio(4, 1, 3, MAP_LOC_PRIO_LOW)
@@ -109,7 +113,7 @@ function InitAllyPriorities()
 end
 
 function main()
-    SetCameraBounds(-3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -2048.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 2560.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3072.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 2560.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -2048.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
+    SetCameraBounds(-3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), -2432.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), 3584.0 - GetCameraMargin(CAMERA_MARGIN_TOP), -3328.0 + GetCameraMargin(CAMERA_MARGIN_LEFT), 3584.0 - GetCameraMargin(CAMERA_MARGIN_TOP), 3328.0 - GetCameraMargin(CAMERA_MARGIN_RIGHT), -2432.0 + GetCameraMargin(CAMERA_MARGIN_BOTTOM))
     SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl", "Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
     NewSoundEnvironment("Default")
     SetAmbientDaySound("LordaeronSummerDay")
@@ -126,11 +130,11 @@ function config()
     SetPlayers(5)
     SetTeams(5)
     SetGamePlacement(MAP_PLACEMENT_TEAMS_TOGETHER)
-    DefineStartLocation(0, -2048.0, 1984.0)
-    DefineStartLocation(1, -2048.0, -704.0)
-    DefineStartLocation(2, 1152.0, -704.0)
-    DefineStartLocation(3, 1152.0, 1984.0)
-    DefineStartLocation(4, -3456.0, 2048.0)
+    DefineStartLocation(0, -2048.0, 2304.0)
+    DefineStartLocation(1, -2048.0, 2304.0)
+    DefineStartLocation(2, -2048.0, 2304.0)
+    DefineStartLocation(3, -2048.0, 2304.0)
+    DefineStartLocation(4, -3008.0, 2880.0)
     InitCustomPlayerSlots()
     InitCustomTeams()
     InitAllyPriorities()
