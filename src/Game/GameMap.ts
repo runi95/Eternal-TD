@@ -1,4 +1,5 @@
 import { Checkpoint } from "Utility/Checkpoint";
+import { Rectangle } from "w3ts";
 
 export class GameMap {
     public static readonly CHECKPOINTS: Checkpoint[] = [
@@ -20,4 +21,5 @@ export class GameMap {
         // END
         {x: -1920, y: 1152},
     ];
+    public static readonly PLAYABLE_AREA: Rectangle = new Rectangle(-3328, 1024, -768, 3584);
 }

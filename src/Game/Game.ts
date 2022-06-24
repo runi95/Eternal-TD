@@ -40,7 +40,6 @@ export class Game {
     private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower> = new Map();
     private readonly mapRegionController: MapRegionController;
-    private readonly playableArea: Rectangle = new Rectangle(-3328, 1024, -768, 3584);
     private readonly builderUnitTypeId: number = FourCC('u001');
     private readonly castleLocation: Checkpoint = {x: -3008, y: 2944};
     private readonly castleUnitTypeId: number = FourCC('h00H');
@@ -129,7 +128,7 @@ export class Game {
                 SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);
                 FogModifierStart(CreateFogModifierRect(Player(i), FOG_OF_WAR_VISIBLE, GetEntireMapRect(), false, false));
                 SetPlayerAlliance(Player(23), Player(i), ALLIANCE_PASSIVE, true);
-                const builder = CreateUnit(Player(i), this.builderUnitTypeId, this.playableArea.centerX, this.playableArea.centerY, bj_UNIT_FACING);
+                const builder = CreateUnit(Player(i), this.builderUnitTypeId, GameMap.PLAYABLE_AREA.centerX, GameMap.PLAYABLE_AREA.centerY, bj_UNIT_FACING);
                 SelectUnitForPlayerSingle(builder, Player(i));
             }
         }
