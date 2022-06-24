@@ -11,15 +11,15 @@ export class MapRegionController {
     regionIds: Record<string, number> = {}
     regions: Record<string, CreepRegion> = {}
     enterTrig: Trigger;
-    constructor(creepSpawnCP: Checkpoint, roundCreepController: RoundCreepController, debugEnabled: boolean) {
-        let lastCP = creepSpawnCP;
+    constructor(roundCreepController: RoundCreepController, debugEnabled: boolean) {
+        let lastCP = GameMap.CHECKPOINTS[0];
         let rId = 0;
         this.enterTrig = new Trigger();
-        GameMap.CHECKPOINTS.forEach((checkpoint, cpIndx) => {
-            const direction = directionCP(lastCP, checkpoint);
+        for(let i = 1; i < GameMap.CHECKPOINTS.length; i++) {
+            const direction = directionCP(lastCP, GameMap.CHECKPOINTS[i]);
             switch (direction) {
                 case Direction.SOUTH:
-                    for (let i = lastCP.y; i > checkpoint.y; i=i-128) {
+                    for (let i = lastCP.y; i > GameMap.CHECKPOINTS[i].y; i=i-128) {
                         if(debugEnabled) {
                             DrawPoint(lastCP.x, i)
                         }
@@ -29,14 +29,14 @@ export class MapRegionController {
                         reg.addRect(rect);
                         rect.destroy();
                         this.regionIds[reg.id] = rId;
-                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg);
+                        this.regions[reg.id] = new CreepRegion(rId, i, reg);
                         rId++;
                         this.enterTrig.registerEnterRegion(reg.handle, null);
 
                     }
                     break;
                 case Direction.NORTH:
-                    for (let i = lastCP.y+128; i < checkpoint.y; i=i+128) {
+                    for (let i = lastCP.y+128; i < GameMap.CHECKPOINTS[i].y; i=i+128) {
                         if(debugEnabled) {
                             DrawPoint(lastCP.x, i)
                         }
@@ -46,13 +46,13 @@ export class MapRegionController {
                         reg.addRect(rect);
                         rect.destroy();
                         this.regionIds[reg.id] = rId;
-                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg);
+                        this.regions[reg.id] = new CreepRegion(rId, i, reg);
                         rId++;
                         this.enterTrig.registerEnterRegion(reg.handle, null);
                     }
                     break;
                 case Direction.EAST:
-                    for (let i = lastCP.x+128; i < checkpoint.x; i=i+128) {
+                    for (let i = lastCP.x+128; i < GameMap.CHECKPOINTS[i].x; i=i+128) {
                         if(debugEnabled) {
                             DrawPoint(i, lastCP.y)
                         }
@@ -62,13 +62,13 @@ export class MapRegionController {
                         reg.addRect(rect);
                         rect.destroy();
                         this.regionIds[reg.id] = rId;
-                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg);
+                        this.regions[reg.id] = new CreepRegion(rId, i, reg);
                         rId++;
                         this.enterTrig.registerEnterRegion(reg.handle, null);
                     }
                     break;
                 case Direction.WEST:
-                    for (let i = lastCP.x-128; i > checkpoint.x; i=i-128) {
+                    for (let i = lastCP.x-128; i > GameMap.CHECKPOINTS[i].x; i=i-128) {
                         if(debugEnabled) {
                             DrawPoint(i, lastCP.y)
                         }
@@ -78,14 +78,14 @@ export class MapRegionController {
                         reg.addRect(rect);
                         rect.destroy();
                         this.regionIds[reg.id] = rId;
-                        this.regions[reg.id] = new CreepRegion(rId, cpIndx, reg);
+                        this.regions[reg.id] = new CreepRegion(rId, i, reg);
                         rId++;
                         this.enterTrig.registerEnterRegion(reg.handle, null);
                     }
                     break;
             }
-            lastCP = checkpoint;
-        })
+            lastCP = GameMap.CHECKPOINTS[i];
+        }
         this.enterTrig.addAction(() => {
             const r = this.regions[Region.fromHandle(GetTriggeringRegion()).id];
             const u = Unit.fromEvent();

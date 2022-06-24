@@ -39,7 +39,6 @@ export class Game {
     private readonly commandHandler: Commands;
     private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower> = new Map();
-    private readonly creepSpawn: Checkpoint;
     private readonly mapRegionController: MapRegionController;
     private readonly playableArea: Rectangle = new Rectangle(-3328, 1024, -768, 3584);
     private readonly builderUnitTypeId: number = FourCC('u001');
@@ -63,11 +62,9 @@ export class Game {
         this.spells = new Spells(this.towerAbilitySystem, this.towers);
         this.commandHandler = new Commands(this);
 
-        this.creepSpawn = {x: -2944, y: 2560};
-
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 
-        this.mapRegionController = new MapRegionController(this.creepSpawn, this.roundCreepController, this.debugEnabled);
+        this.mapRegionController = new MapRegionController(this.roundCreepController, this.debugEnabled);
 
         const deathTrig: Trigger = new Trigger();
         deathTrig.addAction(() => {
@@ -177,7 +174,7 @@ export class Game {
                     (creepSpawnDetails.modifiers as Modifier[])[i].transform(initializedCreepType);
                 }
 
-                const creep: unit = CreateUnit(Player(23), initializedCreepType.unitTypeId, this.creepSpawn.x, this.creepSpawn.y, 0);
+                const creep: unit = CreateUnit(Player(23), initializedCreepType.unitTypeId, GameMap.CHECKPOINTS[0].x, GameMap.CHECKPOINTS[0].y, 0);
                 SetUnitExploded(creep, true);
                 const handleId: number = GetHandleId(creep);
                 initializedCreepType.apply(creep);
