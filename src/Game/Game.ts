@@ -20,6 +20,7 @@ import {Commands} from "../Utility/Commands";
 import {MapRegionController} from "./MapRegionController";
 import { TowerAbilitySystem } from "../TowerAbilities/TowerAbilitySystem";
 import { Sounds } from "Utility/Sounds";
+import { GameMap } from "./GameMap";
 
 export class Game {
     public roundIndex: number = 0;
@@ -38,7 +39,6 @@ export class Game {
     private readonly commandHandler: Commands;
     private readonly towerController: TowerController;
     private readonly towers: Map<number, Tower> = new Map();
-    private readonly checkpoints: Checkpoint[];
     private readonly creepSpawn: Checkpoint;
     private readonly mapRegionController: MapRegionController;
     private readonly playableArea: Rectangle = new Rectangle(-3328, 1024, -768, 3584);
@@ -64,26 +64,10 @@ export class Game {
         this.commandHandler = new Commands(this);
 
         this.creepSpawn = {x: -2944, y: 2560};
-        this.checkpoints = [
-            {x: -1792, y: 2560},
-            {x: -1792, y: 3072},
-            {x: -2304, y: 3072},
-            {x: -2304, y: 1664},
-            {x: -2816, y: 1664},
-            {x: -2816, y: 2176},
-            {x: -1408, y: 2176},
-            {x: -1408, y: 2816},
-            {x: -1024, y: 2816},
-            {x: -1024, y: 1792},
-            {x: -1920, y: 1792},
-            
-            // END
-            {x: -1920, y: 1152},
-        ];
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 
-        this.mapRegionController = new MapRegionController(this.creepSpawn, this.checkpoints, this.roundCreepController, this.debugEnabled);
+        this.mapRegionController = new MapRegionController(this.creepSpawn, this.roundCreepController, this.debugEnabled);
 
         const deathTrig: Trigger = new Trigger();
         deathTrig.addAction(() => {
@@ -115,13 +99,13 @@ export class Game {
         });
         meatWagonAutoAttackGroundTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED)
 
-        for (let i = 0; i < this.checkpoints.length; i++) {
+        for (let i = 0; i < GameMap.CHECKPOINTS.length; i++) {
             const trig: Trigger = new Trigger();
             trig.addCondition(() => GetPlayerId(GetOwningPlayer(GetEnteringUnit())) === 23)
 
-            const checkpoint: Checkpoint = this.checkpoints[i];
+            const checkpoint: Checkpoint = GameMap.CHECKPOINTS[i];
             const nextCheckpointIndex: number = i + 1;
-            const nextCheckpoint: Checkpoint | null = i === this.checkpoints.length - 1 ? null : this.checkpoints[nextCheckpointIndex];
+            const nextCheckpoint: Checkpoint | null = i === GameMap.CHECKPOINTS.length - 1 ? null : GameMap.CHECKPOINTS[nextCheckpointIndex];
             trig.addAction(() => {
                 const enteringUnit: unit = GetEnteringUnit();
 
@@ -200,8 +184,8 @@ export class Game {
                 for (let i = 0; creepSpawnDetails.modifiers !== undefined && i < creepSpawnDetails.modifiers.length; i++) {
                     (creepSpawnDetails.modifiers as Modifier[])[i].apply(creep);
                 }
-                this.roundCreepController.set(handleId, new SpawnedCreep(initializedCreepType, creepSpawnDetails.modifiers, this.checkpoints[0], 0));
-                IssuePointOrder(creep, 'move', this.checkpoints[0].x, this.checkpoints[0].y);
+                this.roundCreepController.set(handleId, new SpawnedCreep(initializedCreepType, creepSpawnDetails.modifiers, GameMap.CHECKPOINTS[0], 0));
+                IssuePointOrder(creep, 'move', GameMap.CHECKPOINTS[0].x, GameMap.CHECKPOINTS[0].y);
 
                 if (creepCount >= creepSpawnDetails.amount) {
                     creepIndex++;

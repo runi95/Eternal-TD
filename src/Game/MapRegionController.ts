@@ -5,16 +5,17 @@ import {Region} from "w3ts/handles/region";
 import {Rectangle} from "w3ts/handles/rect";
 import {DrawPoint} from "../Utility/Rasterizer";
 import {RoundCreepController} from "./RoundCreepController";
+import { GameMap } from "./GameMap";
 
 export class MapRegionController {
     regionIds: Record<string, number> = {}
     regions: Record<string, CreepRegion> = {}
     enterTrig: Trigger;
-    constructor(creepSpawnCP: Checkpoint, checkpoints: Checkpoint[], roundCreepController: RoundCreepController, debugEnabled: boolean) {
+    constructor(creepSpawnCP: Checkpoint, roundCreepController: RoundCreepController, debugEnabled: boolean) {
         let lastCP = creepSpawnCP;
         let rId = 0;
         this.enterTrig = new Trigger();
-        checkpoints.forEach((checkpoint, cpIndx) => {
+        GameMap.CHECKPOINTS.forEach((checkpoint, cpIndx) => {
             const direction = directionCP(lastCP, checkpoint);
             switch (direction) {
                 case Direction.SOUTH:
@@ -89,7 +90,7 @@ export class MapRegionController {
             const r = this.regions[Region.fromHandle(GetTriggeringRegion()).id];
             const u = Unit.fromEvent();
             const spawnedCreep = roundCreepController.get(u.id);
-            if(checkpoints[r.target_cp_indx] !== spawnedCreep.currentCheckpoint) {
+            if(GameMap.CHECKPOINTS[r.target_cp_indx] !== spawnedCreep.currentCheckpoint) {
                 // print('enter wong wegion')
                 return;
             }
