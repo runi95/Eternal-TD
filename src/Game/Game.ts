@@ -21,8 +21,7 @@ import { GameOptions } from "./GameOptions";
 import { Creep } from "Creeps/Creep";
 
 export class Game {
-    // public roundIndex: number = 0;
-    public roundIndex: number = 27;
+    public roundIndex: number = 0;
     private readonly timerUtils: TimerUtils;
     private readonly damageEngineGlobals: DamageEngineGlobals;
     private readonly damageEngine: DamageEngine;
@@ -138,9 +137,7 @@ export class Game {
         const t: Timer = this.timerUtils.newTimer();
         t.start(1, false, () => {
             Sounds.START_OF_GAME.start();
-            // TODO: FIXME: Broken as fuck!
-            // t.start(7, false, () => {
-            t.start(1, false, () => {
+            t.start(7, false, () => {
                 const eff = new Effect("Units/Demon/Infernal/InfernalBirth.mdl", this.castleLocation.x, this.castleLocation.y);
                 eff.destroy();
                 t.start(0.5, false, () => {
