@@ -169,31 +169,13 @@ Gives a 40% chance to do 50 additional damage on an attack.
 }
 
 STRING 47
-// Units: u002 (Villager), Name (Name)
+// Units: u004 (Villager), Name (Name)
 {
 Villager
 }
 
 STRING 48
-// Units: u003 (Villager), Name (Name)
-{
-Villager
-}
-
-STRING 49
-// Units: u002 (Villager), EditorSuffix (Name - Editor Suffix)
-{
-(Regen)
-}
-
-STRING 50
-// Units: u003 (Villager), EditorSuffix (Name - Editor Suffix)
-{
-(Invisibility)
-}
-
-STRING 51
-// Units: u004 (Villager), Name (Name)
+// Units: u005 (Villager), Name (Name)
 {
 Villager
 }
@@ -202,12 +184,6 @@ STRING 52
 // Units: u004 (Villager), EditorSuffix (Name - Editor Suffix)
 {
 (Fortified)
-}
-
-STRING 53
-// Units: u005 (Villager), Name (Name)
-{
-Villager
 }
 
 STRING 54

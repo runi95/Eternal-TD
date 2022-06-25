@@ -1,6 +1,6 @@
 import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { ATTACK_TYPE_NORMAL, ATTACK_TYPE_SIEGE } from "../GameSettings";
+import { ATTACK_TYPE_NORMAL } from "../GameSettings";
 import {Unit} from "w3ts";
 import {Point} from "w3ts/handles/point";
 import {Group} from "../../Group";
@@ -8,10 +8,12 @@ import { Tower } from "Towers/Tower";
 import { StunUtils } from "Utility/StunUtils";
 import { ObsidianStatueCustomData } from "Towers/ObsidianStatue/ObsidianStatue";
 import { DefenseTypes } from "Creeps/DefenseTypes";
+import { GameMap } from "Game/GameMap";
+import { InvisibilityModifier } from "Creeps/Modifiers/InvisibilityModifier";
+import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
 
 const frostWyrmUnitTypeId: number = FourCC('h00G');
 const fortifiedUnitTypeId: number = FourCC('u004');
-const invisibilityUnitTypeId: number = FourCC('u003');
 export class FrostWyrmDamageEvent implements DamageEvent {
     private readonly towers: Map<number, Tower>;
     private readonly stunUtils: StunUtils
@@ -75,8 +77,10 @@ export class FrostWyrmDamageEvent implements DamageEvent {
             if (!u.isAlive())
                 return;
 
-            const unitTypeId: number = u.typeId;
-            if (!hasColdSnap && (unitTypeId === fortifiedUnitTypeId || unitTypeId === invisibilityUnitTypeId))
+            const unitId = u.id;
+            const creep = GameMap.SPAWNED_CREEP_MAP.get(unitId);
+            if (creep === undefined) return;
+            if (!hasColdSnap && (creep.creepBaseUnit.name === FortifiedVillager.name || creep.hasModifier(InvisibilityModifier.INVISIBILITY_MODIFIER)))
                 return;
 
             if (BlzGetUnitIntegerField(u.handle, UNIT_IF_DEFENSE_TYPE) === DefenseTypes.HEAVY)

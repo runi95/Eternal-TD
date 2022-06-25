@@ -1,20 +1,10 @@
-import { Creep } from "../Creep";
-import { Modifier } from "../Modifier";
+import { CreepModifier } from "Creeps/CreepModifier";
+import { CreepRegenSystem } from "Creeps/CreepRegenSystem";
+import { Unit } from "w3ts";
 
-export interface RegenUnit {
-    unit: unit;
-    remainingRegenTicks: number;
-}
+// TODO: Add some sort of effect to the unit so that it's possible to tell that it's a regen unit.
 
-export const regenUnitMap: Map<number, RegenUnit> = new Map();
-
-const regenUnitTypeId: number = FourCC('u002');
-export class RegenModifier extends Modifier {
-    public transform(creep: Creep): void {
-        creep.unitTypeId = regenUnitTypeId;
-    }
-
-    public apply(unit: unit): void {
-        regenUnitMap.set(GetHandleId(unit), { unit, remainingRegenTicks: 3 });
-    }
-}
+export class RegenModifier extends CreepModifier {
+    public static readonly REGEN_MODIFIER = new RegenModifier();
+    public readonly applyEffect = (unit: Unit) => CreepRegenSystem.REGEN_UNIT_MAP.set(unit.id, { remainingRegenTicks: 3 });
+};

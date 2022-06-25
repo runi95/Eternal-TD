@@ -1,13 +1,13 @@
-import { CreepType } from "Creeps/CreepType";
+import { CreepBaseUnit } from "Creeps/CreepBaseUnit";
 import { Color } from "../../Utility/Color";
-import { Creep } from "../Creep";
 import { BlackVillager } from "./BlackVillager";
 
 const fortifiedVillagerTypeId: number = FourCC('u004');
-export class FortifiedVillager extends Creep {
+export class FortifiedVillager extends CreepBaseUnit {
+    public static readonly FORTIFIED_VILLAGER = new FortifiedVillager();
+
     public readonly health: number = 4;
     public readonly unitTypeId: number = fortifiedVillagerTypeId;
     public readonly color: Color = {r: 255, g: 255, b: 255, a: 255};
-    public readonly creepType: CreepType = CreepType.FORTIFIED;
-    protected readonly children: Creep[] = [new BlackVillager(), new BlackVillager()];
+    public readonly children: CreepBaseUnit[] = [BlackVillager.BLACK_VILLAGER, BlackVillager.BLACK_VILLAGER];
 }

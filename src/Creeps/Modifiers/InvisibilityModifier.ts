@@ -1,15 +1,9 @@
-import { Creep } from "../Creep";
-import { Modifier } from "../Modifier";
+import { CreepModifier } from "Creeps/CreepModifier";
+import { TargetFlags } from "Creeps/TargetFlags";
+import { Color } from "Utility/Color";
 
-const invisibilityUnitTypeId: number = FourCC('u003');
-
-export class InvisibilityModifier extends Modifier {
-    public transform(creep: Creep): void {
-        creep.unitTypeId = invisibilityUnitTypeId;
-        creep.color = {r: creep.color.a, g: creep.color.g, b: creep.color.b, a: 125};
-    }
-
-    public apply(_unit: unit): void {
-        return;
-    }
-}
+export class InvisibilityModifier extends CreepModifier {
+    public static readonly INVISIBILITY_MODIFIER = new InvisibilityModifier();
+    public readonly targetAsOverride = TargetFlags.WARD;
+    public readonly colorMask: Color = {r: 1, g: 1, b: 1, a: 0.5};
+};

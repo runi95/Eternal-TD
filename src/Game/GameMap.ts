@@ -1,7 +1,9 @@
+import { Creep } from "Creeps/Creep";
 import { Checkpoint } from "Utility/Checkpoint";
 import { Rectangle } from "w3ts";
 
 export class GameMap {
+    public static readonly SPAWNED_CREEP_MAP = new Map<number, Creep>();
     public static readonly CHECKPOINTS: Checkpoint[] = [
         // SPAWN
         {x: -2432, y: 2048},

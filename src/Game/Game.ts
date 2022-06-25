@@ -4,14 +4,10 @@ import {getRoundCreeps} from "./Rounds";
 import {DamageEngineGlobals} from "../Utility/DamageEngine/DamageEngineGlobals";
 import {DamageEngine} from "../Utility/DamageEngine/DamageEngine";
 import {DamageEventController} from "../Utility/DamageEngine/DamageEventController";
-import {RoundCreepController} from "./RoundCreepController";
-import {SpawnedCreep} from "../Creeps/SpawnedCreep";
 import {Checkpoint} from "../Utility/Checkpoint";
 import {TowerUpgradeSystem} from "./TowerUpgradeSystem";
 import {Tower} from "../Towers/Tower";
-import {Modifier} from "../Creeps/Modifier";
 import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
-import {regenUnitMap} from "../Creeps/Modifiers/RegenModifier"
 import {StunUtils} from "../Utility/StunUtils";
 import {TowerController} from "../Towers/TowerController";
 import {Effect, Timer, Trigger} from "w3ts";
@@ -22,14 +18,15 @@ import { TowerAbilitySystem } from "../TowerAbilities/TowerAbilitySystem";
 import { Sounds } from "Utility/Sounds";
 import { GameMap } from "./GameMap";
 import { GameOptions } from "./GameOptions";
+import { Creep } from "Creeps/Creep";
 
 export class Game {
-    public roundIndex: number = 0;
+    // public roundIndex: number = 0;
+    public roundIndex: number = 27;
     private readonly timerUtils: TimerUtils;
     private readonly damageEngineGlobals: DamageEngineGlobals;
     private readonly damageEngine: DamageEngine;
     private readonly damageEventController: DamageEventController;
-    private readonly roundCreepController: RoundCreepController;
     private readonly creepRegenSystem: CreepRegenSystem;
     private readonly stunUtils: StunUtils;
     private readonly spells: Spells;
@@ -53,27 +50,28 @@ export class Game {
         this.gameMap = new GameMap();
         this.damageEngineGlobals = new DamageEngineGlobals();
         this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
-        this.roundCreepController = new RoundCreepController();
         this.stunUtils = new StunUtils(this.timerUtils);
-        this.damageEventController = new DamageEventController(this.damageEngine, this.roundCreepController, this.timerUtils, this.stunUtils, this.towers);
+        this.damageEventController = new DamageEventController(this.damageEngine, this.timerUtils, this.stunUtils, this.towers);
         this.randomNumberGenerator = new RandomNumberGenerator();
         this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils, this.towers, this.stunUtils);
         this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
         this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController, this.towers);
-        this.creepRegenSystem = new CreepRegenSystem(this.timerUtils, this.roundCreepController);
+        
+        this.creepRegenSystem = new CreepRegenSystem(this.timerUtils);
+        
         this.spells = new Spells(this.towerAbilitySystem, this.towers);
         this.commandHandler = new Commands(this);
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 
-        this.mapRegionController = new MapRegionController(this.roundCreepController, this.gameOptions);
+        this.mapRegionController = new MapRegionController(this.gameOptions);
 
         const deathTrig: Trigger = new Trigger();
         deathTrig.addAction(() => {
             const trig: unit = GetTriggerUnit();
             const trigHandleId: number = GetHandleId(trig);
-            regenUnitMap.delete(trigHandleId);
-            this.roundCreepController.delete(trigHandleId);
+            CreepRegenSystem.REGEN_UNIT_MAP.delete(trigHandleId);
+            GameMap.SPAWNED_CREEP_MAP.delete(trigHandleId);
         });
         deathTrig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
 
@@ -104,20 +102,21 @@ export class Game {
 
             const checkpoint: Checkpoint = GameMap.CHECKPOINTS[i];
             const nextCheckpointIndex: number = i + 1;
-            const nextCheckpoint: Checkpoint | null = i === GameMap.CHECKPOINTS.length - 1 ? null : GameMap.CHECKPOINTS[nextCheckpointIndex];
+            const isLastCheckpoint: boolean = i === GameMap.CHECKPOINTS.length - 1;
             trig.addAction(() => {
                 const enteringUnit: unit = GetEnteringUnit();
 
-                if (nextCheckpoint === null) {
+                if (isLastCheckpoint) {
                     DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 3, `|cffff0000A life has been lost!|r`);
                     Sounds.LOSE_A_LIFE.start();
-                    return RemoveUnit(enteringUnit);
+                    RemoveUnit(enteringUnit);
+                    return;
                 }
 
-                const spawnedCreep: SpawnedCreep = this.roundCreepController.get(GetHandleId(enteringUnit)) as SpawnedCreep;
-                spawnedCreep.currentCheckpoint = nextCheckpoint;
-                spawnedCreep.currentCheckpointIndex = nextCheckpointIndex;
-                IssuePointOrder(enteringUnit, 'move', nextCheckpoint.x, nextCheckpoint.y);
+                const spawnedCreep = GameMap.SPAWNED_CREEP_MAP.get(GetHandleId(enteringUnit));
+                // spawnedCreep.currentCheckpoint = nextCheckpoint;
+                spawnedCreep.nextCheckpointIndex = nextCheckpointIndex;
+                // IssuePointOrder(enteringUnit, 'move', nextCheckpoint.x, nextCheckpoint.y);
             });
             // TODO: PR to w3ts to add this
             TriggerRegisterEnterRectSimple(trig.handle, Rect(checkpoint.x - 32, checkpoint.y - 32, checkpoint.x + 32, checkpoint.y + 32));
@@ -139,7 +138,9 @@ export class Game {
         const t: Timer = this.timerUtils.newTimer();
         t.start(1, false, () => {
             Sounds.START_OF_GAME.start();
-            t.start(7, false, () => {
+            // TODO: FIXME: Broken as fuck!
+            // t.start(7, false, () => {
+            t.start(1, false, () => {
                 const eff = new Effect("Units/Demon/Infernal/InfernalBirth.mdl", this.castleLocation.x, this.castleLocation.y);
                 eff.destroy();
                 t.start(0.5, false, () => {
@@ -154,6 +155,7 @@ export class Game {
 
     private spawnRounds(): void {
         const t: Timer = this.timerUtils.newTimer();
+        let bla = false;
         let creepCount = 0;
         let creepIndex = 0;
         let tick = 0;
@@ -171,20 +173,10 @@ export class Game {
             if (tick >= creepSpawnDetails.delay) {
                 tick = 0;
                 creepCount++;
-                const initializedCreepType = new creepSpawnDetails.creepType();
-                for (let i = 0; creepSpawnDetails.modifiers !== undefined && i < creepSpawnDetails.modifiers.length; i++) {
-                    (creepSpawnDetails.modifiers as Modifier[])[i].transform(initializedCreepType);
+                if (!bla) {
+                    bla = true;
+                    Creep.spawn(creepSpawnDetails.creepType, creepSpawnDetails.modifiers);
                 }
-
-                const creep: unit = CreateUnit(Player(23), initializedCreepType.unitTypeId, GameMap.CHECKPOINTS[0].x, GameMap.CHECKPOINTS[0].y, 0);
-                SetUnitExploded(creep, true);
-                const handleId: number = GetHandleId(creep);
-                initializedCreepType.apply(creep);
-                for (let i = 0; creepSpawnDetails.modifiers !== undefined && i < creepSpawnDetails.modifiers.length; i++) {
-                    (creepSpawnDetails.modifiers as Modifier[])[i].apply(creep);
-                }
-                this.roundCreepController.set(handleId, new SpawnedCreep(initializedCreepType, creepSpawnDetails.modifiers, GameMap.CHECKPOINTS[0], 0));
-                IssuePointOrder(creep, 'move', GameMap.CHECKPOINTS[0].x, GameMap.CHECKPOINTS[0].y);
 
                 if (creepCount >= creepSpawnDetails.amount) {
                     creepIndex++;

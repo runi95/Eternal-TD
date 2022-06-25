@@ -14,11 +14,13 @@ import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
 import { TowerAbility } from "TowerAbilities/TowerAbility";
 import { Group } from "Utility/Group";
 import { TargetFlags } from "Creeps/TargetFlags";
+import { GameMap } from "Game/GameMap";
+import { InvisibilityModifier } from "Creeps/Modifiers/InvisibilityModifier";
+import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
 const fortifiedUnitTypeId: number = FourCC('u004');
-const invisibilityUnitTypeId: number = FourCC('u003');
 const zeppelinUnitTypeId: number = FourCC('u006');
 const dummyUnitTypeId: number = FourCC('u007');
 const embrittlementAbilityId: number = FourCC('A00D');
@@ -195,11 +197,13 @@ export class TowerController {
                         if (u.owner.id !== 23)
                             return;
 
-                        if (this.stunUtils.getFrozenUnit(u.id) !== undefined && !hasReFreeze)
+                        const unitId = u.id;
+                        if (this.stunUtils.getFrozenUnit(unitId) !== undefined && !hasReFreeze)
                             return;
 
-                        const unitTypeId: number = u.typeId;
-                        if (!hasColdSnap && (unitTypeId === fortifiedUnitTypeId || unitTypeId === invisibilityUnitTypeId))
+                        const creep = GameMap.SPAWNED_CREEP_MAP.get(unitId);
+                        if (creep === undefined) return;
+                        if (!hasColdSnap && (creep.creepBaseUnit.name === FortifiedVillager.name || creep.hasModifier(InvisibilityModifier.INVISIBILITY_MODIFIER)))
                             return;
 
                         if (BlzGetUnitIntegerField(u.handle, UNIT_IF_DEFENSE_TYPE) === DefenseTypes.HEAVY)

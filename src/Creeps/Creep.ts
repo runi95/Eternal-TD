@@ -1,51 +1,141 @@
-import { Color } from "../Utility/Color";
-import { CreepType } from "./CreepType";
+import { GameMap } from "Game/GameMap";
+import { MapPlayer, Unit } from "w3ts";
+import { CreepBaseUnit } from "./CreepBaseUnit";
 import { DefenseTypes } from "./DefenseTypes";
 import { TargetFlags } from "./TargetFlags";
+import { CreepDefaults } from "./CreepDefaults";
+import { CreepModifier } from "./CreepModifier";
+import { Color } from "Utility/Color";
 
 export interface CreepDamageEvent {
-    spawnedCreeps: Creep[];
+    spawnedCreeps: CreepBaseUnit[];
     overflowingDamage: number;
 }
 
-const defaultCreepUnitTypeId: number = FourCC('u000');
-const creepBaseSpeed = 280.0;
-const defaultTargetAsFlag = TargetFlags.GROUND;
-const defaultDefenseType = DefenseTypes.MEDIUM;
+export type Parent = {
+    parent: Parent;
+    creepBaseUnit: CreepBaseUnit;
+} | null;
+
 export class Creep {
-    public health = 1;
-    public speed = 1;
-    public unitTypeId: number = defaultCreepUnitTypeId;
-    public color: Color = {r: 255, g: 255, b: 255, a: 255};
-    public defenseType: DefenseTypes = defaultDefenseType;
-    public targetAs: TargetFlags = defaultTargetAsFlag;
-    public readonly creepType: CreepType = CreepType.NONE;
-    protected children: Creep[] = [];
-    protected _parent: Creep | null = null;
+    public readonly unitId: number;
+    public currentRegion: number | null = null;
 
-    public apply(unit: unit): void {
-        SetUnitVertexColor(unit, this.color.r, this.color.g, this.color.b, this.color.a);
-        SetUnitMoveSpeed(unit, creepBaseSpeed * this.speed);
+    private readonly modifiers: CreepModifier[];
+    private readonly modifierNameCheckMap: Map<string, boolean> = new Map();
+    private readonly unit: Unit;
+    private _nextCheckpointIndex: number;
+    private _creepBaseUnit: CreepBaseUnit;
+    private _parent: Parent;
 
-        if (this.health > 1) {
-            BlzSetUnitMaxHP(unit, this.health);
-            SetUnitLifePercentBJ(unit, 100);
+    // Precalculated modifier values
+    private readonly healthAddend: number;
+    private readonly healthMultiplier: number;
+    private readonly colorMask: Color;
+    private readonly defenseTypeOverride: DefenseTypes | undefined;
+    private readonly targetAsOverride: TargetFlags | undefined;
+
+    public static spawn(creepBaseUnit: CreepBaseUnit, modifiers: CreepModifier[] = [], nextCheckpointIndex: number = 1, x?: number, y?: number, face: number = bj_UNIT_FACING): void {
+        new Creep(creepBaseUnit, null, modifiers, nextCheckpointIndex, x, y, face);
+    }
+    
+    private constructor(creepBaseUnit: CreepBaseUnit, parent: Parent, modifiers: CreepModifier[], nextCheckpointIndex: number, x: number, y: number, face: number) {
+        this._creepBaseUnit = creepBaseUnit;
+        this._parent = parent;
+        this._nextCheckpointIndex = nextCheckpointIndex;
+        this.modifiers = modifiers;
+        this.unit = new Unit(MapPlayer.fromIndex(23), creepBaseUnit.unitTypeId, x || GameMap.CHECKPOINTS[0].x, y || GameMap.CHECKPOINTS[0].y, face);
+        this.unitId = this.unit.id;
+        
+        let rMask = 1;
+        let gMask = 1;
+        let bMask = 1;
+        let aMask = 1;
+        let healthAddend = 0;
+        let healthMultiplier = 1;
+        let defenseTypeOverride: DefenseTypes | undefined;
+        let targetAsOverride: TargetFlags | undefined;
+        const applyEffects: ((unit: Unit) => void)[] = [];
+        for (const modifier of this.modifiers) {
+            this.modifierNameCheckMap.set(modifier.name, true);
+            if (modifier.colorMask !== undefined) {
+                rMask *= modifier.colorMask.r;
+                gMask *= modifier.colorMask.g;
+                bMask *= modifier.colorMask.b;
+                aMask *= modifier.colorMask.a;
+            }
+
+            if (modifier.healthAddend !== undefined) healthAddend += modifier.healthAddend;
+            if (modifier.healthMultiplier !== undefined) healthMultiplier += modifier.healthMultiplier;
+            if (modifier.defenseTypeOverride !== undefined) defenseTypeOverride = modifier.defenseTypeOverride;
+            if (modifier.targetAsOverride !== undefined) targetAsOverride = modifier.targetAsOverride;
+            if (modifier.applyEffect !== undefined) applyEffects.push(modifier.applyEffect);
         }
-
-        if (this.defenseType !== defaultDefenseType) {
-            BlzSetUnitIntegerField(unit, UNIT_IF_DEFENSE_TYPE, this.defenseType);
+        
+        this.colorMask = {r: rMask, g: gMask, b: bMask, a: aMask};
+        this.healthAddend = healthAddend;
+        this.healthMultiplier = healthMultiplier;
+        this.defenseTypeOverride = defenseTypeOverride;
+        this.targetAsOverride = targetAsOverride;
+        
+        this.applyStats();
+        
+        for (const applyEffect of applyEffects) {
+            (applyEffect as any)(this.unit); // FIXME: Why do we have to do "as any" here?
         }
+        
+        this.unit.issueOrderAt("move", GameMap.CHECKPOINTS[nextCheckpointIndex].x, GameMap.CHECKPOINTS[nextCheckpointIndex].y);
+        this.unit.setExploded(true);
 
-        if (this.targetAs !== defaultTargetAsFlag) {
-            BlzSetUnitIntegerField(unit, UNIT_IF_TARGETED_AS, this.targetAs);
-        }
+        GameMap.SPAWNED_CREEP_MAP.set(this.unitId, this);
     }
 
-    public dealLethalDamage(damageAmount: number): CreepDamageEvent {
-        let spawnedCreeps: Creep[] = [];
-        for (let i = 0; i < this.children.length; i++) {
-            this.children[i]._parent = this;
-            const creepDamageEvent = this.children[i].dealDamage(damageAmount);
+    public hasModifier(modifier: CreepModifier): boolean {
+        return !!this.modifierNameCheckMap.get(modifier.name);
+    }
+
+    public regrow(): void {
+        if (this._parent === null) return;
+        this._creepBaseUnit = this._parent.creepBaseUnit;
+        this._parent = this._parent.parent;
+        this.applyStats();
+    }
+
+    public dealLethalDamage(damageAmount: number): number {
+        let spawnedCreeps: CreepBaseUnit[] = [];
+        for (let i = 0; i < this._creepBaseUnit.children.length; i++) {
+            const creepDamageEvent = this.dealDamageToBaseUnits(this._creepBaseUnit.children[i], damageAmount);
+            damageAmount = creepDamageEvent.overflowingDamage;
+            spawnedCreeps = spawnedCreeps.concat(creepDamageEvent.spawnedCreeps);
+        }
+
+        let isUnitReused = false;
+        const newParent = { parent: this._parent, creepBaseUnit: this._creepBaseUnit };
+        for (let i = 0; i < spawnedCreeps.length; i++) {
+            if (i === 0 && spawnedCreeps[0].unitTypeId === this._creepBaseUnit.unitTypeId) {
+                isUnitReused = true;
+                this._parent = newParent;
+                this._creepBaseUnit = spawnedCreeps[0];
+                this.applyStats();
+            } else {
+                new Creep(spawnedCreeps[i], newParent, this.modifiers, this._nextCheckpointIndex, this.unit.x, this.unit.y, this.unit.facing);
+            }
+        }
+
+        return isUnitReused ? damageAmount : -1;
+    }
+
+    public dealDamageToBaseUnits(creepBaseUnit: CreepBaseUnit, damageAmount: number): CreepDamageEvent {
+        const modifiedHealth = (creepBaseUnit.health + this.healthAddend) * this.healthMultiplier;
+        if (damageAmount < modifiedHealth) {
+            return {spawnedCreeps: [creepBaseUnit], overflowingDamage: damageAmount};
+        }
+        
+        damageAmount -= modifiedHealth;
+
+        let spawnedCreeps: CreepBaseUnit[] = [];
+        for (let i = 0; i < this._creepBaseUnit.children.length && damageAmount > 0; i++) {
+            const creepDamageEvent = this.dealDamageToBaseUnits(this._creepBaseUnit.children[i], damageAmount);
             damageAmount = creepDamageEvent.overflowingDamage;
             spawnedCreeps = spawnedCreeps.concat(creepDamageEvent.spawnedCreeps);
         }
@@ -53,23 +143,51 @@ export class Creep {
         return { spawnedCreeps, overflowingDamage: damageAmount };
     }
 
-    public dealDamage(damageAmount: number): CreepDamageEvent {
-        if (damageAmount < this.health) {
-            return { spawnedCreeps: [this], overflowingDamage: damageAmount };
-        }
-
-        let spawnedCreeps: Creep[] = [];
-        for (let i = 0; i < this.children.length && damageAmount > 0; i++) {
-            this.children[i]._parent = this;
-            const creepDamageEvent = this.children[i].dealDamage(damageAmount - this.health);
-            damageAmount = creepDamageEvent.overflowingDamage;
-            spawnedCreeps = spawnedCreeps.concat(creepDamageEvent.spawnedCreeps);
-        }
-
-        return { spawnedCreeps, overflowingDamage: damageAmount };
+    public get creepBaseUnit(): CreepBaseUnit {
+        return this._creepBaseUnit;
     }
 
-    public get parent(): Creep | null {
-        return this._parent;
+    public get nextCheckpointIndex(): number {
+        return this._nextCheckpointIndex;
+    }
+
+    public set nextCheckpointIndex(nextCheckpointIndex: number) {
+        this.unit.issueOrderAt("move", GameMap.CHECKPOINTS[nextCheckpointIndex].x, GameMap.CHECKPOINTS[nextCheckpointIndex].y);
+        this._nextCheckpointIndex = nextCheckpointIndex;
+    }
+
+    private get color(): Color {
+        return {
+            r: Math.round(this._creepBaseUnit.color.r * this.colorMask.r),
+            g: Math.round(this._creepBaseUnit.color.g * this.colorMask.g), 
+            b: Math.round(this._creepBaseUnit.color.b * this.colorMask.b),
+            a: Math.round(this._creepBaseUnit.color.a * this.colorMask.a)
+        };
+    }
+
+    private applyStats() {
+        const creepColor = this.color;
+        this.unit.setVertexColor(creepColor.r, creepColor.g, creepColor.b, creepColor.a);
+
+        const creepMoveSpeed = this._creepBaseUnit.moveSpeed;
+        if (creepMoveSpeed !== CreepDefaults.MOVE_SPEED) {
+            this.unit.moveSpeed = creepMoveSpeed;
+        }
+
+        const creepHealth = (this._creepBaseUnit.health + this.healthAddend) * this.healthMultiplier;
+        if (creepHealth > CreepDefaults.HEALTH) {
+            this.unit.maxLife = creepHealth;
+            this.unit.life = creepHealth;
+        }
+
+        const creepDefenseType = this.defenseTypeOverride || this.creepBaseUnit.defenseType || CreepDefaults.DEFENSE_TYPE;
+        if (creepDefenseType !== CreepDefaults.DEFENSE_TYPE) {
+            BlzSetUnitIntegerField(this.unit.handle, UNIT_IF_DEFENSE_TYPE, creepDefenseType);
+        }
+
+        const creepTargetAs = this.targetAsOverride || this.creepBaseUnit.targetAs || CreepDefaults.TARGET_AS_FLAG;
+        if (creepTargetAs !== CreepDefaults.TARGET_AS_FLAG) {
+            BlzSetUnitIntegerField(this.unit.handle, UNIT_IF_TARGETED_AS, creepTargetAs);
+        }
     }
 }

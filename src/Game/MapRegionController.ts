@@ -4,15 +4,14 @@ import {Direction, directionCP} from "../Utility/Checkpoint";
 import {Region} from "w3ts/handles/region";
 import {Rectangle} from "w3ts/handles/rect";
 import {DrawPoint} from "../Utility/Rasterizer";
-import {RoundCreepController} from "./RoundCreepController";
 import { GameMap } from "./GameMap";
 import { GameOptions } from "./GameOptions";
 
 export class MapRegionController {
-    regionIds: Record<string, number> = {}
-    regions: Record<string, CreepRegion> = {}
+    regionIds: Record<string, number> = {};
+    regions: Record<string, CreepRegion> = {};
     enterTrig: Trigger;
-    constructor(roundCreepController: RoundCreepController, gameOptions: GameOptions) {
+    constructor(gameOptions: GameOptions) {
         let lastCP = GameMap.CHECKPOINTS[0];
         let rId = 0;
         this.enterTrig = new Trigger();
@@ -24,7 +23,7 @@ export class MapRegionController {
                         if(gameOptions.isDebugModeEnabled) {
                             DrawPoint(lastCP.x, i)
                         }
-                        const reg = new Region()
+                        const reg = new Region();
                         const rect = new Rectangle(lastCP.x-128, i-128, lastCP.x+128, i)
                         // this.drawRect(lastCP.x-128, i-128, lastCP.x+128, i);
                         reg.addRect(rect);
@@ -89,19 +88,20 @@ export class MapRegionController {
         }
 
         this.enterTrig.addAction(() => {
-            const r = this.regions[Region.fromHandle(GetTriggeringRegion()).id];
-            const u = Unit.fromEvent();
-            const spawnedCreep = roundCreepController.get(u.id);
-            if(GameMap.CHECKPOINTS[r.target_cp_indx + 1] !== spawnedCreep.currentCheckpoint) {
-                // print('enter wong wegion')
+            const currentRegionId: number = Region.fromHandle(GetTriggeringRegion()).id;
+            const r = this.regions[currentRegionId];
+            const spawnedCreep = GameMap.SPAWNED_CREEP_MAP.get(Unit.fromEvent().id);
+            if(r.target_cp_indx !== spawnedCreep.nextCheckpointIndex) {
+                // print(`enter wong wegion: expected ${r.target_cp_indx}, got ${spawnedCreep.nextCheckpointIndex}`);
                 return;
             }
-            if(spawnedCreep.currentRegion) {
-                delete spawnedCreep.currentRegion.creeps[u.id];
+
+            if(spawnedCreep.currentRegion !== null && this.regions[spawnedCreep.currentRegion]) {
+                delete this.regions[spawnedCreep.currentRegion].creeps[spawnedCreep.unitId];
             }
-            r.creeps[u.id] = spawnedCreep;
-            spawnedCreep.currentRegion = r;
-            // print(`entred region ${r.regionId}`)
+            r.creeps[spawnedCreep.unitId] = spawnedCreep;
+            spawnedCreep.currentRegion = currentRegionId;
+            print(`entred region ${r.regionId}`);
         })
     }
 

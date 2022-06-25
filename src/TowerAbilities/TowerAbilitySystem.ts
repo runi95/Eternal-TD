@@ -1,3 +1,6 @@
+import { InvisibilityModifier } from "Creeps/Modifiers/InvisibilityModifier";
+import { Zeppelin } from "Creeps/Normal/Zeppelin";
+import { GameMap } from "Game/GameMap";
 import { Tower } from "Towers/Tower";
 import { Group } from "Utility/Group";
 import { StunUtils } from "Utility/StunUtils";
@@ -24,7 +27,6 @@ const harpyRogueUnitTypeId: number = FourCC('h00E');
 const greaterHarpyUnitTypeId: number = FourCC('h00F');
 const attackAbilityId: number = FourCC('Aatk');
 const zeppelinUnitTypeId: number = FourCC('u006');
-const invisibilityUnitTypeId: number = FourCC('u003');
 
 const BUTTON_SIZE = 0.03;
 const COOLDOWN_FRAME_SIZE = BUTTON_SIZE / 0.04;
@@ -497,13 +499,17 @@ export class TowerAbilitySystem {
                         if (u.owner.id !== 23) {
                             return;
                         }
-                        
+
+                        const unitId = u.id;
+                        const creep = GameMap.SPAWNED_CREEP_MAP.get(unitId);
+                        if (creep === undefined) return;
                         if (!snowstormBlizzard) {
-                            const unitTypeId: number = u.typeId;
-                            switch (unitTypeId) {
-                                case invisibilityUnitTypeId:
-                                case zeppelinUnitTypeId:
-                                    snowstormDuration = 3;
+                            if (creep.hasModifier(InvisibilityModifier.INVISIBILITY_MODIFIER)) {
+                                snowstormDuration = 3;
+                            }
+
+                            if (creep.creepBaseUnit.name === Zeppelin.name) {
+                                snowstormDuration = 3;
                             }
                         }
 

@@ -1,5 +1,4 @@
 import { Tower } from "Towers/Tower";
-import { RoundCreepController } from "../../Game/RoundCreepController";
 import { StunUtils } from "../StunUtils";
 import { TimerUtils } from "../TimerUtils";
 import { DamageEngine } from "./DamageEngine";
@@ -13,14 +12,14 @@ import { VillagerLethalDamageEvent } from "./DamageEvents/VillagerLethalDamageEv
 import { VillagerTypeBonusDamageEvent } from "./DamageEvents/VillagerTypeBonusDamageEvent";
 
 export class DamageEventController {
-    constructor(damageEngine: DamageEngine, roundCreepController: RoundCreepController, timerUtils: TimerUtils, stunUtils: StunUtils, towers: Map<number, Tower>) {
+    constructor(damageEngine: DamageEngine, timerUtils: TimerUtils, stunUtils: StunUtils, towers: Map<number, Tower>) {
         // Initial damage events
         // damageEngine.addInitialDamageEvent(new MyInitialDamageEvent());
 
         // Initial damage modification events
         damageEngine.addInitialDamageModificationEvent(new EmbrittlementDamageEvent());
         damageEngine.addInitialDamageModificationEvent(new SuperBrittleDamageEvent());
-        damageEngine.addInitialDamageModificationEvent(new VillagerTypeBonusDamageEvent(roundCreepController, towers));
+        damageEngine.addInitialDamageModificationEvent(new VillagerTypeBonusDamageEvent(towers));
 
         // Final damage modification events
         // damageEngine.addFinalDamageModificationEvent(new MyFinalDamageModificationEvent());
@@ -28,10 +27,10 @@ export class DamageEventController {
         // After damage events
         damageEngine.addAfterDamageEvent(new SapperDamageEvent(towers));
         damageEngine.addAfterDamageEvent(new SeaGiantDamageEvent(timerUtils, towers));
-        damageEngine.addAfterDamageEvent(new SkeletalOrcDamageEvent(stunUtils, roundCreepController));
+        damageEngine.addAfterDamageEvent(new SkeletalOrcDamageEvent(stunUtils));
         damageEngine.addAfterDamageEvent(new FrostWyrmDamageEvent(towers, stunUtils)); 
 
         // Lethal damage events
-        damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent(roundCreepController, stunUtils));
+        damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent(stunUtils));
     }
 }

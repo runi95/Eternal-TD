@@ -1,11 +1,11 @@
 import {Region} from "w3ts/handles/region";
-import {SpawnedCreep} from "./SpawnedCreep";
+import { Creep } from "./Creep";
 
 export class CreepRegion {
     public target_cp_indx: number;
     public region: Region;
     public regionId: number;
-    public creeps: Record<string, SpawnedCreep> = {};
+    public creeps: Record<string, Creep> = {};
 
     constructor(regionId: number, target_cp_index: number, region: Region) {
         this.region = region;
