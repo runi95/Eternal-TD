@@ -43,6 +43,7 @@ export class VillagerTypeBonusDamageEvent implements DamageEvent {
             case CreepType.ZEPPELIN:
                 globals.DamageEventAmount += tower.zeppelinVillagerBonusDamage;
                 break;
+            case CreepType.NONE:
             default:
                 return;
         }

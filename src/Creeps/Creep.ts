@@ -19,7 +19,7 @@ export class Creep {
     public color: Color = {r: 255, g: 255, b: 255, a: 255};
     public defenseType: DefenseTypes = defaultDefenseType;
     public targetAs: TargetFlags = defaultTargetAsFlag;
-    public readonly creepType: CreepType | null = null;
+    public readonly creepType: CreepType = CreepType.NONE;
     protected children: Creep[] = [];
     protected _parent: Creep | null = null;
 
