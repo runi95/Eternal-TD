@@ -152,7 +152,6 @@ export class Game {
 
     private spawnRounds(): void {
         const t: Timer = this.timerUtils.newTimer();
-        let bla = false;
         let creepCount = 0;
         let creepIndex = 0;
         let tick = 0;
@@ -170,10 +169,7 @@ export class Game {
             if (tick >= creepSpawnDetails.delay) {
                 tick = 0;
                 creepCount++;
-                if (!bla) {
-                    bla = true;
-                    Creep.spawn(creepSpawnDetails.creepType, creepSpawnDetails.modifiers);
-                }
+                Creep.spawn(creepSpawnDetails.creepType, creepSpawnDetails.modifiers);
 
                 if (creepCount >= creepSpawnDetails.amount) {
                     creepIndex++;
