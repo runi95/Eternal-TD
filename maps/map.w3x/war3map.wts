@@ -174,22 +174,10 @@ STRING 47
 Villager
 }
 
-STRING 48
-// Units: u005 (Villager), Name (Name)
-{
-Villager
-}
-
 STRING 52
 // Units: u004 (Villager), EditorSuffix (Name - Editor Suffix)
 {
 (Fortified)
-}
-
-STRING 54
-// Units: u005 (Villager), EditorSuffix (Name - Editor Suffix)
-{
-(2)
 }
 
 STRING 55
