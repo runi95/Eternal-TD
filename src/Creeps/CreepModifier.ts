@@ -1,4 +1,5 @@
 import { Color } from "Utility/Color";
+import { Scale } from "Utility/Scale";
 import { Unit } from "w3ts";
 import { DefenseTypes } from "./DefenseTypes";
 import { TargetFlags } from "./TargetFlags";
@@ -32,6 +33,11 @@ export abstract class CreepModifier {
      * Overrides the original targetAs flag with the given flag
      */
     public readonly targetAsOverride?: TargetFlags;
+
+    /**
+     * Overrides the original scale size with the given scale
+     */
+    public readonly scaleOverride?: Scale;
 
     /**
      * Apply the specified effect at the very end of spawning the creep

@@ -6,6 +6,7 @@ import { TargetFlags } from "./TargetFlags";
 import { CreepDefaults } from "./CreepDefaults";
 import { CreepModifier } from "./CreepModifier";
 import { Color } from "Utility/Color";
+import { Scale } from "Utility/Scale";
 
 export interface CreepDamageEvent {
     spawnedCreeps: CreepBaseUnit[];
@@ -32,6 +33,7 @@ export class Creep {
     private readonly healthAddend: number;
     private readonly healthMultiplier: number;
     private readonly colorMask: Color;
+    private readonly scaleOverride: Scale;
     private readonly defenseTypeOverride: DefenseTypes | undefined;
     private readonly targetAsOverride: TargetFlags | undefined;
 
@@ -55,6 +57,7 @@ export class Creep {
         let healthMultiplier = 1;
         let defenseTypeOverride: DefenseTypes | undefined;
         let targetAsOverride: TargetFlags | undefined;
+        let scaleOverride: Scale | undefined;
         const applyEffects: ((unit: Unit) => void)[] = [];
         for (const modifier of this.modifiers) {
             this.modifierNameCheckMap.set(modifier.name, true);
@@ -69,6 +72,7 @@ export class Creep {
             if (modifier.healthMultiplier !== undefined) healthMultiplier += modifier.healthMultiplier;
             if (modifier.defenseTypeOverride !== undefined) defenseTypeOverride = modifier.defenseTypeOverride;
             if (modifier.targetAsOverride !== undefined) targetAsOverride = modifier.targetAsOverride;
+            if (modifier.scaleOverride !== undefined) scaleOverride = modifier.scaleOverride;
             if (modifier.applyEffect !== undefined) applyEffects.push(modifier.applyEffect);
         }
         
@@ -77,6 +81,7 @@ export class Creep {
         this.healthMultiplier = healthMultiplier;
         this.defenseTypeOverride = defenseTypeOverride;
         this.targetAsOverride = targetAsOverride;
+        this.scaleOverride = scaleOverride;
         
         this.applyStats();
         
@@ -168,6 +173,11 @@ export class Creep {
     private applyStats() {
         const creepColor = this.color;
         this.unit.setVertexColor(creepColor.r, creepColor.g, creepColor.b, creepColor.a);
+
+        const scale = this.scaleOverride || this._creepBaseUnit.scale;
+        if (scale.x !== CreepDefaults.SCALE.x || scale.y !== CreepDefaults.SCALE.y || scale.z !== CreepDefaults.SCALE.z) {
+            this.unit.setScale(scale.x, scale.y, scale.z);
+        }
 
         const creepMoveSpeed = this._creepBaseUnit.moveSpeed;
         if (creepMoveSpeed !== CreepDefaults.MOVE_SPEED) {
