@@ -37,7 +37,7 @@ export class Creep {
     private readonly defenseTypeOverride: DefenseTypes | undefined;
     private readonly targetAsOverride: TargetFlags | undefined;
 
-    public static spawn(creepBaseUnit: CreepBaseUnit, modifiers: CreepModifier[] = [], nextCheckpointIndex: number = 1, x?: number, y?: number, face: number = bj_UNIT_FACING): void {
+    public static spawn(creepBaseUnit: CreepBaseUnit, modifiers: CreepModifier[] = [], nextCheckpointIndex: number = 1, x?: number, y?: number, face: number = 0): void {
         new Creep(creepBaseUnit, null, modifiers, nextCheckpointIndex, x, y, face);
     }
     
