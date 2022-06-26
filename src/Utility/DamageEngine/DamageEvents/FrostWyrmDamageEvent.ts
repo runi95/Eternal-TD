@@ -13,7 +13,6 @@ import { InvisibilityModifier } from "Creeps/Modifiers/InvisibilityModifier";
 import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
 
 const frostWyrmUnitTypeId: number = FourCC('h00G');
-const fortifiedUnitTypeId: number = FourCC('u004');
 export class FrostWyrmDamageEvent implements DamageEvent {
     private readonly towers: Map<number, Tower>;
     private readonly stunUtils: StunUtils

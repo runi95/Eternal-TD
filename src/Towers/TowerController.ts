@@ -20,7 +20,6 @@ import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
-const fortifiedUnitTypeId: number = FourCC('u004');
 const zeppelinUnitTypeId: number = FourCC('u006');
 const dummyUnitTypeId: number = FourCC('u007');
 const embrittlementAbilityId: number = FourCC('A00D');
