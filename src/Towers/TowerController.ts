@@ -17,10 +17,10 @@ import { TargetFlags } from "Creeps/TargetFlags";
 import { GameMap } from "Game/GameMap";
 import { InvisibilityModifier } from "Creeps/Modifiers/InvisibilityModifier";
 import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
+import { Zeppelin } from "Creeps/Normal/Zeppelin";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
-const zeppelinUnitTypeId: number = FourCC('u006');
 const dummyUnitTypeId: number = FourCC('u007');
 const embrittlementAbilityId: number = FourCC('A00D');
 const superBrittleAbilityId: number = FourCC('A00E');
@@ -221,7 +221,7 @@ export class TowerController {
                             dummy.issueTargetOrder("curse", u);
                         }
 
-                        if (unitTypeId === zeppelinUnitTypeId) {
+                        if (creep.creepBaseUnit.name === Zeppelin.name) {
                             if (hasSuperBrittle) {
                                 const dummy = new Unit(tower.unit.owner, dummyUnitTypeId, u.x, u.y, bj_UNIT_FACING);
                                 dummy.addAbility(superBrittleAbilityId);
