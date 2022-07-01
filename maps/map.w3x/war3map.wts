@@ -169,30 +169,6 @@ Gives a 40% chance to do 50 additional damage on an attack.
 }
 
 STRING 47
-// Units: u002 (Villager), Name (Name)
-{
-Villager
-}
-
-STRING 48
-// Units: u003 (Villager), Name (Name)
-{
-Villager
-}
-
-STRING 49
-// Units: u002 (Villager), EditorSuffix (Name - Editor Suffix)
-{
-(Regen)
-}
-
-STRING 50
-// Units: u003 (Villager), EditorSuffix (Name - Editor Suffix)
-{
-(Invisibility)
-}
-
-STRING 51
 // Units: u004 (Villager), Name (Name)
 {
 Villager
@@ -202,18 +178,6 @@ STRING 52
 // Units: u004 (Villager), EditorSuffix (Name - Editor Suffix)
 {
 (Fortified)
-}
-
-STRING 53
-// Units: u005 (Villager), Name (Name)
-{
-Villager
-}
-
-STRING 54
-// Units: u005 (Villager), EditorSuffix (Name - Editor Suffix)
-{
-(2)
 }
 
 STRING 55
@@ -316,12 +280,6 @@ STRING 80
 // Abilities: A005 (Cluster Bombs), Tip (Tooltip - Normal)
 {
 Cluster Bombs
-}
-
-STRING 84
-// Destructibles: B000 (Human Keep), Name (Name)
-{
-Human Keep
 }
 
 STRING 85
@@ -676,5 +634,113 @@ STRING 164
 // Units: h00B (Skeletal Mage), Tip (Tooltip - Basic)
 {
 Build Skeletal Mage
+}
+
+STRING 166
+// Units: h00E (Harpy Rogue), Ubertip (Tooltip - Extended)
+{
+TODO: Write description
+}
+
+STRING 167
+// Units: h00E (Harpy Rogue), Name (Name)
+{
+Harpy Rogue
+}
+
+STRING 168
+// Units: h00F (Greater Harpy), Name (Name)
+{
+Greater Harpy
+}
+
+STRING 169
+// Units: h00F (Greater Harpy), Ubertip (Tooltip - Extended)
+{
+TODO: Write description
+}
+
+STRING 170
+// Units: h00G (Frost Wyrm), Name (Name)
+{
+Frost Wyrm
+}
+
+STRING 171
+// Units: h00G (Frost Wyrm), Ubertip (Tooltip - Extended)
+{
+TODO: Write description
+}
+
+STRING 172
+// Abilities: A00C (ArcticWind), Name (Name)
+{
+ArcticWind
+}
+
+STRING 173
+// Abilities: A00C (ArcticWind), EditorSuffix (Editor Suffix)
+{
+(Slow Aura)
+}
+
+STRING 174
+// Abilities: A00D (Embrittlement), Name (Name)
+{
+Embrittlement
+}
+
+STRING 175
+// Abilities: A00D (Embrittlement), EditorSuffix (Editor Suffix)
+{
+(Curse)
+}
+
+STRING 176
+// Buffs/Effects: B002 (), Bufftip (Tooltip)
+{
+Embrittlement
+}
+
+STRING 177
+// Buffs/Effects: B002 (), Buffubertip (Tooltip - Extended)
+{
+This unit is Embrittled; it receives more damage when attacked again.
+}
+
+STRING 178
+// Abilities: A00E (Super Brittle), Name (Name)
+{
+Super Brittle
+}
+
+STRING 179
+// Buffs/Effects: B003 (), Buffubertip (Tooltip - Extended)
+{
+This unit is Super Brittle; it receives even more damage when attacked again.
+}
+
+STRING 180
+// Abilities: A00E (Super Brittle), EditorSuffix (Editor Suffix)
+{
+(Slow)
+}
+
+STRING 181
+// Buffs/Effects: B003 (), Bufftip (Tooltip)
+{
+Super Brittle
+}
+
+STRING 182
+// Buffs/Effects: B004 (), Bufftip (Tooltip)
+{
+Super Brittle
+}
+
+STRING 183
+// Buffs/Effects: B004 (), Buffubertip (Tooltip - Extended)
+{
+This unit is slowed; its movement speed is reduced.
 }
 

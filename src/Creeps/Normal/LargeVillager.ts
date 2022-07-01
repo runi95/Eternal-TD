@@ -1,13 +1,13 @@
+import { CreepBaseUnit } from "Creeps/CreepBaseUnit";
+import { Scale } from "Utility/Scale";
 import { Color } from "../../Utility/Color";
-import { Creep } from "../Creep";
-import { CreepType } from "../CreepType";
 import { RainbowVillager } from "./RainbowVillager";
 
-const largeVillagerTypeId: number = FourCC('u005');
-export class LargeVillager extends Creep {
+export class LargeVillager extends CreepBaseUnit {
+    public static readonly LARGE_VILLAGER = new LargeVillager();
+
     public readonly health: number = 20;
-    public readonly unitTypeId: number = largeVillagerTypeId;
     public readonly color: Color = {r: 255, g: 255, b: 255, a: 255};
-    public readonly creepType: CreepType = CreepType.LARGE;
-    protected readonly children: Creep[] = [new RainbowVillager(), new RainbowVillager()];
+    public readonly scale: Scale = {x: 1.5, y: 1.5, z: 2};
+    public readonly children: CreepBaseUnit[] = [RainbowVillager.RAINBOW_VILLAGER, RainbowVillager.RAINBOW_VILLAGER];
 }

@@ -7,16 +7,24 @@ import { TowerType } from "./TowerType";
 import towerTypeMap from "./TowerTypes";
 import { TowerUpgrade } from "./TowerUpgrade";
 import {Timer, Trigger, Unit} from "w3ts";
-import {GroupInRange} from "../Utility/GroupInRange";
 import { VoidwalkerCustomData } from "./Voidwalker/Voidwalker";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import {MapRegionController} from "../Game/MapRegionController";
 import { DefenseTypes } from "Creeps/DefenseTypes";
+import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
+import { TowerAbility } from "TowerAbilities/TowerAbility";
+import { Group } from "Utility/Group";
+import { TargetFlags } from "Creeps/TargetFlags";
+import { GameMap } from "Game/GameMap";
+import { InvisibilityModifier } from "Creeps/Modifiers/InvisibilityModifier";
+import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
+import { Zeppelin } from "Creeps/Normal/Zeppelin";
 
 const attackAbilityId: number = FourCC('Aatk');
 const tickTowerAbilityId: number = FourCC('A008');
-const fortifiedUnitTypeId: number = FourCC('u004');
-const invisibilityUnitTypeId: number = FourCC('u003');
+const dummyUnitTypeId: number = FourCC('u007');
+const embrittlementAbilityId: number = FourCC('A00D');
+const superBrittleAbilityId: number = FourCC('A00E');
 const abominationUnitTypeId: number = FourCC('h007');
 const obsidianStatueUnitTypeId: number = FourCC('h008');
 const voidwalkerUnitTypeId: number = FourCC('h00C');
@@ -24,13 +32,15 @@ const lesserVoidwalkerUnitTypeId: number = FourCC('o000');
 const timedLifeBuffId: number = FourCC('BTLF');
 export class TowerController {
     private readonly towers: Map<number, Tower>;
+    private readonly towerAbilitySystem: TowerAbilitySystem;
     private readonly timerUtils: TimerUtils;
     private readonly stunUtils: StunUtils;
     private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly tickTowers: Map<number, Timer> = new Map();
     private readonly mapRegionController: MapRegionController;
 
-    constructor(timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>, mapRegionController: MapRegionController) {
+    constructor(towerAbilitySystem: TowerAbilitySystem, timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>, mapRegionController: MapRegionController) {
+        this.towerAbilitySystem = towerAbilitySystem;
         this.timerUtils = timerUtils;
         this.stunUtils = stunUtils;
         this.randomNumberGenerator = randomNumberGenerator;
@@ -80,9 +90,9 @@ export class TowerController {
             }
 
             SelectUnitForPlayerSingle(unit.handle, GetTriggerPlayer());
+        } else {
+            upgrade.applyUpgrade(tower);
         }
-
-        upgrade.applyUpgrade(tower);
 
         if (this.tickTowers.has(originalHandleId)) {
             this.timerUtils.releaseTimer(this.tickTowers.get(originalHandleId) as Timer);
@@ -91,6 +101,10 @@ export class TowerController {
 
         if (tower.unit.getAbilityLevel(tickTowerAbilityId) > 0) {
             this.addTickTower(tower);
+        }
+
+        if (upgrade.ability !== undefined) {
+            this.towerAbilitySystem.addTowerAbility(GetPlayerId(GetOwningPlayer(tower.unit.handle)), tower, upgrade.ability as TowerAbility);
         }
 
         return isTowerUnitReplaced;
@@ -133,7 +147,7 @@ export class TowerController {
                         realDamageAmount += greaterPermanentImmolationAdditionalDamageAmount;
 
                     const loc = tower.unit.point;
-                    const group = GroupInRange(range, loc);
+                    const group: Group = Group.fromRange(range, loc);
 
                     let unitCount = 0;
                     group.for((u: Unit) => {
@@ -146,6 +160,9 @@ export class TowerController {
                         if (u.owner.id !== 23)
                             return;
 
+                        if (BlzGetUnitIntegerField(u.handle, UNIT_IF_TARGETED_AS) === TargetFlags.WARD)
+                            return;
+
                         unitCount++;
                         tower.unit.damageTarget(u.handle, realDamageAmount, true, false, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
 
@@ -155,9 +172,21 @@ export class TowerController {
                 };
             case obsidianStatueUnitTypeId:
                 return (tower: Tower) => {
-                    const { range, maxUnitCount, damageAmount, freezeDuration, hasPermafrost, hasColdSnap, hasReFreeze } = tower.customData as ObsidianStatueCustomData;
+                    const {
+                        range,
+                        maxUnitCount,
+                        damageAmount,
+                        freezeDuration,
+                        hasPermafrost,
+                        hasColdSnap,
+                        hasReFreeze,
+                        hasIceShards,
+                        hasDeepFreeze,
+                        hasEmbrittlement,
+                        hasSuperBrittle,
+                     } = tower.customData as ObsidianStatueCustomData;
                     const loc = tower.unit.point;
-                    const group = GroupInRange(range, loc);
+                    const group: Group = Group.fromRange(range, loc);
 
                     let unitCount = 0;
                     group.for((u: Unit) => {
@@ -170,16 +199,43 @@ export class TowerController {
                         if (u.owner.id !== 23)
                             return;
 
-                        const unitTypeId: number = u.typeId;
-                        if (!hasColdSnap && (unitTypeId === fortifiedUnitTypeId || unitTypeId === invisibilityUnitTypeId))
-                                return;
+                        const unitId = u.id;
+                        if (this.stunUtils.getFrozenUnit(unitId) !== undefined && !hasReFreeze)
+                            return;
+
+                        const creep = GameMap.SPAWNED_CREEP_MAP.get(unitId);
+                        if (creep === undefined) return;
+                        if (!hasColdSnap && (creep.creepBaseUnit.name === FortifiedVillager.name || creep.hasModifier(InvisibilityModifier.INVISIBILITY_MODIFIER)))
+                            return;
 
                         if (BlzGetUnitIntegerField(u.handle, UNIT_IF_DEFENSE_TYPE) === DefenseTypes.HEAVY)
                             return;
 
                         unitCount++;
+
+                        if (hasEmbrittlement) {
+                            const dummy = new Unit(tower.unit.owner, dummyUnitTypeId, u.x, u.y, bj_UNIT_FACING);
+                            dummy.addAbility(embrittlementAbilityId);
+
+                            if (hasSuperBrittle) {
+                                dummy.incAbilityLevel(embrittlementAbilityId);
+                            }
+
+                            dummy.issueTargetOrder("curse", u);
+                        }
+
+                        if (creep.creepBaseUnit.name === Zeppelin.name) {
+                            if (hasSuperBrittle) {
+                                const dummy = new Unit(tower.unit.owner, dummyUnitTypeId, u.x, u.y, bj_UNIT_FACING);
+                                dummy.addAbility(superBrittleAbilityId);
+                                dummy.issueTargetOrder("slow", u);
+                            }
+
+                            return;
+                        }
+
                         tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
-                        this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze);
+                        this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
                     });
                     group.destroy();
                     loc.destroy();
@@ -203,10 +259,10 @@ export class TowerController {
                     }
 
                     lesserVoidwalker.applyTimedLife(timedLifeBuffId, duration);
-                    
+
                     if (additionalRange > 0) {
                         lesserVoidwalker.acquireRange = 450 + additionalRange;
-    
+
                         // NOTE: For some reason index starts at 1 for the UNIT_WEAPON_RF_ATTACK_RANGE field and it adds range instead of setting it.
                         BlzSetUnitWeaponRealField(lesserVoidwalker.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, additionalRange);
                     }

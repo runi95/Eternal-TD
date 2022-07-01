@@ -1,13 +1,13 @@
 [Misc]
 BoneDecayTime=10.0
 ChanceToMiss=0.0
-DamageBonusHero=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
+DamageBonusHero=1.00,1.00,1.00,1.00,1.00,0.00,1.00,1.00
 DamageBonusMagic=1.00,1.00,1.00,1.00,1.00,1.00,0.00,1.00
 DamageBonusNormal=1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00
 DamageBonusPierce=1.00,1.00,1.00,0.00,1.00,1.00,1.00,1.00
 DamageBonusSiege=1.00,1.00,1.00,1.00,1.00,1.00,1.00,0.00
 DamageBonusSpells=1.00,1.00,1.00,1.00,1.00,1.00,0.00,1.00
-MaxUnitSpeed=999.0
+MaxUnitSpeed=522.0
 MinUnitSpeed=100.0
 ReactionDelay=0.1
 StructureDecayTime=2.0

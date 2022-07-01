@@ -1,29 +1,14 @@
-import { BlueVillager } from "../Creeps/Normal/BlueVillager";
-import { Creep } from "../Creeps/Creep";
-import { GreenVillager } from "../Creeps/Normal/GreenVillager";
-import { PinkVillager } from "../Creeps/Normal/PinkVillager";
-import { RedVillager } from "../Creeps/Normal/RedVillager";
-import { YellowVillager } from "../Creeps/Normal/YellowVillager";
-import { Modifier } from "../Creeps/Modifier";
-import { RegenModifier } from "../Creeps/Modifiers/RegenModifier";
-import { BlackVillager } from "../Creeps/Normal/BlackVillager";
-import { WhiteVillager } from "../Creeps/Normal/WhiteVillager";
+import { CreepBaseUnit } from "Creeps/CreepBaseUnit";
+import { CreepBaseUnits } from "Creeps/CreepBaseUnits";
+import { CreepModifier } from "Creeps/CreepModifier";
 import { InvisibilityModifier } from "../Creeps/Modifiers/InvisibilityModifier";
-import { PurpleVillager } from "../Creeps/Normal/PurpleVillager";
-import { ZebraVillager } from "../Creeps/Normal/ZebraVillager";
-import { FortifiedVillager } from "../Creeps/Normal/FortifiedVillager";
-import { RainbowVillager } from "../Creeps/Normal/RainbowVillager";
-import { LargeVillager } from "../Creeps/Normal/LargeVillager";
-import { Zeppelin } from "../Creeps/Normal/Zeppelin";
-
-const regenModifier = new RegenModifier();
-const invisibilityModifier = new InvisibilityModifier();
+import { RegenModifier } from "Creeps/Modifiers/RegenModifier";
 
 interface CreepSpawnDetails {
-    creepType: typeof Creep;
+    creepType: CreepBaseUnit;
     amount: number;
     delay: number;
-    modifiers?: Modifier[];
+    modifiers?: CreepModifier[];
 }
 
 type Round = CreepSpawnDetails[];
@@ -33,7 +18,7 @@ const rounds: Rounds = [
     // ROUND 1:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 20,
             delay: 0.9,
         }
@@ -42,7 +27,7 @@ const rounds: Rounds = [
     // ROUND 2:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 35,
             delay:  0.9
         }
@@ -51,12 +36,12 @@ const rounds: Rounds = [
     // ROUND 3:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 25,
             delay: 0.9
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 5,
             delay: 0.9
         }
@@ -65,12 +50,12 @@ const rounds: Rounds = [
     // ROUND 4:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 35,
             delay: 0.9
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 18,
             delay: 0.9
         }
@@ -79,12 +64,12 @@ const rounds: Rounds = [
     // ROUND 5:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 5,
             delay: 0.9
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 27,
             delay: 0.9
         }
@@ -93,17 +78,17 @@ const rounds: Rounds = [
     // ROUND 6:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 15,
             delay: 0.9
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 15,
             delay: 0.9
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 4,
             delay: 0.9
         }
@@ -112,17 +97,17 @@ const rounds: Rounds = [
     // ROUND 7:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 20,
             delay: 0.9
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 20,
             delay: 0.9
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 5,
             delay: 0.9
         }
@@ -131,17 +116,17 @@ const rounds: Rounds = [
     // ROUND 8:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 10,
             delay: 0.9
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 20,
             delay: 0.9
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 14,
             delay: 0.9
         },
@@ -150,7 +135,7 @@ const rounds: Rounds = [
     // ROUND 9:
     [
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 30,
             delay: 0.9
         }
@@ -159,7 +144,7 @@ const rounds: Rounds = [
     // ROUND 10:
     [
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 102,
             delay: 0.9
         }
@@ -168,22 +153,22 @@ const rounds: Rounds = [
     // ROUND 11:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 10,
             delay: 0.9
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 10,
             delay: 0.9
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 12,
             delay: 0.9
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 3,
             delay: 0.9
         }
@@ -192,17 +177,17 @@ const rounds: Rounds = [
     // ROUND 12:
     [
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 15,
             delay: 0.9
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 10,
             delay: 0.9
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 5,
             delay: 0.9
         }
@@ -211,12 +196,12 @@ const rounds: Rounds = [
     // ROUND 13:
     [
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 50,
             delay: 0.9
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 23,
             delay: 0.9
         }
@@ -225,22 +210,22 @@ const rounds: Rounds = [
     // ROUND 14:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 49,
             delay: 0.9
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 15,
             delay: 0.9
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 10,
             delay: 0.9
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 9,
             delay: 0.9
         },
@@ -249,27 +234,27 @@ const rounds: Rounds = [
     // ROUND 15:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 20,
             delay: 0.9
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 15,
             delay: 0.9
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 12,
             delay: 0.9
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 10,
             delay: 0.9
         },
         {
-            creepType: PinkVillager,
+            creepType: CreepBaseUnits.PINK_VILLAGER,
             amount: 5,
             delay: 0.9
         }
@@ -278,12 +263,12 @@ const rounds: Rounds = [
     // ROUND 16:
     [
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 40,
             delay: 0.9
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 8,
             delay: 0.9
         }
@@ -292,17 +277,17 @@ const rounds: Rounds = [
     // ROUND 17:
     [
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 12,
             delay: 0.9,
-            modifiers: [regenModifier],
+            modifiers: [RegenModifier.REGEN_MODIFIER],
         },
     ],
 
     // ROUND 18:
     [
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 80,
             delay: 0.9
         }
@@ -311,23 +296,23 @@ const rounds: Rounds = [
     // ROUND 19:
     [
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 10,
             delay: 0.9
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 4,
             delay: 0.9
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 5,
             delay: 0.9,
-            modifiers: [regenModifier],
+            modifiers: [RegenModifier.REGEN_MODIFIER],
         },
         {
-            creepType: PinkVillager,
+            creepType: CreepBaseUnits.PINK_VILLAGER,
             amount: 4,
             delay: 0.9
         },
@@ -336,7 +321,7 @@ const rounds: Rounds = [
     // ROUND 20:
     [
         {
-            creepType: BlackVillager,
+            creepType: CreepBaseUnits.BLACK_VILLAGER,
             amount: 6,
             delay: 0.9
         },
@@ -345,12 +330,12 @@ const rounds: Rounds = [
     // ROUND 21
     [
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 40,
             delay: 0.9
         },
         {
-            creepType: PinkVillager,
+            creepType: CreepBaseUnits.PINK_VILLAGER,
             amount: 14,
             delay: 0.9
         },
@@ -359,7 +344,7 @@ const rounds: Rounds = [
     // ROUND 22:
     [
         {
-            creepType: WhiteVillager,
+            creepType: CreepBaseUnits.WHITE_VILLAGER,
             amount: 16,
             delay: 0.9
         },
@@ -368,12 +353,12 @@ const rounds: Rounds = [
     // ROUND 23:
     [
         {
-            creepType: BlackVillager,
+            creepType: CreepBaseUnits.BLACK_VILLAGER,
             amount: 7,
             delay: 0.9
         },
         {
-            creepType: WhiteVillager,
+            creepType: CreepBaseUnits.WHITE_VILLAGER,
             amount: 7,
             delay: 0.9
         },
@@ -382,28 +367,28 @@ const rounds: Rounds = [
     // ROUND 24:
     [
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 20,
             delay: 0.9
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 1,
             delay: 0.9,
-            modifiers: [invisibilityModifier]
+            modifiers: [InvisibilityModifier.INVISIBILITY_MODIFIER]
         },
     ],
 
     // ROUND 25:
     [
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 25,
             delay: 0.9,
-            modifiers: [regenModifier]
+            modifiers: [RegenModifier.REGEN_MODIFIER]
         },
         {
-            creepType: PurpleVillager,
+            creepType: CreepBaseUnits.PURPLE_VILLAGER,
             amount: 10,
             delay: 0.9,
         },
@@ -412,13 +397,13 @@ const rounds: Rounds = [
     // ROUND 26:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 23,
             delay: 0.9,
-            modifiers: [regenModifier]
+            modifiers: [RegenModifier.REGEN_MODIFIER]
         },
         {
-            creepType: ZebraVillager,
+            creepType: CreepBaseUnits.ZEBRA_VILLAGER,
             amount: 4,
             delay: 0.9,
         },
@@ -427,22 +412,22 @@ const rounds: Rounds = [
     // ROUND 27:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 100,
             delay: 0.1,
         },
         {
-            creepType: BlueVillager,
+            creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 60,
             delay: 0.1,
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 45,
             delay: 0.1
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 45,
             delay: 0.1
         }
@@ -451,7 +436,7 @@ const rounds: Rounds = [
     // ROUND 28:
     [
         {
-            creepType: FortifiedVillager,
+            creepType: CreepBaseUnits.FORTIFIED_VILLAGER,
             amount: 6,
             delay: 0.9,
         },
@@ -460,22 +445,22 @@ const rounds: Rounds = [
     // ROUND 29:
     [
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 50,
             delay: 0.9,
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 15,
             delay: 0.9,
-            modifiers: [regenModifier]
+            modifiers: [RegenModifier.REGEN_MODIFIER]
         },
     ],
 
     // ROUND 30:
     [
         {
-            creepType: FortifiedVillager,
+            creepType: CreepBaseUnits.FORTIFIED_VILLAGER,
             amount: 9,
             delay: 0.9,
         },
@@ -484,42 +469,42 @@ const rounds: Rounds = [
     // ROUND 31:
     [
         {
-            creepType: BlackVillager,
+            creepType: CreepBaseUnits.BLACK_VILLAGER,
             amount: 8,
             delay: 0.9,
         },
         {
-            creepType: WhiteVillager,
+            creepType: CreepBaseUnits.WHITE_VILLAGER,
             amount: 8,
             delay: 0.9,
         },
         {
-            creepType: ZebraVillager,
+            creepType: CreepBaseUnits.ZEBRA_VILLAGER,
             amount: 8,
             delay: 0.9,
         },
         {
-            creepType: ZebraVillager,
+            creepType: CreepBaseUnits.ZEBRA_VILLAGER,
             amount: 2,
             delay: 0.9,
-            modifiers: [regenModifier]
+            modifiers: [RegenModifier.REGEN_MODIFIER]
         },
     ],
 
     // ROUND 32:
     [
         {
-            creepType: BlackVillager,
+            creepType: CreepBaseUnits.BLACK_VILLAGER,
             amount: 15,
             delay: 0.9,
         },
         {
-            creepType: WhiteVillager,
+            creepType: CreepBaseUnits.WHITE_VILLAGER,
             amount: 20,
             delay: 0.9,
         },
         {
-            creepType: PurpleVillager,
+            creepType: CreepBaseUnits.PURPLE_VILLAGER,
             amount: 10,
             delay: 0.9,
         },
@@ -528,28 +513,28 @@ const rounds: Rounds = [
     // ROUND 33:
     [
         {
-            creepType: RedVillager,
+            creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 20,
             delay: 0.1,
-            modifiers: [invisibilityModifier],
+            modifiers: [InvisibilityModifier.INVISIBILITY_MODIFIER],
         },
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 13,
             delay: 0.6,
-            modifiers: [invisibilityModifier],
+            modifiers: [InvisibilityModifier.INVISIBILITY_MODIFIER],
         },
     ],
 
     // ROUND 34:
     [
         {
-            creepType: YellowVillager,
+            creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 160,
             delay: 0.05,
         },
         {
-            creepType: ZebraVillager,
+            creepType: CreepBaseUnits.ZEBRA_VILLAGER,
             amount: 6,
             delay: 0.9,
         },
@@ -558,22 +543,22 @@ const rounds: Rounds = [
     // ROUND 35:
     [
         {
-            creepType: PinkVillager,
+            creepType: CreepBaseUnits.PINK_VILLAGER,
             amount: 35,
             delay: 0.4,
         },
         {
-            creepType: BlackVillager,
+            creepType: CreepBaseUnits.BLACK_VILLAGER,
             amount: 30,
             delay: 0.4,
         },
         {
-            creepType: WhiteVillager,
+            creepType: CreepBaseUnits.WHITE_VILLAGER,
             amount: 25,
             delay: 0.4,
         },
         {
-            creepType: RainbowVillager,
+            creepType: CreepBaseUnits.RAINBOW_VILLAGER,
             amount: 6,
             delay: 0.4,
         },
@@ -582,43 +567,43 @@ const rounds: Rounds = [
     // ROUND 36:
     [
         {
-            creepType: PinkVillager,
+            creepType: CreepBaseUnits.PINK_VILLAGER,
             amount: 140,
             delay: 0.05,
         },
         {
-            creepType: GreenVillager,
+            creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 30,
             delay: 0.4,
-            modifiers: [regenModifier, invisibilityModifier],
+            modifiers: [RegenModifier.REGEN_MODIFIER, InvisibilityModifier.INVISIBILITY_MODIFIER],
         },
     ],
 
     // ROUND 37:
     [
         {
-            creepType: BlackVillager,
+            creepType: CreepBaseUnits.BLACK_VILLAGER,
             amount: 25,
             delay: 0.5,
         },
         {
-            creepType: WhiteVillager,
+            creepType: CreepBaseUnits.WHITE_VILLAGER,
             amount: 25,
             delay: 0.5,
         },
         {
-            creepType: WhiteVillager,
+            creepType: CreepBaseUnits.WHITE_VILLAGER,
             amount: 7,
             delay: 0.5,
-            modifiers: [invisibilityModifier],
+            modifiers: [InvisibilityModifier.INVISIBILITY_MODIFIER],
         },
         {
-            creepType: ZebraVillager,
+            creepType: CreepBaseUnits.ZEBRA_VILLAGER,
             amount: 10,
             delay: 0.5,
         },
         {
-            creepType: FortifiedVillager,
+            creepType: CreepBaseUnits.FORTIFIED_VILLAGER,
             amount: 15,
             delay: 0.5,
         },
@@ -627,27 +612,27 @@ const rounds: Rounds = [
     // ROUND 38:
     [
         {
-            creepType: PinkVillager,
+            creepType: CreepBaseUnits.PINK_VILLAGER,
             amount: 42,
             delay: 0.1,
         },
         {
-            creepType: WhiteVillager,
+            creepType: CreepBaseUnits.WHITE_VILLAGER,
             amount: 17,
             delay: 0.1,
         },
         {
-            creepType: ZebraVillager,
+            creepType: CreepBaseUnits.ZEBRA_VILLAGER,
             amount: 10,
             delay: 0.1,
         },
         {
-            creepType: FortifiedVillager,
+            creepType: CreepBaseUnits.FORTIFIED_VILLAGER,
             amount: 14,
             delay: 0.1,
         },
         {
-            creepType: LargeVillager,
+            creepType: CreepBaseUnits.LARGE_VILLAGER,
             amount: 2,
             delay: 0.9,
         },
@@ -656,37 +641,37 @@ const rounds: Rounds = [
     // ROUND 39:
     [
         {
-            creepType: BlackVillager,
+            creepType: CreepBaseUnits.BLACK_VILLAGER,
             amount: 10,
             delay: 0.1,
         },
         {
-            creepType: WhiteVillager,
+            creepType: CreepBaseUnits.WHITE_VILLAGER,
             amount: 10,
             delay: 0.1,
         },
         {
-            creepType: ZebraVillager,
+            creepType: CreepBaseUnits.ZEBRA_VILLAGER,
             amount: 20,
             delay: 0.1,
         },
         {
-            creepType: RainbowVillager,
+            creepType: CreepBaseUnits.RAINBOW_VILLAGER,
             amount: 18,
             delay: 0.1,
         },
         {
-            creepType: RainbowVillager,
+            creepType: CreepBaseUnits.RAINBOW_VILLAGER,
             amount: 2,
             delay: 0.1,
-            modifiers: [regenModifier],
+            modifiers: [RegenModifier.REGEN_MODIFIER],
         },
     ],
 
     // ROUND 40:
     [
         {
-            creepType: Zeppelin,
+            creepType: CreepBaseUnits.ZEPPELIN,
             amount: 1,
             delay: 0.9,
         },

@@ -1,9 +1,11 @@
+import { CreepBaseUnit } from "Creeps/CreepBaseUnit";
 import { Color } from "../../Utility/Color";
-import { Creep } from "../Creep";
 import { GreenVillager } from "./GreenVillager";
 
-export class YellowVillager extends Creep {
-    public speed = 3.2;
+export class YellowVillager extends CreepBaseUnit {
+    public static readonly YELLOW_VILLAGER = new YellowVillager();
+
+    public readonly moveSpeed = 480;
     public readonly color: Color = {r: 255, g: 255, b: 75, a: 255};
-    protected readonly children: Creep[] = [new GreenVillager()];
+    public readonly children: CreepBaseUnit[] = [GreenVillager.GREEN_VILLAGER];
 }

@@ -1,10 +1,11 @@
 import {CreepRegion} from "../Creeps/CreepRegion";
 import {Trigger, Unit} from "w3ts";
-import {Checkpoint, Direction, directionCP, distance2D} from "../Utility/Checkpoint";
+import {Direction, directionCP, distance2D} from "../Utility/Checkpoint";
 import {Region} from "w3ts/handles/region";
 import {Rectangle} from "w3ts/handles/rect";
 import {DrawPoint} from "../Utility/Rasterizer";
-import {RoundCreepController} from "./RoundCreepController";
+import { GameMap } from "./GameMap";
+import { GameOptions } from "./GameOptions";
 
 const DRAW_EVERY_REGION_DEBUG = false;
 
@@ -13,19 +14,19 @@ export class MapRegionController {
     regionLookup: CreepRegion[] = []
     regions: Record<string, CreepRegion> = {}
     enterTrig: Trigger;
-    constructor(creepSpawnCP: Checkpoint, checkpoints: Checkpoint[], roundCreepController: RoundCreepController, debugEnabled: boolean) {
-        let lastCP = creepSpawnCP;
+    constructor(gameOptions: GameOptions) {
+        let lastCP = GameMap.CHECKPOINTS[0];
         let rId = 0;
         this.enterTrig = new Trigger();
-        checkpoints.forEach((checkpoint, cpIndx) => {
-            const direction = directionCP(lastCP, checkpoint);
+        for(let cpIndx = 1; cpIndx < GameMap.CHECKPOINTS.length; cpIndx++) {
+            const direction = directionCP(lastCP, GameMap.CHECKPOINTS[cpIndx]);
             switch (direction) {
                 case Direction.SOUTH:
-                    for (let i = lastCP.y; i > checkpoint.y; i=i-128) {
-                        if(debugEnabled && DRAW_EVERY_REGION_DEBUG) {
+                    for (let i = lastCP.y; i > GameMap.CHECKPOINTS[cpIndx].y; i=i-128) {
+                        if(gameOptions.isDebugModeEnabled && DRAW_EVERY_REGION_DEBUG) {
                             DrawPoint(lastCP.x, i)
                         }
-                        const reg = new Region()
+                        const reg = new Region();
                         const rect = new Rectangle(lastCP.x-128, i-128, lastCP.x+128, i)
                         // this.drawRect(lastCP.x-128, i-128, lastCP.x+128, i);
                         reg.addRect(rect);
@@ -38,8 +39,8 @@ export class MapRegionController {
                     }
                     break;
                 case Direction.NORTH:
-                    for (let i = lastCP.y+128; i < checkpoint.y; i=i+128) {
-                        if(debugEnabled && DRAW_EVERY_REGION_DEBUG) {
+                    for (let i = lastCP.y+128; i < GameMap.CHECKPOINTS[cpIndx].y; i=i+128) {
+                        if(gameOptions.isDebugModeEnabled && DRAW_EVERY_REGION_DEBUG) {
                             DrawPoint(lastCP.x, i)
                         }
                         const reg = new Region()
@@ -55,8 +56,8 @@ export class MapRegionController {
                     }
                     break;
                 case Direction.EAST:
-                    for (let i = lastCP.x+128; i < checkpoint.x; i=i+128) {
-                        if(debugEnabled && DRAW_EVERY_REGION_DEBUG) {
+                    for (let i = lastCP.x+128; i < GameMap.CHECKPOINTS[cpIndx].x; i=i+128) {
+                        if(gameOptions.isDebugModeEnabled && DRAW_EVERY_REGION_DEBUG) {
                             DrawPoint(i, lastCP.y)
                         }
                         const reg = new Region()
@@ -72,8 +73,8 @@ export class MapRegionController {
                     }
                     break;
                 case Direction.WEST:
-                    for (let i = lastCP.x-128; i > checkpoint.x; i=i-128) {
-                        if(debugEnabled && DRAW_EVERY_REGION_DEBUG) {
+                    for (let i = lastCP.x-128; i > GameMap.CHECKPOINTS[cpIndx].x; i=i-128) {
+                        if(gameOptions.isDebugModeEnabled  && DRAW_EVERY_REGION_DEBUG) {
                             DrawPoint(i, lastCP.y)
                         }
                         const reg = new Region()
@@ -89,22 +90,24 @@ export class MapRegionController {
                     }
                     break;
             }
-            lastCP = checkpoint;
-        })
+            lastCP = GameMap.CHECKPOINTS[cpIndx];
+        }
+
         this.enterTrig.addAction(() => {
-            const r = this.regions[Region.fromHandle(GetTriggeringRegion()).id];
-            const u = Unit.fromEvent();
-            const spawnedCreep = roundCreepController.get(u.id);
-            if(checkpoints[r.target_cp_indx] !== spawnedCreep.currentCheckpoint) {
-                // print('enter wong wegion')
+            const currentRegionId: number = Region.fromHandle(GetTriggeringRegion()).id;
+            const r = this.regions[currentRegionId];
+            const spawnedCreep = GameMap.SPAWNED_CREEP_MAP.get(Unit.fromEvent().id);
+            if(r.target_cp_indx !== spawnedCreep.nextCheckpointIndex) {
+                // print(`enter wong wegion: expected ${r.target_cp_indx}, got ${spawnedCreep.nextCheckpointIndex}`);
                 return;
             }
-            if(spawnedCreep.currentRegion) {
-                delete spawnedCreep.currentRegion.creeps[u.id];
+
+            if(spawnedCreep.currentRegion !== null && this.regions[spawnedCreep.currentRegion]) {
+                delete this.regions[spawnedCreep.currentRegion].creeps[spawnedCreep.unitId];
             }
-            r.creeps[u.id] = spawnedCreep;
-            spawnedCreep.currentRegion = r;
-            // print(`entred region ${r.regionId}`)
+            r.creeps[spawnedCreep.unitId] = spawnedCreep;
+            spawnedCreep.currentRegion = currentRegionId;
+            print(`entred region ${r.regionId}`);
         })
     }
 

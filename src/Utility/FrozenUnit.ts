@@ -1,12 +1,22 @@
 import {Unit} from "w3ts";
 
 export class FrozenUnit {
+    public hasDeepFreeze: boolean;
     public readonly permafrost: boolean;
+    public readonly hasIceShards: boolean;
     private readonly unit: Unit;
     private duration: number;
 
-    constructor(unit: Unit, duration: number, permafrost: boolean) {
+    constructor(
+        unit: Unit,
+        duration: number,
+        permafrost: boolean,
+        hasIceShards: boolean,
+        hasDeepFreeze: boolean,
+    ) {
         this.permafrost = permafrost;
+        this.hasIceShards = hasIceShards;
+        this.hasDeepFreeze = hasDeepFreeze;
         this.unit = unit;
         this.duration = duration;
     }

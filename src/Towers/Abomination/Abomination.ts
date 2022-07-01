@@ -13,6 +13,9 @@ import { IncreasedEffectiveness } from "./Upgrades/Path3/IncreasedEffectiveness"
 import { Overdrive } from "./Upgrades/Path3/Overdrive";
 import { ContaminationZone } from "./Upgrades/Path3/ContaminationZone";
 import {Unit} from "w3ts";
+import { Enlarge } from "./Upgrades/Path2/Enlarge";
+import { Pandemic } from "./Upgrades/Path2/Pandemic";
+import { Plague } from "./Upgrades/Path2/Plague";
 
 export interface AbominationCustomData {
     range: number;
@@ -26,7 +29,6 @@ export interface AbominationCustomData {
 
 const tickTowerAbilityId: number = FourCC('A008');
 
-// TODO: Should not be able to target invisible creeps
 export class Abomination extends TowerType {
     public upgrades: TowerUpgrade[][] = [
         [
@@ -39,6 +41,9 @@ export class Abomination extends TowerType {
         [
             new LongerRange(),
             new EvenLongerRange(),
+            new Enlarge(),
+            new Pandemic(),
+            new Plague(),
         ],
         [
             new IncreasedEffectiveness(),

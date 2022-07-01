@@ -60,11 +60,18 @@ export class StunUtils {
      * @param u - The unit to freeze
      * @param duration - The duration (in seconds) to freeze the unit for
      */
-     public freezeUnit(u: Unit, duration: number, permafrost: boolean, refreeze: boolean): void {
+     public freezeUnit(
+         u: Unit,
+         duration: number,
+         permafrost: boolean,
+         refreeze: boolean,
+         hasIceShards: boolean,
+         hasDeepFreeze: boolean,
+    ): void {
         const handleId: number = u.id;
         if (this.frozenUnits.has(handleId)) {
             if (refreeze) {
-                const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost);
+                const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost, hasIceShards, hasDeepFreeze);
                 if (frozenUnit.getDuration() < duration) {
                     frozenUnit.setDuration(duration);
                 }
@@ -77,7 +84,7 @@ export class StunUtils {
             this.stunnedUnits.get(handleId)?.setDuration(0);
         }
 
-        const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost);
+        const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost, hasIceShards, hasDeepFreeze);
         this.frozenUnits.set(handleId, frozenUnit);
         frozenUnit.getUnit().addAbility(this.freezeAbilityId);
         frozenUnit.getUnit().pauseEx(true);
@@ -97,6 +104,18 @@ export class StunUtils {
                 this.timerUtils.releaseTimer(t);
             }
         });
+    }
+
+    public getFrozenUnit(handleId: number): FrozenUnit | undefined {
+        return this.frozenUnits.get(handleId);
+    }
+
+    public unfreezeUnit(handleId: number) {
+        this.frozenUnits.get(handleId)?.setDuration(0);
+    }
+
+    public removeStun(handleId: number) {
+        this.stunnedUnits.get(handleId)?.setDuration(0);
     }
 
     public clearAllStuns(): void {

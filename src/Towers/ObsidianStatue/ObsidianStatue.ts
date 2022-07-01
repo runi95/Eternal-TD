@@ -6,6 +6,13 @@ import { EnhancedFreeze } from "./Upgrades/Path2/EnhancedFreeze";
 import { LargerRadius } from "./Upgrades/Path3/LargerRadius";
 import { ReFreeze } from "./Upgrades/Path3/ReFreeze";
 import {Unit} from "w3ts";
+import { IceShards } from "./Upgrades/Path1/IceShards";
+import { DeepFreeze } from "./Upgrades/Path2/DeepFreeze";
+import { FrostWyrm } from "./Upgrades/Path3/FrostWyrm";
+import { ArcticWind } from "./Upgrades/Path2/ArcticWind";
+import { Embrittlement } from "./Upgrades/Path1/Embrittlement";
+import { SuperBrittle } from "./Upgrades/Path1/SuperBrittle";
+import { Snowstorm } from "./Upgrades/Path2/Snowstorm";
 
 export interface ObsidianStatueCustomData {
     range: number;
@@ -15,6 +22,10 @@ export interface ObsidianStatueCustomData {
     hasPermafrost: boolean;
     hasColdSnap: boolean;
     hasReFreeze: boolean;
+    hasIceShards: boolean;
+    hasDeepFreeze: boolean;
+    hasEmbrittlement: boolean;
+    hasSuperBrittle: boolean;
 }
 
 const tickTowerAbilityId: number = FourCC('A008');
@@ -25,13 +36,20 @@ export class ObsidianStatue extends TowerType {
         [
             new Permafrost(),
             new ColdSnap(),
+            new IceShards(),
+            new Embrittlement(),
+            new SuperBrittle(),
         ],
         [
             new EnhancedFreeze(),
+            new DeepFreeze(),
+            new ArcticWind(),
+            new Snowstorm(),
         ],
         [
             new LargerRadius(),
             new ReFreeze(),
+            new FrostWyrm(),
         ]
     ];
     public unitTypeId: number = FourCC('h008');
@@ -45,6 +63,10 @@ export class ObsidianStatue extends TowerType {
             hasPermafrost: false,
             hasColdSnap: false,
             hasReFreeze: false,
+            hasIceShards: false,
+            hasDeepFreeze: false,
+            hasEmbrittlement: false,
+            hasSuperBrittle: false,
         };
     }
 

@@ -1,3 +1,4 @@
+import { TowerAbility } from "TowerAbilities/TowerAbility";
 import { Tower } from "./Tower";
 
 export abstract class TowerUpgrade {
@@ -8,4 +9,5 @@ export abstract class TowerUpgrade {
     public abstract applyUpgrade(tower: Tower): void;
     
     public newUnitTypeId?: number = undefined;
+    public readonly ability?: TowerAbility = undefined;
 }
