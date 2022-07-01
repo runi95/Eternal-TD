@@ -70,7 +70,7 @@ export class TowerAbilitySystem {
             BlzFrameSetAbsPoint(button, FRAMEPOINT_CENTER, x, FRAME_START_POS_Y);
             BlzFrameSetPoint(backdrop, FRAMEPOINT_CENTER, button, FRAMEPOINT_CENTER, 0.0, 0.0);
             BlzFrameSetTexture(backdrop, 'ReplaceableTextures/CommandButtons/BTNFlakCannons.blp', 0, true);
-            
+
             this.buttons.push(button);
             this.backdrops.push(backdrop);
 
@@ -132,7 +132,7 @@ export class TowerAbilitySystem {
                             }
                         }
 
-                        
+
                         activeAbility.visibleCooldown = minCooldown;
 
                         BlzFrameSetVisible(cooldownFrame, true);
@@ -238,7 +238,7 @@ export class TowerAbilitySystem {
                     const activeTower = this.towerAbilities[playerIndex][i].towers[j];
                     if (this.towerAbilities[playerIndex][i].towers.length > 1) {
                         this.towerAbilities[playerIndex][i].towers.splice(j, 1);
-    
+
                         let minCooldown: number = this.towerAbilities[playerIndex][i].towers[0].cooldown;
                         for (let k = 1; k < this.towerAbilities[playerIndex][i].towers.length; k++) {
                             if (this.towerAbilities[playerIndex][i].towers[k].cooldown < minCooldown) {
@@ -251,7 +251,7 @@ export class TowerAbilitySystem {
                         this.towerAbilities[playerIndex].splice(i, 1);
                         shift = i;
                     }
-                    
+
                     activeTower.cooldown = 0;
                     break;
                 }
@@ -282,12 +282,12 @@ export class TowerAbilitySystem {
                         // Hide previous tower
                         tower.unit.show = false;
                         units.push(tower.unit);
-                        
+
                         // Create a dummy tower
                         const dummyUnit = new Unit(tower.unit.owner, harpyRogueUnitTypeId, tower.unit.x, tower.unit.y, tower.unit.facing, 0);
                         dummyUnit.setAttackCooldown(0.06, 0);
                         dummyUnits.push(dummyUnit);
-                        const dummyTower = new Tower(dummyUnit, tower.towerType, tower.pathUpgrades);
+                        const dummyTower = new Tower(dummyUnit, tower.towerType, tower.visibleRegions, tower.pathUpgrades);
                         const pathUpgrades = tower.pathUpgrades;
                         dummyUnit.disableAbility(attackAbilityId, false, true);
                         for (let i = 0; i < pathUpgrades.length; i++) {
@@ -346,12 +346,12 @@ export class TowerAbilitySystem {
                         // Hide previous tower
                         tower.unit.show = false;
                         units.push(tower.unit);
-                        
+
                         // Create a dummy tower
                         const dummyUnit = new Unit(tower.unit.owner, greaterHarpyUnitTypeId, tower.unit.x, tower.unit.y, tower.unit.facing, 0);
                         dummyUnit.setAttackCooldown(0.03, 0);
                         dummyUnits.push(dummyUnit);
-                        const dummyTower = new Tower(dummyUnit, tower.towerType, tower.pathUpgrades);
+                        const dummyTower = new Tower(dummyUnit, tower.towerType, tower.visibleRegions,tower.pathUpgrades);
                         const pathUpgrades = tower.pathUpgrades;
                         dummyUnit.disableAbility(attackAbilityId, false, true);
                         for (let i = 0; i < pathUpgrades.length; i++) {
