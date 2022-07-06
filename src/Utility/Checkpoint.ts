@@ -20,6 +20,11 @@ export const DEBUG_DIRECTION = [
 export function distanceCP(checkpointA: Checkpoint, checkpointB: Checkpoint): number {
     return Math.abs(checkpointA.x - checkpointB.x) + Math.abs(checkpointA.y - checkpointB.y);
 }
+
+export function distance2D(cpA: Checkpoint, cpB: Checkpoint): number {
+    return Math.sqrt(Math.pow(cpA.x * 1.0 - cpB.x, 2) + Math.pow(cpA.y * 1.0 - cpB.y, 2))
+
+}
 export function directionCP(checkpointA: Checkpoint, checkpointB: Checkpoint): Direction {
     const diffA = checkpointA.x - checkpointB.x;
     const diffB = checkpointA.y - checkpointB.y;
@@ -37,5 +42,5 @@ export function directionCP(checkpointA: Checkpoint, checkpointB: Checkpoint): D
     }
     print('Same points or something, idk')
     return Direction.NORTH;
-
 }
+

@@ -42,3 +42,11 @@ export function DrawPoint(x: number, y: number, modelname?: string): void {
     sfx.push(new Effect(imagePath, x, y));
     drawings.push(sfx);
 }
+
+export function RemoveAllDrawings(): void {
+    let current = drawings.pop();
+    while (current) {
+        current.forEach((fx) => fx.destroy());
+        current = drawings.pop();
+    }
+}

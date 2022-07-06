@@ -9,6 +9,7 @@ import { TowerUpgrade } from "./TowerUpgrade";
 import {Timer, Trigger, Unit} from "w3ts";
 import { VoidwalkerCustomData } from "./Voidwalker/Voidwalker";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
+import {MapRegionController} from "../Game/MapRegionController";
 import { DefenseTypes } from "Creeps/DefenseTypes";
 import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
 import { TowerAbility } from "TowerAbilities/TowerAbility";
@@ -36,13 +37,15 @@ export class TowerController {
     private readonly stunUtils: StunUtils;
     private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly tickTowers: Map<number, Timer> = new Map();
+    private readonly mapRegionController: MapRegionController;
 
-    constructor(towerAbilitySystem: TowerAbilitySystem, timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>) {
+    constructor(towerAbilitySystem: TowerAbilitySystem, timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>, mapRegionController: MapRegionController) {
         this.towerAbilitySystem = towerAbilitySystem;
         this.timerUtils = timerUtils;
         this.stunUtils = stunUtils;
         this.randomNumberGenerator = randomNumberGenerator;
         this.towers = towers;
+        this.mapRegionController = mapRegionController;
 
         const constTrig: Trigger = new Trigger();
         constTrig.addAction(() => {
@@ -56,9 +59,9 @@ export class TowerController {
             }
 
             const trigHandleId: number = trig.id;
-            const tower: Tower = new Tower(trig, towerType);
+            const tower: Tower = new Tower(trig, towerType, mapRegionController.getVisibleRegions(trig));
             tower.towerType.applyInitialUnitValues(trig);
-            
+
             // TODO: Remove towers from this map when the tower is sold
             this.towers.set(trigHandleId, tower);
             this.addTickTower(tower);
@@ -207,7 +210,7 @@ export class TowerController {
 
                         if (BlzGetUnitIntegerField(u.handle, UNIT_IF_DEFENSE_TYPE) === DefenseTypes.HEAVY)
                             return;
-    
+
                         unitCount++;
 
                         if (hasEmbrittlement) {
@@ -256,10 +259,10 @@ export class TowerController {
                     }
 
                     lesserVoidwalker.applyTimedLife(timedLifeBuffId, duration);
-                    
+
                     if (additionalRange > 0) {
                         lesserVoidwalker.acquireRange = 450 + additionalRange;
-    
+
                         // NOTE: For some reason index starts at 1 for the UNIT_WEAPON_RF_ATTACK_RANGE field and it adds range instead of setting it.
                         BlzSetUnitWeaponRealField(lesserVoidwalker.handle, UNIT_WEAPON_RF_ATTACK_RANGE, 1, additionalRange);
                     }

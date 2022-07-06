@@ -53,13 +53,13 @@ export class Game {
         this.damageEventController = new DamageEventController(this.damageEngine, this.timerUtils, this.stunUtils, this.towers);
         this.randomNumberGenerator = new RandomNumberGenerator();
         this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils, this.towers, this.stunUtils);
-        this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers);
+        this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers, this.mapRegionController);
         this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController, this.towers);
-        
+
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils);
-        
+
         this.spells = new Spells(this.towerAbilitySystem, this.towers);
-        this.commandHandler = new Commands(this);
+        this.commandHandler = new Commands(this, this.mapRegionController, this.towers);
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 
@@ -86,7 +86,7 @@ export class Game {
 
             // Not allowed to attack ground if attack is hidden
             BlzUnitDisableAbility(attacker, attackAbilityId, false, false);
-            
+
             // Issue order to attack ground
             IssuePointOrderById(attacker, 851984, x, y);
 
@@ -162,7 +162,7 @@ export class Game {
                 this.roundIndex++;
                 return;
             }
-            
+
             tick += 0.03;
 
             const creepSpawnDetails = round[creepIndex];
