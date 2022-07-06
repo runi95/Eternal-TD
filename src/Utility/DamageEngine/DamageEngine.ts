@@ -3,7 +3,7 @@ import * as settings from './GameSettings';
 import { DamageEngineGlobals } from './DamageEngineGlobals';
 import { DamageEvent } from './DamageEvent';
 import { TimerUtils } from '../TimerUtils';
-import {Timer, Trigger} from "w3ts";
+import { Timer, Trigger } from "w3ts";
 
 interface Damage {
     type: number;

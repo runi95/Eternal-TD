@@ -6,7 +6,7 @@ import { Tower } from "./Tower";
 import { TowerType } from "./TowerType";
 import towerTypeMap from "./TowerTypes";
 import { TowerUpgrade } from "./TowerUpgrade";
-import {Timer, Trigger, Unit} from "w3ts";
+import { Timer, Trigger, Unit } from "w3ts";
 import { VoidwalkerCustomData } from "./Voidwalker/Voidwalker";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import {MapRegionController} from "../Game/MapRegionController";
@@ -122,7 +122,7 @@ export class TowerController {
     }
 
     private getTowerTickFunction(unitTypeId: number): (tower: Tower) => void {
-        switch(unitTypeId) {
+        switch (unitTypeId) {
             // ABOMINATION TICK FUNCTION
             case abominationUnitTypeId:
                 return (tower: Tower) => {
@@ -184,7 +184,7 @@ export class TowerController {
                         hasDeepFreeze,
                         hasEmbrittlement,
                         hasSuperBrittle,
-                     } = tower.customData as ObsidianStatueCustomData;
+                    } = tower.customData as ObsidianStatueCustomData;
                     const loc = tower.unit.point;
                     const group: Group = Group.fromRange(range, loc);
 

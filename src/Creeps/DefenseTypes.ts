@@ -6,5 +6,5 @@ export enum DefenseTypes {
     NORMAL = 4,
     HERO = 5,
     DIVINE = 6,
-    UNARMORED = 7,    
+    UNARMORED = 7,
 }

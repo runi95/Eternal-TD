@@ -1,4 +1,4 @@
-import {Trigger} from "w3ts";
+import { Trigger } from "w3ts";
 
 export abstract class Spell {
     protected readonly abstract abilityId: number;
@@ -15,5 +15,5 @@ export abstract class Spell {
     }
 
     // eslint-disable-next-line
-    protected action(): void {}
+    protected action(): void { }
 }

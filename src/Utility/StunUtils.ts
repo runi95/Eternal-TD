@@ -1,8 +1,8 @@
-import {StunnedUnit} from './StunnedUnit';
-import {TimerUtils} from './TimerUtils';
-import {FrozenUnit} from './FrozenUnit';
-import {MapPlayer, Timer, Unit} from "w3ts";
-import {OrderId} from "w3ts/globals/order";
+import { StunnedUnit } from './StunnedUnit';
+import { TimerUtils } from './TimerUtils';
+import { FrozenUnit } from './FrozenUnit';
+import { MapPlayer, Timer, Unit } from "w3ts";
+import { OrderId } from "w3ts/globals/order";
 
 const dummyUnitTypeId: number = FourCC('u007');
 const timedLifeBuffId: number = FourCC('BTLF');
@@ -45,7 +45,7 @@ export class StunUtils {
                     if (!this.frozenUnits.has(handleId)) {
                         BlzPauseUnitEx(stunnedUnit.getUnit(), false);
                     }
-                    
+
                     this.stunnedUnits.delete(handleId);
                     this.timerUtils.releaseTimer(t);
                 }
@@ -60,13 +60,13 @@ export class StunUtils {
      * @param u - The unit to freeze
      * @param duration - The duration (in seconds) to freeze the unit for
      */
-     public freezeUnit(
-         u: Unit,
-         duration: number,
-         permafrost: boolean,
-         refreeze: boolean,
-         hasIceShards: boolean,
-         hasDeepFreeze: boolean,
+    public freezeUnit(
+        u: Unit,
+        duration: number,
+        permafrost: boolean,
+        refreeze: boolean,
+        hasIceShards: boolean,
+        hasDeepFreeze: boolean,
     ): void {
         const handleId: number = u.id;
         if (this.frozenUnits.has(handleId)) {

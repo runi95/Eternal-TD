@@ -126,7 +126,7 @@ export class TowerAbilitySystem {
                     if (isLastAbility) {
                         const activeAbility = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex];
                         let minCooldown = tower.cooldown;
-                        for(let i = 0; i < this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers.length; i++) {
+                        for (let i = 0; i < this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers.length; i++) {
                             if (this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers[i].cooldown < minCooldown) {
                                 minCooldown = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers[i].cooldown;
                             }
@@ -164,7 +164,7 @@ export class TowerAbilitySystem {
         };
 
         let activeAbility: ActiveTowerAbility | undefined = undefined;
-        for(let i = 0; i < this.towerAbilities[playerIndex].length; i++) {
+        for (let i = 0; i < this.towerAbilities[playerIndex].length; i++) {
             if (this.towerAbilities[playerIndex][i].ability.name === ability.name) {
                 this.towerAbilities[playerIndex][i].towers.push(abilTower);
                 activeAbility = this.towerAbilities[playerIndex][i];
@@ -210,7 +210,7 @@ export class TowerAbilitySystem {
     }
 
     public render(): void {
-        for(let i = 0; i < MAX_FRAME_COUNT; i++) {
+        for (let i = 0; i < MAX_FRAME_COUNT; i++) {
             const playerIndex: number = GetPlayerId(GetLocalPlayer());
             let abilityIcon: string = "";
             let isVisible: boolean = false;
@@ -413,7 +413,7 @@ export class TowerAbilitySystem {
                         const uLife = u.life;
                         if (targ === undefined || uLife > targLife) {
                             targ = u,
-                            targLife = uLife;
+                                targLife = uLife;
                         }
                     });
                     grp.destroy();

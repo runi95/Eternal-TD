@@ -28,14 +28,14 @@ export function distance2D(cpA: Checkpoint, cpB: Checkpoint): number {
 export function directionCP(checkpointA: Checkpoint, checkpointB: Checkpoint): Direction {
     const diffA = checkpointA.x - checkpointB.x;
     const diffB = checkpointA.y - checkpointB.y;
-    if(diffA !== 0) {
-        if(diffA < 0) {
+    if (diffA !== 0) {
+        if (diffA < 0) {
             return Direction.EAST;
         }
         return Direction.WEST;
     }
-    if(diffB !== 0) {
-        if(diffB > 0) {
+    if (diffB !== 0) {
+        if (diffB > 0) {
             return Direction.SOUTH;
         }
         return Direction.NORTH;
@@ -43,4 +43,3 @@ export function directionCP(checkpointA: Checkpoint, checkpointB: Checkpoint): D
     print('Same points or something, idk')
     return Direction.NORTH;
 }
-

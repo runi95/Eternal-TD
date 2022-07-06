@@ -28,7 +28,7 @@ export class DamageEventController {
         damageEngine.addAfterDamageEvent(new SapperDamageEvent(towers));
         damageEngine.addAfterDamageEvent(new SeaGiantDamageEvent(timerUtils, towers));
         damageEngine.addAfterDamageEvent(new SkeletalOrcDamageEvent(stunUtils));
-        damageEngine.addAfterDamageEvent(new FrostWyrmDamageEvent(towers, stunUtils)); 
+        damageEngine.addAfterDamageEvent(new FrostWyrmDamageEvent(towers, stunUtils));
 
         // Lethal damage events
         damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent(stunUtils));

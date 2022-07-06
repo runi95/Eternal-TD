@@ -12,7 +12,7 @@ import { FurtherIncreasedEffectiveness } from "./Upgrades/Path3/FurtherIncreased
 import { IncreasedEffectiveness } from "./Upgrades/Path3/IncreasedEffectiveness";
 import { Overdrive } from "./Upgrades/Path3/Overdrive";
 import { ContaminationZone } from "./Upgrades/Path3/ContaminationZone";
-import {Unit} from "w3ts";
+import { Unit } from "w3ts";
 import { Enlarge } from "./Upgrades/Path2/Enlarge";
 import { Pandemic } from "./Upgrades/Path2/Pandemic";
 import { Plague } from "./Upgrades/Path2/Plague";
@@ -54,7 +54,7 @@ export class Abomination extends TowerType {
         ]
     ];
     public unitTypeId: number = FourCC('h007');
-    
+
     public initializeCustomData(): AbominationCustomData {
         return {
             range: 300,

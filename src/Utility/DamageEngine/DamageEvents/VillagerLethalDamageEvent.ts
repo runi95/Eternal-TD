@@ -9,7 +9,7 @@ import { GameMap } from "Game/GameMap";
 const obsidianStatueUnitTypeId: number = FourCC('h008');
 export class VillagerLethalDamageEvent implements DamageEvent {
     private readonly stunUtils: StunUtils;
-    
+
     constructor(stunUtils: StunUtils) {
         this.stunUtils = stunUtils;
     }

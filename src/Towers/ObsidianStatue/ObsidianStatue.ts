@@ -5,7 +5,7 @@ import { Permafrost } from "./Upgrades/Path1/Permafrost";
 import { EnhancedFreeze } from "./Upgrades/Path2/EnhancedFreeze";
 import { LargerRadius } from "./Upgrades/Path3/LargerRadius";
 import { ReFreeze } from "./Upgrades/Path3/ReFreeze";
-import {Unit} from "w3ts";
+import { Unit } from "w3ts";
 import { IceShards } from "./Upgrades/Path1/IceShards";
 import { DeepFreeze } from "./Upgrades/Path2/DeepFreeze";
 import { FrostWyrm } from "./Upgrades/Path3/FrostWyrm";

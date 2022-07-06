@@ -1,4 +1,4 @@
-import {Trigger} from "w3ts";
+import { Trigger } from "w3ts";
 
 export class Debug {
     private readonly cast_trig: Trigger = new Trigger();

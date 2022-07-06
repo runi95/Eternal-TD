@@ -1,6 +1,6 @@
-import {Spell} from 'Spells/Spell';
-import {Unit} from "w3ts";
-import {OrderId} from "w3ts/globals/order";
+import { Spell } from 'Spells/Spell';
+import { Unit } from "w3ts";
+import { OrderId } from "w3ts/globals/order";
 
 const attackAbilityId: number = FourCC('Aatk');
 export class AttackGround extends Spell {

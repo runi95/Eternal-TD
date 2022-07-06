@@ -1,7 +1,7 @@
 import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
 import { Tower } from "Towers/Tower";
-import {MapPlayer, Trigger, Unit} from "w3ts";
-import {OrderId} from "w3ts/globals/order";
+import { MapPlayer, Trigger, Unit } from "w3ts";
+import { OrderId } from "w3ts/globals/order";
 
 export class Sell {
     private readonly towerAbilitySystem: TowerAbilitySystem;

@@ -1,4 +1,4 @@
-import {Unit} from "w3ts";
+import { Unit } from "w3ts";
 
 export class FrozenUnit {
     public hasDeepFreeze: boolean;

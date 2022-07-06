@@ -7,7 +7,7 @@ export abstract class TowerUpgrade {
     public abstract cost: number;
     public abstract description: string;
     public abstract applyUpgrade(tower: Tower): void;
-    
+
     public newUnitTypeId?: number = undefined;
     public readonly ability?: TowerAbility = undefined;
 }

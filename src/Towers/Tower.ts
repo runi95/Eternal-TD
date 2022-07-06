@@ -1,6 +1,6 @@
 import { TowerType } from "./TowerType";
-import {Unit} from "w3ts";
-import {CreepRegion} from "../Creeps/CreepRegion";
+import { Unit } from "w3ts";
+import { CreepRegion } from "../Creeps/CreepRegion";
 
 export class Tower {
     public readonly towerType: TowerType;

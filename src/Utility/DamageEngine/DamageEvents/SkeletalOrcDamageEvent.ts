@@ -9,7 +9,7 @@ const skeletalOrcUnitTypeId: number = FourCC('h006');
 const skeletalHammerAbilityId: number = FourCC('A004');
 export class SkeletalOrcDamageEvent implements DamageEvent {
     private readonly stunUtils: StunUtils;
-    
+
     constructor(stunUtils: StunUtils) {
         this.stunUtils = stunUtils;
     }
@@ -36,7 +36,7 @@ export class SkeletalOrcDamageEvent implements DamageEvent {
             switch (spawnedCreep.creepBaseUnit.name) {
                 case Zeppelin.name:
                     // Skeletal Orc should not stun Zeppelins unless upgraded.
-                return;
+                    return;
             }
         }
 

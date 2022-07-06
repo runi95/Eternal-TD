@@ -29,7 +29,7 @@ const rounds: Rounds = [
         {
             creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 35,
-            delay:  0.9
+            delay: 0.9
         }
     ],
 

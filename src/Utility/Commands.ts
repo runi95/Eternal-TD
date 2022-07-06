@@ -1,9 +1,9 @@
-import {Game} from "../Game/Game";
-import {MapPlayer, Trigger, Unit} from "w3ts";
-import {Players} from "w3ts/globals";
-import {DrawPoint, DrawRect, RemoveAllDrawings} from "./Rasterizer";
-import {MapRegionController} from "../Game/MapRegionController";
-import {Tower} from "../Towers/Tower";
+import { Game } from "../Game/Game";
+import { MapPlayer, Trigger, Unit } from "w3ts";
+import { Players } from "w3ts/globals";
+import { DrawPoint, DrawRect, RemoveAllDrawings } from "./Rasterizer";
+import { MapRegionController } from "../Game/MapRegionController";
+import { Tower } from "../Towers/Tower";
 
 const COMMAND_PREFIX = '-';
 
@@ -40,9 +40,9 @@ export class Commands {
         switch (command) {
             case "draw":
                 if (args.length === 4) {
-                // const point = Point.fromHandle(player.startLocationPoint);
+                    // const point = Point.fromHandle(player.startLocationPoint);
                     DrawRect(parseInt(args[0]), parseInt(args[1]), parseInt(args[2]), parseInt(args[3]));
-                //     print(`${point.x} ${point.y}, ${point.z}`)
+                    //     print(`${point.x} ${point.y}, ${point.z}`)
                 }
                 break;
             case "clear":
@@ -50,26 +50,26 @@ export class Commands {
                 break;
 
             case "coords":
-                    if(this.selectedUnit) {
-                        print(`${this.selectedUnit.x}, ${this.selectedUnit.y}`);
-                        const tower = this.towers.get(this.selectedUnit.id);
-                        if(tower) {
-                            tower.visibleRegions.forEach((reg) => DrawPoint(reg.center.x, reg.center.y));
-                        }
-                        break;
+                if (this.selectedUnit) {
+                    print(`${this.selectedUnit.x}, ${this.selectedUnit.y}`);
+                    const tower = this.towers.get(this.selectedUnit.id);
+                    if (tower) {
+                        tower.visibleRegions.forEach((reg) => DrawPoint(reg.center.x, reg.center.y));
                     }
-                    if (!this.utilityTriggers[`${player.id}-selectTrigger`]) {
-                        const t = new Trigger();
-                        t.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SELECTED);
-                        t.addAction(() => {
-                            this.selectedUnit = Unit.fromEvent();
-                            // t.destroy();
-                            // this.utilityTriggers[`${player.id}-selectTrigger`] = undefined;
-                        })
-                        this.utilityTriggers[`${player.id}-selectTrigger`] = t;
-                        break;
-                    }
-                    print("Select a unit first");
+                    break;
+                }
+                if (!this.utilityTriggers[`${player.id}-selectTrigger`]) {
+                    const t = new Trigger();
+                    t.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SELECTED);
+                    t.addAction(() => {
+                        this.selectedUnit = Unit.fromEvent();
+                        // t.destroy();
+                        // this.utilityTriggers[`${player.id}-selectTrigger`] = undefined;
+                    })
+                    this.utilityTriggers[`${player.id}-selectTrigger`] = t;
+                    break;
+                }
+                print("Select a unit first");
                 break;
             case "zoom":
             case "cam":
@@ -95,7 +95,7 @@ export class Commands {
             case "next":
                 if (args.length !== 1)
                     break;
-                
+
                 this.game.roundIndex = parseInt(args[0]) - 1;
                 break;
         }

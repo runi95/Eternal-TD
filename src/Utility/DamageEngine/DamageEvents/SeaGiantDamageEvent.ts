@@ -2,9 +2,9 @@ import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { TimerUtils } from "../../TimerUtils";
 import { ATTACK_TYPE_SIEGE } from "../GameSettings";
-import {Effect, Timer, Unit} from "w3ts";
-import {Point} from "w3ts/handles/point";
-import {Group} from "../../Group";
+import { Effect, Timer, Unit } from "w3ts";
+import { Point } from "w3ts/handles/point";
+import { Group } from "../../Group";
 import { Tower } from "Towers/Tower";
 import { SapperCustomData } from "Towers/Sapper/Sapper";
 
@@ -13,8 +13,8 @@ const clusterBombsAbilityId: number = FourCC('A005');
 export class SeaGiantDamageEvent implements DamageEvent {
     private readonly timerUtils: TimerUtils;
     private readonly towers: Map<number, Tower>;
-    
-    constructor (timerUtils: TimerUtils, towers: Map<number, Tower>) {
+
+    constructor(timerUtils: TimerUtils, towers: Map<number, Tower>) {
         this.timerUtils = timerUtils;
         this.towers = towers;
     }
@@ -45,7 +45,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
         const userData: number = (GetUnitUserData(globals.DamageEventSource as unit) + 1) % 2;
         SetUnitUserData(globals.DamageEventSource as unit, userData);
 
-        const {aoeDamage} = (tower.customData as SapperCustomData)
+        const { aoeDamage } = (tower.customData as SapperCustomData)
 
         let ticks = 21;
         const t: Timer = this.timerUtils.newTimer();
@@ -54,7 +54,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
 
             if (ticks > 12) {
                 const loc: Point = new Point(x + 150 * CosBJ(45 * ticks), y + 150 * SinBJ(45 * ticks));
-                const effect = new Effect('Objects/Spawnmodels/Human/FragmentationShards/FragBoomSpawn.mdl',loc.x, loc.y )
+                const effect = new Effect('Objects/Spawnmodels/Human/FragmentationShards/FragBoomSpawn.mdl', loc.x, loc.y)
                 effect.destroy()
                 const grp: Group = Group.fromRange(150, loc);
                 grp.for((u: Unit) => {
@@ -71,7 +71,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
                 // Wait...
             } else {
                 const loc: Point = new Point(x + 200 * CosBJ(45 * ticks), y + 200 * SinBJ(45 * ticks));
-                const effect = new Effect('Abilities/Weapons/CannonTowerMissile/CannonTowerMissile.mdl',loc.x, loc.y )
+                const effect = new Effect('Abilities/Weapons/CannonTowerMissile/CannonTowerMissile.mdl', loc.x, loc.y)
                 effect.destroy()
                 const grp: Group = Group.fromRange(340, loc);
                 grp.for((u: Unit) => {

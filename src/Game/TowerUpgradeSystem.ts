@@ -34,7 +34,7 @@ export class TowerUpgradeSystem {
                 this.upgradePathIconFrames[i].push(this.createUpgradePathIconFrame(this.menu, x + i * 0.046875, y + j * 0.0375));
             }
         }
-        
+
         const menuBackdrop: Frame = new Frame('menuBackdrop', this.menu, -1, 0, 'BACKDROP', '');
 
         menuBackdrop.setTexture("war3mapImported/TowerUpgradePanel.dds", 0, true)
@@ -99,7 +99,7 @@ export class TowerUpgradeSystem {
     }
 
     private createUpgradePathIconFrame(parent: Frame, offsetX: number, offsetY: number): Frame {
-        const iconFrame = new Frame( 'iconFrame', parent, -1, 0, 'BACKDROP', '');
+        const iconFrame = new Frame('iconFrame', parent, -1, 0, 'BACKDROP', '');
         iconFrame.setSize(0.02625, 0.02625)
         iconFrame.setPoint(FRAMEPOINT_CENTER, parent, FRAMEPOINT_CENTER, offsetX, offsetY)
         iconFrame.setTexture("UI/Widgets/EscMenu/Human/Quest-Unknown.dds", 0, true)

@@ -1,6 +1,6 @@
 import * as grp from "w3ts/handles/group";
-import {Unit} from "w3ts";
-import {Point} from "w3ts/handles/point";
+import { Unit } from "w3ts";
+import { Point } from "w3ts/handles/point";
 
 
 // TODO: PR to w3ts to add this

@@ -10,7 +10,7 @@ import { Zeppelin } from "Creeps/Normal/Zeppelin";
 
 export class VillagerTypeBonusDamageEvent implements DamageEvent {
     private readonly towers: Map<number, Tower>;
-    
+
     constructor(towers: Map<number, Tower>) {
         this.towers = towers;
     }

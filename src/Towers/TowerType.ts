@@ -1,10 +1,10 @@
 import { TowerUpgrade } from "./TowerUpgrade";
-import {Unit} from "w3ts";
+import { Unit } from "w3ts";
 
 export abstract class TowerType {
     public abstract unitTypeId: number;
     public abstract upgrades: TowerUpgrade[][];
-    
+
     public initializeCustomData(): unknown {
         return;
     }

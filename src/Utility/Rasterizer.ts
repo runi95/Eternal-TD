@@ -1,4 +1,4 @@
-import {Effect} from "w3ts";
+import { Effect } from "w3ts";
 
 const drawings: Effect[][] = [];
 

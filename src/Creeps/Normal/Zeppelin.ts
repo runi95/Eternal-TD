@@ -8,6 +8,6 @@ export class Zeppelin extends CreepBaseUnit {
 
     public readonly health: number = 400;
     public readonly unitTypeId: number = zeppelinTypeId;
-    public readonly color: Color = {r: 255, g: 255, b: 255, a: 255};
+    public readonly color: Color = { r: 255, g: 255, b: 255, a: 255 };
     public readonly children: CreepBaseUnit[] = [LargeVillager.LARGE_VILLAGER, LargeVillager.LARGE_VILLAGER, LargeVillager.LARGE_VILLAGER, LargeVillager.LARGE_VILLAGER];
 }

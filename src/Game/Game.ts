@@ -1,19 +1,19 @@
-import {TimerUtils} from "../Utility/TimerUtils";
-import {Spells} from "../Spells/Spells";
-import {getRoundCreeps} from "./Rounds";
-import {DamageEngineGlobals} from "../Utility/DamageEngine/DamageEngineGlobals";
-import {DamageEngine} from "../Utility/DamageEngine/DamageEngine";
-import {DamageEventController} from "../Utility/DamageEngine/DamageEventController";
-import {Checkpoint} from "../Utility/Checkpoint";
-import {TowerUpgradeSystem} from "./TowerUpgradeSystem";
-import {Tower} from "../Towers/Tower";
-import {CreepRegenSystem} from "../Creeps/CreepRegenSystem";
-import {StunUtils} from "../Utility/StunUtils";
-import {TowerController} from "../Towers/TowerController";
-import {Effect, Timer, Trigger} from "w3ts";
+import { TimerUtils } from "../Utility/TimerUtils";
+import { Spells } from "../Spells/Spells";
+import { getRoundCreeps } from "./Rounds";
+import { DamageEngineGlobals } from "../Utility/DamageEngine/DamageEngineGlobals";
+import { DamageEngine } from "../Utility/DamageEngine/DamageEngine";
+import { DamageEventController } from "../Utility/DamageEngine/DamageEventController";
+import { Checkpoint } from "../Utility/Checkpoint";
+import { TowerUpgradeSystem } from "./TowerUpgradeSystem";
+import { Tower } from "../Towers/Tower";
+import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
+import { StunUtils } from "../Utility/StunUtils";
+import { TowerController } from "../Towers/TowerController";
+import { Effect, Timer, Trigger } from "w3ts";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
-import {Commands} from "../Utility/Commands";
-import {MapRegionController} from "./MapRegionController";
+import { Commands } from "../Utility/Commands";
+import { MapRegionController } from "./MapRegionController";
 import { TowerAbilitySystem } from "../TowerAbilities/TowerAbilitySystem";
 import { Sounds } from "Utility/Sounds";
 import { GameMap } from "./GameMap";
@@ -37,7 +37,7 @@ export class Game {
     private readonly towers: Map<number, Tower> = new Map();
     private readonly mapRegionController: MapRegionController;
     private readonly builderUnitTypeId: number = FourCC('u001');
-    private readonly castleLocation: Checkpoint = {x: -2560, y: 2368};
+    private readonly castleLocation: Checkpoint = { x: -2560, y: 2368 };
     private readonly castleUnitTypeId: number = FourCC('h00H');
     private readonly castleUnit: unit;
     private readonly gameOptions: GameOptions;
@@ -129,7 +129,7 @@ export class Game {
                 SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);
                 FogModifierStart(CreateFogModifierRect(Player(i), FOG_OF_WAR_VISIBLE, GetEntireMapRect(), false, false));
                 SetPlayerAlliance(Player(23), Player(i), ALLIANCE_PASSIVE, true);
-                const builder = CreateUnit(Player(i), this.builderUnitTypeId, this.gameMap.playableArea.centerX,this.gameMap.playableArea.centerY, bj_UNIT_FACING);
+                const builder = CreateUnit(Player(i), this.builderUnitTypeId, this.gameMap.playableArea.centerX, this.gameMap.playableArea.centerY, bj_UNIT_FACING);
                 SelectUnitForPlayerSingle(builder, Player(i));
             }
         }

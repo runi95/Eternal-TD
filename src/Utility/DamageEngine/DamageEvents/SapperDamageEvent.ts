@@ -1,9 +1,9 @@
 import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { ATTACK_TYPE_SIEGE } from "../GameSettings";
-import {Unit} from "w3ts";
-import {Point} from "w3ts/handles/point";
-import {Group} from "../../Group";
+import { Unit } from "w3ts";
+import { Point } from "w3ts/handles/point";
+import { Group } from "../../Group";
 import { Tower } from "Towers/Tower";
 import { SapperCustomData } from "Towers/Sapper/Sapper";
 
@@ -26,7 +26,7 @@ export class SapperDamageEvent implements DamageEvent {
             return;
         }
 
-        switch(globals.DamageEventSourceUnitTypeId) {
+        switch (globals.DamageEventSourceUnitTypeId) {
             case sapperUnitTypeId:
             case seaGiantUnitTypeId:
             case wendigoUnitTypeId:
@@ -48,7 +48,7 @@ export class SapperDamageEvent implements DamageEvent {
             return;
         }
 
-        const {areaOfEffect, maxUnitCount, aoeDamage} = tower.customData as SapperCustomData;
+        const { areaOfEffect, maxUnitCount, aoeDamage } = tower.customData as SapperCustomData;
 
         const loc: Point = new Point(GetUnitX(targ), GetUnitY(targ));
         const grp: Group = Group.fromRange(areaOfEffect, loc);

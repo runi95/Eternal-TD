@@ -3,7 +3,7 @@ import { DefenseTypes } from "./DefenseTypes";
 import { TargetFlags } from "./TargetFlags";
 
 export class CreepDefaults {
-    public static readonly SCALE: Scale = {x: 1.1, y: 1.1, z: 1.1};
+    public static readonly SCALE: Scale = { x: 1.1, y: 1.1, z: 1.1 };
     public static readonly HEALTH: number = 1;
     public static readonly UNIT_TYPE_ID: number = FourCC('u000');
     public static readonly UNIT_SKIN_TYPE_ID: number = null;

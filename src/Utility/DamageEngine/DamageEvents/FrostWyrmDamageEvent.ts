@@ -1,9 +1,9 @@
 import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { ATTACK_TYPE_NORMAL } from "../GameSettings";
-import {Unit} from "w3ts";
-import {Point} from "w3ts/handles/point";
-import {Group} from "../../Group";
+import { Unit } from "w3ts";
+import { Point } from "w3ts/handles/point";
+import { Group } from "../../Group";
 import { Tower } from "Towers/Tower";
 import { StunUtils } from "Utility/StunUtils";
 import { ObsidianStatueCustomData } from "Towers/ObsidianStatue/ObsidianStatue";

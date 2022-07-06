@@ -40,7 +40,7 @@ export class Creep {
     public static spawn(creepBaseUnit: CreepBaseUnit, modifiers: CreepModifier[] = [], nextCheckpointIndex: number = 1, x?: number, y?: number, face: number = 0): void {
         new Creep(creepBaseUnit, null, modifiers, nextCheckpointIndex, x, y, face);
     }
-    
+
     private constructor(creepBaseUnit: CreepBaseUnit, parent: Parent, modifiers: CreepModifier[], nextCheckpointIndex: number, x: number, y: number, face: number) {
         this._creepBaseUnit = creepBaseUnit;
         this._parent = parent;
@@ -79,20 +79,20 @@ export class Creep {
             if (modifier.scaleOverride !== undefined) scaleOverride = modifier.scaleOverride;
             if (modifier.applyEffect !== undefined) applyEffects.push(modifier.applyEffect);
         }
-        
-        this.colorMask = {r: rMask, g: gMask, b: bMask, a: aMask};
+
+        this.colorMask = { r: rMask, g: gMask, b: bMask, a: aMask };
         this.healthAddend = healthAddend;
         this.healthMultiplier = healthMultiplier;
         this.defenseTypeOverride = defenseTypeOverride;
         this.targetAsOverride = targetAsOverride;
         this.scaleOverride = scaleOverride;
-        
+
         this.applyStats();
-        
+
         for (const applyEffect of applyEffects) {
             (applyEffect as any)(this.unit); // FIXME: Why do we have to do "as any" here?
         }
-        
+
         this.unit.issueOrderAt("move", GameMap.CHECKPOINTS[nextCheckpointIndex].x, GameMap.CHECKPOINTS[nextCheckpointIndex].y);
         this.unit.setExploded(true);
 
@@ -137,9 +137,9 @@ export class Creep {
     public dealDamageToBaseUnits(creepBaseUnit: CreepBaseUnit, damageAmount: number): CreepDamageEvent {
         const modifiedHealth = (creepBaseUnit.health + this.healthAddend) * this.healthMultiplier;
         if (damageAmount < modifiedHealth) {
-            return {spawnedCreeps: [creepBaseUnit], overflowingDamage: damageAmount};
+            return { spawnedCreeps: [creepBaseUnit], overflowingDamage: damageAmount };
         }
-        
+
         damageAmount -= modifiedHealth;
 
         let spawnedCreeps: CreepBaseUnit[] = [];
@@ -168,7 +168,7 @@ export class Creep {
     private get color(): Color {
         return {
             r: Math.round(this._creepBaseUnit.color.r * this.colorMask.r),
-            g: Math.round(this._creepBaseUnit.color.g * this.colorMask.g), 
+            g: Math.round(this._creepBaseUnit.color.g * this.colorMask.g),
             b: Math.round(this._creepBaseUnit.color.b * this.colorMask.b),
             a: Math.round(this._creepBaseUnit.color.a * this.colorMask.a)
         };
