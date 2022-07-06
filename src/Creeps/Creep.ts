@@ -48,7 +48,11 @@ export class Creep {
         this.modifiers = modifiers;
         this.unit = new Unit(MapPlayer.fromIndex(23), creepBaseUnit.unitTypeId, x || GameMap.CHECKPOINTS[0].x, y || GameMap.CHECKPOINTS[0].y, face);
         this.unitId = this.unit.id;
-        
+
+        if (creepBaseUnit.unitSkinTypeId !== CreepDefaults.UNIT_SKIN_TYPE_ID) {
+            this.unit.skin = creepBaseUnit.unitSkinTypeId;
+        }
+
         let rMask = 1;
         let gMask = 1;
         let bMask = 1;

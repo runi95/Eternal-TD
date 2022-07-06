@@ -11,6 +11,7 @@ export abstract class CreepBaseUnit {
     public readonly health: number = CreepDefaults.HEALTH;
     public readonly moveSpeed: number = CreepDefaults.MOVE_SPEED;
     public readonly unitTypeId: number = CreepDefaults.UNIT_TYPE_ID;
+    public readonly unitSkinTypeId: number | null = CreepDefaults.UNIT_SKIN_TYPE_ID;
     public readonly defenseType: DefenseTypes = CreepDefaults.DEFENSE_TYPE;
     public readonly targetAs: TargetFlags = CreepDefaults.TARGET_AS_FLAG;
     public readonly children: CreepBaseUnit[] = [];

@@ -168,18 +168,6 @@ STRING 46
 Gives a 40% chance to do 50 additional damage on an attack.
 }
 
-STRING 47
-// Units: u004 (Villager), Name (Name)
-{
-Villager
-}
-
-STRING 52
-// Units: u004 (Villager), EditorSuffix (Name - Editor Suffix)
-{
-(Fortified)
-}
-
 STRING 55
 // Units: u006 (Zeppelin), Name (Name)
 {
