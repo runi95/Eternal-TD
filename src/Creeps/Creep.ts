@@ -112,6 +112,8 @@ export class Creep {
     }
 
     public dealLethalDamage(damageAmount: number): number {
+        GameMap.PLAYER_GOLD_TO_DISTRIBUTE++;
+
         let spawnedCreeps: CreepBaseUnit[] = [];
         if (this.hasModifier(OverflowProtectionModifier.OVERFLOW_PROTECTION_MODIFIER)) {
             spawnedCreeps = this._creepBaseUnit.children;
@@ -147,6 +149,7 @@ export class Creep {
             return { spawnedCreeps: [creepBaseUnit], overflowingDamage: damageAmount };
         }
 
+        GameMap.PLAYER_GOLD_TO_DISTRIBUTE++;
         damageAmount -= modifiedHealth;
 
         let spawnedCreeps: CreepBaseUnit[] = [];

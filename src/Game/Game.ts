@@ -10,7 +10,7 @@ import { Tower } from "../Towers/Tower";
 import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
 import { StunUtils } from "../Utility/StunUtils";
 import { TowerController } from "../Towers/TowerController";
-import { Effect, Timer, Trigger } from "w3ts";
+import { Effect, MapPlayer, Timer, Trigger } from "w3ts";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import { Commands } from "../Utility/Commands";
 import { MapRegionController } from "./MapRegionController";
@@ -122,8 +122,10 @@ export class Game {
     public start(): void {
         for (let i = 0; i < bj_MAX_PLAYERS; i++) {
             if (GetPlayerSlotState(Player(i)) === PLAYER_SLOT_STATE_PLAYING && GetPlayerController(Player(i)) === MAP_CONTROL_USER) {
-                // SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 650);
-                SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);
+                GameMap.ONLINE_PLAYER_ID_LIST.push(i);
+
+                SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 650);
+                // SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);
                 FogModifierStart(CreateFogModifierRect(Player(i), FOG_OF_WAR_VISIBLE, GetEntireMapRect(), false, false));
                 SetPlayerAlliance(Player(23), Player(i), ALLIANCE_PASSIVE, true);
                 const builder = CreateUnit(Player(i), this.builderUnitTypeId, this.gameMap.playableArea.centerX, this.gameMap.playableArea.centerY, bj_UNIT_FACING);
@@ -182,6 +184,16 @@ export class Game {
 
             if (GameMap.ROUND_INDEX !== currentRound) {
                 this.timerUtils.releaseTimer(t);
+
+                const currentGoldToDistribute = GameMap.PLAYER_GOLD_TO_DISTRIBUTE;
+                const goldPerPlayer = Math.floor(currentGoldToDistribute / GameMap.ONLINE_PLAYER_ID_LIST.length);
+                GameMap.PLAYER_GOLD_TO_DISTRIBUTE = currentGoldToDistribute % GameMap.ONLINE_PLAYER_ID_LIST.length;
+
+                for (let i = 0; i < GameMap.ONLINE_PLAYER_ID_LIST.length; i++) {
+                    const player = MapPlayer.fromIndex(GameMap.ONLINE_PLAYER_ID_LIST[i]);
+                    player.setState(PLAYER_STATE_RESOURCE_GOLD, player.getState(PLAYER_STATE_RESOURCE_GOLD) + goldPerPlayer);
+                }
+
                 this.spawnRounds();
             }
         });

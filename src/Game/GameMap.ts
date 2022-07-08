@@ -7,6 +7,8 @@ import type { Tower } from "../Towers/Tower";
 export class GameMap {
     public static ROUND_INDEX: number = 0;
     public static MAXIMUM_CREEP_MODIFIER_COUNT: number = 4;
+    public static PLAYER_GOLD_TO_DISTRIBUTE: number = 0;
+    public static ONLINE_PLAYER_ID_LIST: number[] = [];
     public static readonly SPAWNED_CREEP_MAP = new Map<number, Creep>();
     public static readonly BUILT_TOWER_MAP: Map<number, Tower> = new Map();
     public static readonly AVAILABLE_MODIFIERS: CreepModifier[] = [];
