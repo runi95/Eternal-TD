@@ -149,7 +149,8 @@ export class Game {
 
     private spawnRounds(): void {
         const t: Timer = this.timerUtils.newTimer();
-        const round = getRoundCreeps(GameMap.ROUND_INDEX);
+        const currentRound = GameMap.ROUND_INDEX;
+        const round = getRoundCreeps(currentRound);
         const modifiers = [];
         if (round.newModifier) {
             modifiers.push(round.newModifier);
@@ -169,6 +170,9 @@ export class Game {
 
             if (creepIndex >= round.creeps.length) {
                 GameMap.ROUND_INDEX++;
+            }
+
+            if (GameMap.ROUND_INDEX !== currentRound) {
                 this.timerUtils.releaseTimer(t);
                 this.spawnRounds();
             }
