@@ -21,7 +21,6 @@ import { GameOptions } from "./GameOptions";
 import { Creep } from "Creeps/Creep";
 
 export class Game {
-    public roundIndex: number = 0;
     private readonly timerUtils: TimerUtils;
     private readonly damageEngineGlobals: DamageEngineGlobals;
     private readonly damageEngine: DamageEngine;
@@ -59,7 +58,7 @@ export class Game {
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils);
 
         this.spells = new Spells(this.towerAbilitySystem);
-        this.commandHandler = new Commands(this);
+        this.commandHandler = new Commands();
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 
@@ -150,7 +149,7 @@ export class Game {
 
     private spawnRounds(): void {
         const t: Timer = this.timerUtils.newTimer();
-        const round = getRoundCreeps(this.roundIndex);
+        const round = getRoundCreeps(GameMap.ROUND_INDEX);
         const modifiers = [];
         if (round.newModifier) {
             modifiers.push(round.newModifier);
@@ -169,7 +168,7 @@ export class Game {
             }
 
             if (creepIndex >= round.creeps.length) {
-                this.roundIndex++;
+                GameMap.ROUND_INDEX++;
                 this.timerUtils.releaseTimer(t);
                 this.spawnRounds();
             }

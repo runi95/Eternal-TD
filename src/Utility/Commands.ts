@@ -7,12 +7,10 @@ import { GameMap } from "../Game/GameMap";
 const COMMAND_PREFIX = '-';
 
 export class Commands {
-    private readonly game: Game;
     private commandTrigger: Trigger;
     private selectedUnit: Unit | undefined;
     private utilityTriggers: Record<string, Trigger> = {};
-    constructor(game: Game) {
-        this.game = game;
+    constructor() {
         this.commandTrigger = new Trigger();
 
         this.commandTrigger.addAction(() => this.handleCommand());
@@ -91,7 +89,7 @@ export class Commands {
                 if (args.length !== 1)
                     break;
 
-                this.game.roundIndex = parseInt(args[0]) - 1;
+                GameMap.ROUND_INDEX = parseInt(args[0]) - 1;
                 break;
         }
 
