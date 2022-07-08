@@ -152,8 +152,16 @@ export class Game {
         const currentRound = GameMap.ROUND_INDEX;
         const round = getRoundCreeps(currentRound);
         const modifiers = [];
+        const availableModifiers = [...GameMap.AVAILABLE_MODIFIERS];
         if (round.newModifier) {
+            GameMap.AVAILABLE_MODIFIERS.push(round.newModifier);
             modifiers.push(round.newModifier);
+        }
+
+        for (let i = 0; i < GameMap.MAXIMUM_CREEP_MODIFIER_COUNT && availableModifiers.length > 0; i++) {
+            const randomModifierIndex = this.randomNumberGenerator.random(0, availableModifiers.length);
+            modifiers.push(availableModifiers[randomModifierIndex]);
+            availableModifiers.splice(randomModifierIndex, 1);
         }
 
         let creepCount = 0;
