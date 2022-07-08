@@ -4,6 +4,7 @@ import { CreepModifier } from "Creeps/CreepModifier";
 import { InvisibilityModifier } from "../Creeps/Modifiers/InvisibilityModifier";
 import { RegenModifier } from "Creeps/Modifiers/RegenModifier";
 import { EvasionModifier } from "../Creeps/Modifiers/EvasionModifier";
+import { DoubleHealthModifier } from "../Creeps/Modifiers/DoubleHealthModifier";
 
 interface CreepSpawnDetails {
     creepType: CreepBaseUnit;
@@ -32,7 +33,8 @@ const rounds: Rounds = [
         creeps: [{
             creepType: CreepBaseUnits.RED_VILLAGER,
             amount: 35,
-        }]
+        }],
+        newModifier: DoubleHealthModifier.DOUBLE_HEALTH_MODIFIER
     },
 
     // ROUND 3:
