@@ -7,6 +7,7 @@ import { CreepDefaults } from "./CreepDefaults";
 import { CreepModifier } from "./CreepModifier";
 import { Color } from "Utility/Color";
 import { Scale } from "Utility/Scale";
+import { OverflowProtectionModifier } from "./Modifiers/OverflowProtectionModifier";
 
 export interface CreepDamageEvent {
     spawnedCreeps: CreepBaseUnit[];
@@ -112,10 +113,16 @@ export class Creep {
 
     public dealLethalDamage(damageAmount: number): number {
         let spawnedCreeps: CreepBaseUnit[] = [];
-        for (let i = 0; i < this._creepBaseUnit.children.length; i++) {
-            const creepDamageEvent = this.dealDamageToBaseUnits(this._creepBaseUnit.children[i], damageAmount);
-            damageAmount = creepDamageEvent.overflowingDamage;
-            spawnedCreeps = spawnedCreeps.concat(creepDamageEvent.spawnedCreeps);
+        if (this.hasModifier(OverflowProtectionModifier.OVERFLOW_PROTECTION_MODIFIER)) {
+            spawnedCreeps = this._creepBaseUnit.children;
+            damageAmount = 0;
+            this.modifierNameCheckMap.delete(OverflowProtectionModifier.OVERFLOW_PROTECTION_MODIFIER.name);
+        } else {
+            for (let i = 0; i < this._creepBaseUnit.children.length; i++) {
+                const creepDamageEvent = this.dealDamageToBaseUnits(this._creepBaseUnit.children[i], damageAmount);
+                damageAmount = creepDamageEvent.overflowingDamage;
+                spawnedCreeps = spawnedCreeps.concat(creepDamageEvent.spawnedCreeps);
+            }
         }
 
         let isUnitReused = false;

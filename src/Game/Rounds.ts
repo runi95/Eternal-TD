@@ -5,6 +5,7 @@ import { InvisibilityModifier } from "../Creeps/Modifiers/InvisibilityModifier";
 import { RegenModifier } from "Creeps/Modifiers/RegenModifier";
 import { EvasionModifier } from "../Creeps/Modifiers/EvasionModifier";
 import { DoubleHealthModifier } from "../Creeps/Modifiers/DoubleHealthModifier";
+import { OverflowProtectionModifier } from "../Creeps/Modifiers/OverflowProtectionModifier";
 
 interface CreepSpawnDetails {
     creepType: CreepBaseUnit;
@@ -46,7 +47,7 @@ const rounds: Rounds = [
         {
             creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 5,
-        }]
+        }],
     },
 
     // ROUND 4:
@@ -126,7 +127,8 @@ const rounds: Rounds = [
         creeps: [{
             creepType: CreepBaseUnits.GREEN_VILLAGER,
             amount: 30,
-        }]
+        }],
+        newModifier: OverflowProtectionModifier.OVERFLOW_PROTECTION_MODIFIER
     },
 
     // ROUND 10:
