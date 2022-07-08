@@ -152,29 +152,28 @@ export class Game {
 
     private spawnRounds(): void {
         const t: Timer = this.timerUtils.newTimer();
+        const round = getRoundCreeps(this.roundIndex);
+        const modifiers = [];
+        if (round.newModifier) {
+            modifiers.push(round.newModifier);
+        }
+
         let creepCount = 0;
         let creepIndex = 0;
-        let tick = 0;
-        t.start(0.03, true, () => {
-            const round = getRoundCreeps(this.roundIndex);
-            if (creepIndex >= round.length) {
-                creepIndex = 0;
-                this.roundIndex++;
-                return;
+        t.start(0.9, true, () => {
+            creepCount++;
+            const creepSpawnDetails = round.creeps[creepIndex];
+            Creep.spawn(creepSpawnDetails.creepType, modifiers);
+
+            if (creepCount >= round.creeps[creepIndex].amount) {
+                creepIndex++;
+                creepCount = 0;
             }
 
-            tick += 0.03;
-
-            const creepSpawnDetails = round[creepIndex];
-            if (tick >= creepSpawnDetails.delay) {
-                tick = 0;
-                creepCount++;
-                Creep.spawn(creepSpawnDetails.creepType, creepSpawnDetails.modifiers);
-
-                if (creepCount >= creepSpawnDetails.amount) {
-                    creepIndex++;
-                    creepCount = 0;
-                }
+            if (creepIndex >= round.creeps.length) {
+                this.roundIndex++;
+                this.timerUtils.releaseTimer(t);
+                this.spawnRounds();
             }
         });
     }
