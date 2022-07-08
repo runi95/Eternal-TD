@@ -60,7 +60,6 @@ export class TowerController {
             const tower: Tower = new Tower(trig, towerType, this.mapRegionController.getVisibleRegions(trig));
             tower.towerType.applyInitialUnitValues(trig);
 
-            // TODO: Remove towers from this map when the tower is sold
             GameMap.BUILT_TOWER_MAP.set(trigHandleId, tower);
             this.addTickTower(tower);
         });
