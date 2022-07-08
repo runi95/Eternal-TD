@@ -34,7 +34,6 @@ export class Game {
     private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly commandHandler: Commands;
     private readonly towerController: TowerController;
-    private readonly towers: Map<number, Tower> = new Map();
     private readonly mapRegionController: MapRegionController;
     private readonly builderUnitTypeId: number = FourCC('u001');
     private readonly castleLocation: Checkpoint = { x: -2560, y: 2368 };
@@ -50,16 +49,16 @@ export class Game {
         this.damageEngineGlobals = new DamageEngineGlobals();
         this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
         this.stunUtils = new StunUtils(this.timerUtils);
-        this.damageEventController = new DamageEventController(this.damageEngine, this.timerUtils, this.stunUtils, this.towers);
+        this.damageEventController = new DamageEventController(this.damageEngine, this.timerUtils, this.stunUtils);
         this.randomNumberGenerator = new RandomNumberGenerator();
-        this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils, this.towers, this.stunUtils);
-        this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.towers, this.mapRegionController);
-        this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController, this.towers);
+        this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils, this.stunUtils);
+        this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.mapRegionController);
+        this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController);
 
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils);
 
-        this.spells = new Spells(this.towerAbilitySystem, this.towers);
-        this.commandHandler = new Commands(this, this.mapRegionController, this.towers);
+        this.spells = new Spells(this.towerAbilitySystem);
+        this.commandHandler = new Commands(this);
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 

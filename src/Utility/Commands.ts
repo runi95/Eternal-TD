@@ -2,8 +2,7 @@ import { Game } from "../Game/Game";
 import { MapPlayer, Trigger, Unit } from "w3ts";
 import { Players } from "w3ts/globals";
 import { DrawPoint, DrawRect, RemoveAllDrawings } from "./Rasterizer";
-import { MapRegionController } from "../Game/MapRegionController";
-import { Tower } from "../Towers/Tower";
+import { GameMap } from "../Game/GameMap";
 
 const COMMAND_PREFIX = '-';
 
@@ -12,13 +11,9 @@ export class Commands {
     private commandTrigger: Trigger;
     private selectedUnit: Unit | undefined;
     private utilityTriggers: Record<string, Trigger> = {};
-    private mapRegionController: MapRegionController;
-    private readonly towers: Map<number, Tower>;
-    constructor(game: Game, mapRegionController: MapRegionController, towers: Map<number, Tower>) {
+    constructor(game: Game) {
         this.game = game;
         this.commandTrigger = new Trigger();
-        this.mapRegionController = mapRegionController;
-        this.towers = towers;
 
         this.commandTrigger.addAction(() => this.handleCommand());
         Players.forEach((player) => this.commandTrigger.registerPlayerChatEvent(player, '', false))
@@ -52,7 +47,7 @@ export class Commands {
             case "coords":
                 if (this.selectedUnit) {
                     print(`${this.selectedUnit.x}, ${this.selectedUnit.y}`);
-                    const tower = this.towers.get(this.selectedUnit.id);
+                    const tower = GameMap.BUILT_TOWER_MAP.get(this.selectedUnit.id);
                     if (tower) {
                         tower.visibleRegions.forEach((reg) => DrawPoint(reg.center.x, reg.center.y));
                     }

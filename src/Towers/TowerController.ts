@@ -9,7 +9,7 @@ import { TowerUpgrade } from "./TowerUpgrade";
 import { Timer, Trigger, Unit } from "w3ts";
 import { VoidwalkerCustomData } from "./Voidwalker/Voidwalker";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
-import {MapRegionController} from "../Game/MapRegionController";
+import { MapRegionController } from "../Game/MapRegionController";
 import { DefenseTypes } from "Creeps/DefenseTypes";
 import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
 import { TowerAbility } from "TowerAbilities/TowerAbility";
@@ -31,7 +31,6 @@ const voidwalkerUnitTypeId: number = FourCC('h00C');
 const lesserVoidwalkerUnitTypeId: number = FourCC('o000');
 const timedLifeBuffId: number = FourCC('BTLF');
 export class TowerController {
-    private readonly towers: Map<number, Tower>;
     private readonly towerAbilitySystem: TowerAbilitySystem;
     private readonly timerUtils: TimerUtils;
     private readonly stunUtils: StunUtils;
@@ -39,12 +38,11 @@ export class TowerController {
     private readonly tickTowers: Map<number, Timer> = new Map();
     private readonly mapRegionController: MapRegionController;
 
-    constructor(towerAbilitySystem: TowerAbilitySystem, timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, towers: Map<number, Tower>, mapRegionController: MapRegionController) {
+    constructor(towerAbilitySystem: TowerAbilitySystem, timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, mapRegionController: MapRegionController) {
         this.towerAbilitySystem = towerAbilitySystem;
         this.timerUtils = timerUtils;
         this.stunUtils = stunUtils;
         this.randomNumberGenerator = randomNumberGenerator;
-        this.towers = towers;
         this.mapRegionController = mapRegionController;
 
         const constTrig: Trigger = new Trigger();
@@ -59,11 +57,11 @@ export class TowerController {
             }
 
             const trigHandleId: number = trig.id;
-            const tower: Tower = new Tower(trig, towerType, mapRegionController.getVisibleRegions(trig));
+            const tower: Tower = new Tower(trig, towerType, this.mapRegionController.getVisibleRegions(trig));
             tower.towerType.applyInitialUnitValues(trig);
 
             // TODO: Remove towers from this map when the tower is sold
-            this.towers.set(trigHandleId, tower);
+            GameMap.BUILT_TOWER_MAP.set(trigHandleId, tower);
             this.addTickTower(tower);
         });
         constTrig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_START);
@@ -79,8 +77,8 @@ export class TowerController {
             unit.disableAbility(attackAbilityId, false, true);
             tower.unit = unit;
 
-            this.towers.delete(originalHandleId);
-            this.towers.set(unit.id, tower);
+            GameMap.BUILT_TOWER_MAP.delete(originalHandleId);
+            GameMap.BUILT_TOWER_MAP.set(unit.id, tower);
 
             tower.towerType.applyInitialUnitValues(unit);
             for (let i = 0; i < pathUpgrades.length; i++) {

@@ -42,14 +42,12 @@ export class TowerAbilitySystem {
     private readonly tooltips: framehandle[] = [];
     private readonly cooldownFrames: framehandle[] = [];
     private readonly timerUtils: TimerUtils;
-    private readonly towers: Map<number, Tower>;
     private readonly stunUtils: StunUtils;
 
     // TODO: Check for desyncs
 
-    constructor(timerUtils: TimerUtils, towers: Map<number, Tower>, stunUtils: StunUtils) {
+    constructor(timerUtils: TimerUtils, stunUtils: StunUtils) {
         this.timerUtils = timerUtils;
-        this.towers = towers;
         this.stunUtils = stunUtils;
 
         Players.forEach(() => this.towerAbilities.push([]));
@@ -308,7 +306,7 @@ export class TowerAbilitySystem {
                         if (!u.show)
                             return;
 
-                        const uTower = this.towers.get(u.id);
+                        const uTower = GameMap.BUILT_TOWER_MAP.get(u.id);
                         if (uTower === undefined)
                             return;
 
@@ -351,7 +349,7 @@ export class TowerAbilitySystem {
                         const dummyUnit = new Unit(tower.unit.owner, greaterHarpyUnitTypeId, tower.unit.x, tower.unit.y, tower.unit.facing, 0);
                         dummyUnit.setAttackCooldown(0.03, 0);
                         dummyUnits.push(dummyUnit);
-                        const dummyTower = new Tower(dummyUnit, tower.towerType, tower.visibleRegions,tower.pathUpgrades);
+                        const dummyTower = new Tower(dummyUnit, tower.towerType, tower.visibleRegions, tower.pathUpgrades);
                         const pathUpgrades = tower.pathUpgrades;
                         dummyUnit.disableAbility(attackAbilityId, false, true);
                         for (let i = 0; i < pathUpgrades.length; i++) {
@@ -372,7 +370,7 @@ export class TowerAbilitySystem {
                         if (!u.show)
                             return;
 
-                        const uTower = this.towers.get(u.id);
+                        const uTower = GameMap.BUILT_TOWER_MAP.get(u.id);
                         if (uTower === undefined)
                             return;
 

@@ -4,8 +4,8 @@ import { ATTACK_TYPE_SIEGE } from "../GameSettings";
 import { Unit } from "w3ts";
 import { Point } from "w3ts/handles/point";
 import { Group } from "../../Group";
-import { Tower } from "Towers/Tower";
 import { SapperCustomData } from "Towers/Sapper/Sapper";
+import { GameMap } from "../../../Game/GameMap";
 
 const sapperUnitTypeId: number = FourCC('h003');
 const seaGiantUnitTypeId: number = FourCC('h004');
@@ -14,12 +14,6 @@ const skeletalOrcUnitTypeId: number = FourCC('h006');
 
 // 120 splash
 export class SapperDamageEvent implements DamageEvent {
-    private readonly towers: Map<number, Tower>;
-
-    constructor(towers: Map<number, Tower>) {
-        this.towers = towers;
-    }
-
     public event(globals: DamageEngineGlobals): void {
         const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
         if (playerId !== 23) {
@@ -43,7 +37,7 @@ export class SapperDamageEvent implements DamageEvent {
         const trig: unit = globals.DamageEventSource as unit;
         const targ: unit = globals.DamageEventTarget as unit;
 
-        const tower = this.towers.get(GetHandleId(trig));
+        const tower = GameMap.BUILT_TOWER_MAP.get(GetHandleId(trig));
         if (tower === undefined) {
             return;
         }

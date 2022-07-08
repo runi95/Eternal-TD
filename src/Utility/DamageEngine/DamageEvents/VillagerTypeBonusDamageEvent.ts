@@ -1,20 +1,14 @@
 import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { Tower } from "Towers/Tower";
 import { GameMap } from "Game/GameMap";
 import { Creep } from "Creeps/Creep";
 import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
 import { PurpleVillager } from "Creeps/Normal/PurpleVillager";
 import { LargeVillager } from "Creeps/Normal/LargeVillager";
 import { Zeppelin } from "Creeps/Normal/Zeppelin";
+import type { Tower } from "Towers/Tower";
 
 export class VillagerTypeBonusDamageEvent implements DamageEvent {
-    private readonly towers: Map<number, Tower>;
-
-    constructor(towers: Map<number, Tower>) {
-        this.towers = towers;
-    }
-
     public event(globals: DamageEngineGlobals): void {
         const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
         if (playerId !== 23) {
@@ -26,7 +20,7 @@ export class VillagerTypeBonusDamageEvent implements DamageEvent {
             return;
         }
 
-        const tower: Tower | undefined = this.towers.get(globals.DamageEventSourceUnitId);
+        const tower: Tower | undefined = GameMap.BUILT_TOWER_MAP.get(globals.DamageEventSourceUnitId);
         if (tower === undefined) {
             return;
         }

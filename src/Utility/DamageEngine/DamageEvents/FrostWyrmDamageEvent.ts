@@ -4,7 +4,6 @@ import { ATTACK_TYPE_NORMAL } from "../GameSettings";
 import { Unit } from "w3ts";
 import { Point } from "w3ts/handles/point";
 import { Group } from "../../Group";
-import { Tower } from "Towers/Tower";
 import { StunUtils } from "Utility/StunUtils";
 import { ObsidianStatueCustomData } from "Towers/ObsidianStatue/ObsidianStatue";
 import { DefenseTypes } from "Creeps/DefenseTypes";
@@ -14,11 +13,9 @@ import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
 
 const frostWyrmUnitTypeId: number = FourCC('h00G');
 export class FrostWyrmDamageEvent implements DamageEvent {
-    private readonly towers: Map<number, Tower>;
     private readonly stunUtils: StunUtils
 
-    constructor(towers: Map<number, Tower>, stunUtils: StunUtils) {
-        this.towers = towers;
+    constructor(stunUtils: StunUtils) {
         this.stunUtils = stunUtils;
     }
 
@@ -39,7 +36,7 @@ export class FrostWyrmDamageEvent implements DamageEvent {
         const trig: unit = globals.DamageEventSource as unit;
         const targ: unit = globals.DamageEventTarget as unit;
 
-        const tower = this.towers.get(GetHandleId(trig));
+        const tower = GameMap.BUILT_TOWER_MAP.get(GetHandleId(trig));
         if (tower === undefined) {
             return;
         }

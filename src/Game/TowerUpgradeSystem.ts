@@ -2,12 +2,12 @@ import { Frame, Trigger, MapPlayer } from "w3ts";
 import { Tower } from "../Towers/Tower";
 import { TowerController } from "../Towers/TowerController";
 import { TowerUpgrade } from "../Towers/TowerUpgrade";
+import { GameMap } from "./GameMap";
 
 // FIXME: Upgrade menu is still visible after selling a tower
 
 export class TowerUpgradeSystem {
     private readonly towerController: TowerController;
-    private readonly towers: Map<number, Tower>;
     private selectedTower: Tower | null = null;
 
     private readonly originFrameGameUi: Frame;
@@ -16,9 +16,8 @@ export class TowerUpgradeSystem {
     private readonly upgradePathTextFrames: Frame[][];
     private readonly upgradePathEnabled: boolean[][];
 
-    constructor(towerController: TowerController, towers: Map<number, Tower>) {
+    constructor(towerController: TowerController) {
         this.towerController = towerController;
-        this.towers = towers;
         this.originFrameGameUi = Frame.fromOrigin(ORIGIN_FRAME_GAME_UI, 0);
 
         this.menu = new Frame('EscMenuPopupMenuTemplate', this.originFrameGameUi, -1, 0);
@@ -56,7 +55,7 @@ export class TowerUpgradeSystem {
             const trig: unit = GetTriggerUnit();
             const unitHandleId: number = GetHandleId(trig);
 
-            const tower: Tower | undefined = this.towers.get(unitHandleId);
+            const tower: Tower | undefined = GameMap.BUILT_TOWER_MAP.get(unitHandleId);
             if (tower === undefined) {
                 this.selectedTower = null;
                 this.menu.setVisible(false);
@@ -65,7 +64,7 @@ export class TowerUpgradeSystem {
             this.selectedTower = tower;
 
             this.renderSelectedTowerUpgrades();
-            this.menu.setVisible(true)
+            this.menu.setVisible(true);
         });
         selectUnitTrig.registerPlayerUnitEvent(MapPlayer.fromIndex(0), EVENT_PLAYER_UNIT_SELECTED, undefined);
         this.menu.setFocus(false);
