@@ -115,7 +115,7 @@ export class MapRegionController {
         return this.regionLookup.filter((region) => {
             const distance = distance2D({ x: unit.x, y: unit.y }, region.center);
             return (distance <= unit.acquireRange + 64)
-        })
+        });
     }
 
 }

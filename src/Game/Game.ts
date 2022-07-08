@@ -52,6 +52,7 @@ export class Game {
         this.damageEventController = new DamageEventController(this.damageEngine, this.timerUtils, this.stunUtils);
         this.randomNumberGenerator = new RandomNumberGenerator();
         this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils, this.stunUtils);
+        this.mapRegionController = new MapRegionController(this.gameOptions);
         this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.mapRegionController);
         this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController);
 
@@ -61,8 +62,6 @@ export class Game {
         this.commandHandler = new Commands(this);
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
-
-        this.mapRegionController = new MapRegionController(this.gameOptions);
 
         const deathTrig: Trigger = new Trigger();
         deathTrig.addAction(() => {
