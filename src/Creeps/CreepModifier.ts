@@ -7,6 +7,9 @@ import { TargetFlags } from "./TargetFlags";
 export type CreepModifierApplyFunction = (unit: Unit) => void;
 
 export abstract class CreepModifier {
+    public abstract readonly icon: string;
+    public abstract readonly description: string;
+
     public readonly name: string = this.constructor.name;
 
     /**

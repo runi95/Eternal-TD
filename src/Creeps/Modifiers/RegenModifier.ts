@@ -6,5 +6,8 @@ import { Unit } from "w3ts";
 
 export class RegenModifier extends CreepModifier {
     public static readonly REGEN_MODIFIER = new RegenModifier();
+
+    public readonly icon: string = ""; // TODO: Find icon
+    public readonly description: string = ""; // TODO: Write description
     public readonly applyEffect = (unit: Unit) => CreepRegenSystem.REGEN_UNIT_MAP.set(unit.id, { remainingRegenTicks: 3 });
 };
