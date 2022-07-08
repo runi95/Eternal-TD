@@ -58,7 +58,7 @@ export class Creep {
         let bMask = 1;
         let aMask = 1;
         let healthAddend = 0;
-        let healthMultiplier = 1;
+        let healthMultiplier = 0;
         let defenseTypeOverride: DefenseTypes | undefined;
         let targetAsOverride: TargetFlags | undefined;
         let scaleOverride: Scale | undefined;
@@ -82,7 +82,7 @@ export class Creep {
 
         this.colorMask = { r: rMask, g: gMask, b: bMask, a: aMask };
         this.healthAddend = healthAddend;
-        this.healthMultiplier = healthMultiplier;
+        this.healthMultiplier = Math.max(healthMultiplier, 1);
         this.defenseTypeOverride = defenseTypeOverride;
         this.targetAsOverride = targetAsOverride;
         this.scaleOverride = scaleOverride;
