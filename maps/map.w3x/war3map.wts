@@ -732,3 +732,15 @@ STRING 183
 This unit is slowed; its movement speed is reduced.
 }
 
+STRING 184
+// Abilities: A00F (Evasion), EditorSuffix (Editor Suffix)
+{
+(25%)
+}
+
+STRING 185
+// Abilities: A00F (Evasion), Ubertip (Tooltip - Normal - Extended)
+{
+Gives a 25% percent chance to avoid an attack.
+}
+
