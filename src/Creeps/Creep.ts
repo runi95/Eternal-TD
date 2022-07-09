@@ -8,6 +8,7 @@ import { CreepModifier } from "./CreepModifier";
 import { Color } from "Utility/Color";
 import { Scale } from "Utility/Scale";
 import { OverflowProtectionModifier } from "./Modifiers/OverflowProtectionModifier";
+import { BlinkModifier } from "./Modifiers/BlinkModifier";
 
 export interface CreepDamageEvent {
     spawnedCreeps: CreepBaseUnit[];
@@ -173,6 +174,27 @@ export class Creep {
     public set nextCheckpointIndex(nextCheckpointIndex: number) {
         this.unit.issueOrderAt("move", GameMap.CHECKPOINTS[nextCheckpointIndex].x, GameMap.CHECKPOINTS[nextCheckpointIndex].y);
         this._nextCheckpointIndex = nextCheckpointIndex;
+
+        if (nextCheckpointIndex % 2 === 0 && this.hasModifier(BlinkModifier.BLINK_MODIFIER)) {
+            const currentX = this.unit.x;
+            const currentY = this.unit.y;
+            const targetX = GameMap.CHECKPOINTS[nextCheckpointIndex].x;
+            const targetY = GameMap.CHECKPOINTS[nextCheckpointIndex].y;
+
+            const dist = Math.sqrt(Math.pow(targetX - currentX, 2) + Math.pow(targetY - currentY, 2));
+
+            const dx = targetX - currentX;
+            const dy = targetY - currentY;
+            const newX = currentX + (dx / dist) * BlinkModifier.BLINK_DISTANCE;
+            const newY = currentY + (dy / dist) * BlinkModifier.BLINK_DISTANCE;
+
+            this.unit.x = newX;
+            this.unit.y = newY;
+            DestroyEffect(AddSpecialEffect('Abilities/Spells/NightElf/Blink/BlinkTarget.mdl', currentX, currentY));
+            DestroyEffect(AddSpecialEffect('Abilities/Spells/NightElf/Blink/BlinkCaster.mdl', newX, newY));
+
+            // this.modifierNameCheckMap.delete(BlinkModifier.BLINK_MODIFIER.name);
+        }
     }
 
     private get color(): Color {

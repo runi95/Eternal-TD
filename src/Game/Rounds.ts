@@ -7,6 +7,7 @@ import { EvasionModifier } from "../Creeps/Modifiers/EvasionModifier";
 import { DoubleHealthModifier } from "../Creeps/Modifiers/DoubleHealthModifier";
 import { OverflowProtectionModifier } from "../Creeps/Modifiers/OverflowProtectionModifier";
 import { DamageReductionModifier } from "../Creeps/Modifiers/DamageReductionModifier";
+import { BlinkModifier } from "../Creeps/Modifiers/BlinkModifier";
 
 interface CreepSpawnDetails {
     creepType: CreepBaseUnit;
@@ -60,7 +61,8 @@ const rounds: Rounds = [
         {
             creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 18,
-        }]
+        }],
+        newModifier: BlinkModifier.BLINK_MODIFIER
     },
 
     // ROUND 5:
