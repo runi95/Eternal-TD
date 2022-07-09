@@ -6,6 +6,7 @@ import { RegenModifier } from "Creeps/Modifiers/RegenModifier";
 import { EvasionModifier } from "../Creeps/Modifiers/EvasionModifier";
 import { DoubleHealthModifier } from "../Creeps/Modifiers/DoubleHealthModifier";
 import { OverflowProtectionModifier } from "../Creeps/Modifiers/OverflowProtectionModifier";
+import { DamageReductionModifier } from "../Creeps/Modifiers/DamageReductionModifier";
 
 interface CreepSpawnDetails {
     creepType: CreepBaseUnit;
@@ -71,7 +72,8 @@ const rounds: Rounds = [
         {
             creepType: CreepBaseUnits.BLUE_VILLAGER,
             amount: 27,
-        }]
+        }],
+        newModifier: DamageReductionModifier.DAMAGE_REDUCTION_MODIFIER
     },
 
     // ROUND 6:

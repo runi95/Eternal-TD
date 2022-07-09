@@ -1,6 +1,7 @@
 import { StunUtils } from "../StunUtils";
 import { TimerUtils } from "../TimerUtils";
 import { DamageEngine } from "./DamageEngine";
+import { DamageReductionDamageEvent } from "./DamageEvents/DamageReductionDamageEvent";
 import { EmbrittlementDamageEvent } from "./DamageEvents/EmbrittlementDamageEvent";
 import { FrostWyrmDamageEvent } from "./DamageEvents/FrostWyrmDamageEvent";
 import { SapperDamageEvent } from "./DamageEvents/SapperDamageEvent";
@@ -21,7 +22,7 @@ export class DamageEventController {
         damageEngine.addInitialDamageModificationEvent(new VillagerTypeBonusDamageEvent());
 
         // Final damage modification events
-        // damageEngine.addFinalDamageModificationEvent(new MyFinalDamageModificationEvent());
+        damageEngine.addFinalDamageModificationEvent(new DamageReductionDamageEvent());
 
         // After damage events
         damageEngine.addAfterDamageEvent(new SapperDamageEvent());
