@@ -30,7 +30,6 @@ export class Game {
     private readonly spells: Spells;
     private readonly towerUpgradeSystem: TowerUpgradeSystem;
     private readonly towerAbilitySystem: TowerAbilitySystem;
-    private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly commandHandler: Commands;
     private readonly towerController: TowerController;
     private readonly mapRegionController: MapRegionController;
@@ -49,10 +48,9 @@ export class Game {
         this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
         this.stunUtils = new StunUtils(this.timerUtils);
         this.damageEventController = new DamageEventController(this.damageEngine, this.timerUtils, this.stunUtils);
-        this.randomNumberGenerator = new RandomNumberGenerator();
         this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils, this.stunUtils);
         this.mapRegionController = new MapRegionController(this.gameOptions);
-        this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.randomNumberGenerator, this.mapRegionController);
+        this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.mapRegionController);
         this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController);
 
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils);
@@ -161,7 +159,7 @@ export class Game {
         }
 
         for (let i = 0; i < GameMap.MAXIMUM_CREEP_MODIFIER_COUNT && availableModifiers.length > 0; i++) {
-            const randomModifierIndex = this.randomNumberGenerator.random(0, availableModifiers.length);
+            const randomModifierIndex = RandomNumberGenerator.random(0, availableModifiers.length);
             modifiers.push(availableModifiers[randomModifierIndex]);
             availableModifiers.splice(randomModifierIndex, 1);
         }

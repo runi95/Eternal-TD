@@ -1,18 +1,21 @@
 export class RandomNumberGenerator {
-    private readonly a: number = 1103515245;
-    private readonly c: number = 12345;
-    private seed = 1;
+    private static readonly a: number = 1103515245;
+    private static readonly c: number = 12345;
+    private static seed = 1;
 
-    public setSeed(seed: number): void {
+    // Static only class
+    private constructor() { }
+
+    public static setSeed(seed: number): void {
         this.seed = seed & 0x7fffffff;
     }
 
-    public next(): number {
+    public static next(): number {
         this.seed = (this.seed * this.a + this.c) & 0x7fffffff;
         return this.seed;
     }
 
-    public random(min: number, max: number): number {
+    public static random(min: number, max: number): number {
         if (min > max) {
             error(`min can't be greater than max`);
             return -1;

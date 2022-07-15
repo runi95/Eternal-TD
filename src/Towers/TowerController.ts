@@ -34,15 +34,13 @@ export class TowerController {
     private readonly towerAbilitySystem: TowerAbilitySystem;
     private readonly timerUtils: TimerUtils;
     private readonly stunUtils: StunUtils;
-    private readonly randomNumberGenerator: RandomNumberGenerator;
     private readonly tickTowers: Map<number, Timer> = new Map();
     private readonly mapRegionController: MapRegionController;
 
-    constructor(towerAbilitySystem: TowerAbilitySystem, timerUtils: TimerUtils, stunUtils: StunUtils, randomNumberGenerator: RandomNumberGenerator, mapRegionController: MapRegionController) {
+    constructor(towerAbilitySystem: TowerAbilitySystem, timerUtils: TimerUtils, stunUtils: StunUtils, mapRegionController: MapRegionController) {
         this.towerAbilitySystem = towerAbilitySystem;
         this.timerUtils = timerUtils;
         this.stunUtils = stunUtils;
-        this.randomNumberGenerator = randomNumberGenerator;
         this.mapRegionController = mapRegionController;
 
         const constTrig: Trigger = new Trigger();
@@ -240,8 +238,8 @@ export class TowerController {
             case voidwalkerUnitTypeId:
                 return (tower: Tower) => {
                     const { duration, spread, cooldown, additionalRange, voidwalkerUnitTypeIds } = tower.customData as VoidwalkerCustomData;
-                    const x: number = tower.unit.x + this.randomNumberGenerator.random(-spread, spread);
-                    const y: number = tower.unit.y + this.randomNumberGenerator.random(-spread, spread);
+                    const x: number = tower.unit.x + RandomNumberGenerator.random(-spread, spread);
+                    const y: number = tower.unit.y + RandomNumberGenerator.random(-spread, spread);
 
                     let lesserVoidwalker: Unit;
                     if (voidwalkerUnitTypeIds !== null) {
