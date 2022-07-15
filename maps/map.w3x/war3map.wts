@@ -744,3 +744,9 @@ STRING 185
 Gives a 25% percent chance to avoid an attack.
 }
 
+STRING 186
+// Units: n001 (Sheep (Decoy)), Name (Name)
+{
+Sheep (Decoy)
+}
+

@@ -1,5 +1,5 @@
 import { GameMap } from "Game/GameMap";
-import { MapPlayer, Unit } from "w3ts";
+import { Effect, MapPlayer, Unit } from "w3ts";
 import { CreepBaseUnit } from "./CreepBaseUnit";
 import { DefenseTypes } from "./DefenseTypes";
 import { TargetFlags } from "./TargetFlags";
@@ -9,6 +9,9 @@ import { Color } from "Utility/Color";
 import { Scale } from "Utility/Scale";
 import { OverflowProtectionModifier } from "./Modifiers/OverflowProtectionModifier";
 import { BlinkModifier } from "./Modifiers/BlinkModifier";
+import { DecoyModifier } from "./Modifiers/DecoyModifier";
+import { Globals } from "../Utility/Globals";
+import { RandomNumberGenerator } from "../Utility/RandomNumberGenerator";
 
 export interface CreepDamageEvent {
     spawnedCreeps: CreepBaseUnit[];
@@ -114,6 +117,9 @@ export class Creep {
 
     public dealLethalDamage(damageAmount: number): number {
         GameMap.PLAYER_GOLD_TO_DISTRIBUTE++;
+        const x = this.unit.x;
+        const y = this.unit.y;
+        const facing = this.unit.facing;
 
         let spawnedCreeps: CreepBaseUnit[] = [];
         if (this.hasModifier(OverflowProtectionModifier.OVERFLOW_PROTECTION_MODIFIER)) {
@@ -137,8 +143,16 @@ export class Creep {
                 this._creepBaseUnit = spawnedCreeps[0];
                 this.applyStats();
             } else {
-                new Creep(spawnedCreeps[i], newParent, this.modifiers, this._nextCheckpointIndex, this.unit.x, this.unit.y, this.unit.facing);
+                new Creep(spawnedCreeps[i], newParent, this.modifiers, this._nextCheckpointIndex, x, y, facing);
             }
+        }
+
+        if (spawnedCreeps.length === 0 && this.hasModifier(DecoyModifier.DECOY_MODIFIER) && RandomNumberGenerator.random(1, 4) === 4) {
+            const eff = new Effect("Abilities/Spells/Human/Polymorph/PolyMorphTarget.mdl", x, y);
+            const decoy = new Unit(MapPlayer.fromIndex(23), DecoyModifier.DECOY_UNIT_ID, x, y, facing);
+            decoy.setExploded(true);
+            decoy.applyTimedLife(Globals.TIMED_LIFE_BUFF_ID, 3);
+            eff.destroy();
         }
 
         return isUnitReused ? damageAmount : -1;
