@@ -48,6 +48,8 @@ export class TowerController {
             const trig: Unit = Unit.fromEvent();
 
             trig.disableAbility(attackAbilityId, false, true);
+            trig.disableAbility(851984, false, true);
+
             const unitTypeId: number = trig.typeId;
             const towerType: TowerType | undefined = towerTypeMap.get(unitTypeId);
             if (towerType === undefined) {
