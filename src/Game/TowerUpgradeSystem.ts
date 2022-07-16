@@ -36,7 +36,7 @@ export class TowerUpgradeSystem {
 
         const menuBackdrop: Frame = new Frame('menuBackdrop', this.menu, -1, 0, 'BACKDROP', '');
 
-        menuBackdrop.setTexture("war3mapImported/TowerUpgradePanel.dds", 0, true)
+        menuBackdrop.setTexture("war3mapImported/TowerUpgradePanel.dds", 0, true);
         menuBackdrop.setAllPoints(this.menu);
 
         this.upgradePathEnabled = [[], [], []];
@@ -46,7 +46,7 @@ export class TowerUpgradeSystem {
                 this.upgradePathEnabled[i][j] = false;
                 const [buttonFrame, textFrame] = this.createUpgradePathButtonFrame(this.upgradePathIconFrames[i][j]);
                 this.upgradePathTextFrames[i][j] = textFrame;
-                this.createUpgradePathButtonTrigger(buttonFrame, i, j)
+                this.createUpgradePathButtonTrigger(buttonFrame, i, j);
             }
         }
 
