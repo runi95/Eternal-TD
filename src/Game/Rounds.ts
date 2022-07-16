@@ -9,6 +9,7 @@ import { OverflowProtectionModifier } from "../Creeps/Modifiers/OverflowProtecti
 import { DamageReductionModifier } from "../Creeps/Modifiers/DamageReductionModifier";
 import { BlinkModifier } from "../Creeps/Modifiers/BlinkModifier";
 import { DecoyModifier } from "../Creeps/Modifiers/DecoyModifier";
+import { LastStandModifier } from "../Creeps/Modifiers/LastStandModifier";
 
 interface CreepSpawnDetails {
     creepType: CreepBaseUnit;
@@ -210,7 +211,8 @@ const rounds: Rounds = [
         {
             creepType: CreepBaseUnits.YELLOW_VILLAGER,
             amount: 9,
-        }]
+        }],
+        newModifier: LastStandModifier.LAST_STAND_MODIFIER
     },
 
     // ROUND 15:

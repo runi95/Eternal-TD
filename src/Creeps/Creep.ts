@@ -12,6 +12,7 @@ import { BlinkModifier } from "./Modifiers/BlinkModifier";
 import { DecoyModifier } from "./Modifiers/DecoyModifier";
 import { Globals } from "../Utility/Globals";
 import { RandomNumberGenerator } from "../Utility/RandomNumberGenerator";
+import { LastStandModifier } from "./Modifiers/LastStandModifier";
 
 export interface CreepDamageEvent {
     spawnedCreeps: CreepBaseUnit[];
@@ -116,7 +117,6 @@ export class Creep {
     }
 
     public dealLethalDamage(damageAmount: number): number {
-        GameMap.PLAYER_GOLD_TO_DISTRIBUTE++;
         const x = this.unit.x;
         const y = this.unit.y;
         const facing = this.unit.facing;
@@ -133,6 +133,13 @@ export class Creep {
                 spawnedCreeps = spawnedCreeps.concat(creepDamageEvent.spawnedCreeps);
             }
         }
+
+        if (spawnedCreeps.length === 0 && this.hasModifier(LastStandModifier.LAST_STAND_MODIFIER)) {
+            this.modifierNameCheckMap.delete(LastStandModifier.LAST_STAND_MODIFIER.name);
+            return 0;
+        }
+
+        GameMap.PLAYER_GOLD_TO_DISTRIBUTE++;
 
         let isUnitReused = false;
         const newParent = { parent: this._parent, creepBaseUnit: this._creepBaseUnit };
