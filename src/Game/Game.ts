@@ -7,7 +7,6 @@ import { DamageEventController } from "../Utility/DamageEngine/DamageEventContro
 import { Checkpoint } from "../Utility/Checkpoint";
 import { TowerUpgradeSystem } from "./TowerUpgradeSystem";
 import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
-import { StunUtils } from "../Utility/StunUtils";
 import { TowerController } from "../Towers/TowerController";
 import { Effect, MapPlayer, Timer, Trigger } from "w3ts";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
