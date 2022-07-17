@@ -7,7 +7,7 @@ import { DamageEventController } from "../Utility/DamageEngine/DamageEventContro
 import { TowerUpgradeSystem } from "./TowerUpgradeSystem";
 import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
 import { TowerController } from "../Towers/TowerController";
-import { Effect, MapPlayer, Trigger } from "w3ts";
+import { Effect, MapPlayer, Trigger, FogModifier, Unit } from "w3ts";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import { Commands } from "../Utility/Commands";
 import { MapRegionController } from "./MapRegionController";
@@ -112,16 +112,23 @@ export class Game {
 
     public start(): void {
         for (let i = 0; i < bj_MAX_PLAYERS; i++) {
-            if (GetPlayerSlotState(Player(i)) === PLAYER_SLOT_STATE_PLAYING && GetPlayerController(Player(i)) === MAP_CONTROL_USER) {
+            const player = MapPlayer.fromIndex(i);
+            const creepPlayer = MapPlayer.fromIndex(23);
+            if (player.slotState === PLAYER_SLOT_STATE_PLAYING && player.controller === MAP_CONTROL_USER) {
                 GameMap.ONLINE_PLAYER_ID_LIST.push(i);
-                new Commands(MapPlayer.fromIndex(i));
 
-                SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 650);
-                // SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);
-                FogModifierStart(CreateFogModifierRect(Player(i), FOG_OF_WAR_VISIBLE, GetEntireMapRect(), false, false));
-                SetPlayerAlliance(Player(23), Player(i), ALLIANCE_PASSIVE, true);
-                const builder = CreateUnit(Player(i), this.builderUnitTypeId, this.gameMap.playableArea.centerX, this.gameMap.playableArea.centerY, bj_UNIT_FACING);
-                SelectUnitForPlayerSingle(builder, Player(i));
+                new Commands(player);
+                this.towerUpgradeSystem.addPlayer(player);
+
+                player.setState(PLAYER_STATE_RESOURCE_GOLD, 650);
+                // player.setState(PLAYER_STATE_RESOURCE_GOLD, 9999999);
+
+                const radius = Math.max(Math.abs(this.gameMap.playableArea.maxX - this.gameMap.playableArea.minX), Math.abs(this.gameMap.playableArea.maxY - this.gameMap.playableArea.minY)) / 2;
+                const fogModifier = new FogModifier(player, FOG_OF_WAR_VISIBLE, this.gameMap.playableArea.centerX, this.gameMap.playableArea.centerY, radius, false, false);
+                fogModifier.start();
+                creepPlayer.setAlliance(player, ALLIANCE_PASSIVE, true);
+                const builder = new Unit(player, this.builderUnitTypeId, this.gameMap.playableArea.centerX, this.gameMap.playableArea.centerY, bj_UNIT_FACING);
+                SelectUnitForPlayerSingle(builder.handle, player.handle);
             }
         }
 
