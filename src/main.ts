@@ -3,40 +3,27 @@ import { StringSink } from './lib/Serilog/Sinks/StringSink';
 import { Game } from './Game/Game';
 import { addScriptHook, W3TS_HOOK } from "w3ts/hooks";
 
-export class Initialiser {
-    public static run(): void {
-        // tslint:disable-next-line:typedef
-        const oldFourCC = FourCC;
-        globalThis['FourCC'] = (id: string) => {
-            const a: number = oldFourCC(id);
-            return a;
-        };
-        Log.Init([new StringSink(LogLevel.Error, SendMessage)]);
+const oldFourCC = FourCC;
+globalThis['FourCC'] = (id: string) => {
+    const a: number = oldFourCC(id);
+    return a;
+};
 
-        xpcall(
-            () => {
-                BlzLoadTOCFile('war3mapImported/Templates.toc');
-                createQuests();
-                const game = new Game();
-                game.start();
-            },
-            (err) => {
-                Log.Fatal(err);
-            },
-        );
-    }
-}
+Log.Init([new StringSink(LogLevel.Error, print)]);
 
-// ceres.suppressDefaultMain();
-// ceres.oldMain();
-// Initialiser.run();
-addScriptHook(W3TS_HOOK.MAIN_AFTER, () => Initialiser.run());
-// eslint-disable-next-line @typescript-eslint/no-empty-function
+addScriptHook(W3TS_HOOK.MAIN_AFTER, () => {
+    xpcall(
+        () => {
+            BlzLoadTOCFile('war3mapImported/Templates.toc');
+            createQuests();
+            new Game().start();
+        },
+        (err) => {
+            Log.Fatal(err);
+        },
+    );
+});
+
 function createQuests(): void {
 
-}
-
-// eslint-disable-next-line
-function SendMessage(this: void, msg: any): void {
-    DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 10, `${msg}`);
 }
