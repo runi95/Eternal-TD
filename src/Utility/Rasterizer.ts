@@ -1,5 +1,4 @@
-import { Effect, Timer } from "w3ts";
-import { TimerUtils } from "./TimerUtils";
+import { Effect } from "w3ts";
 
 export class Rasterizer {
     private static readonly EFFECTS: Effect[] = [];

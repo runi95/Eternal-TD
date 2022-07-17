@@ -1,7 +1,5 @@
-import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { ATTACK_TYPE_NORMAL } from "../GameSettings";
-import { Unit } from "w3ts";
 import { Point } from "w3ts/handles/point";
 import { Group } from "../../Group";
 import { StunUtils } from "Utility/StunUtils";
@@ -10,6 +8,8 @@ import { DefenseTypes } from "Creeps/DefenseTypes";
 import { GameMap } from "Game/GameMap";
 import { InvisibilityModifier } from "Creeps/Modifiers/InvisibilityModifier";
 import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
+import type { Unit } from "w3ts";
+import type { DamageEvent } from "../DamageEvent";
 
 const frostWyrmUnitTypeId: number = FourCC('h00G');
 export class FrostWyrmDamageEvent implements DamageEvent {

@@ -1,5 +1,5 @@
-import { TowerUpgrade } from "./TowerUpgrade";
-import { Unit } from "w3ts";
+import type { TowerUpgrade } from "./TowerUpgrade";
+import type { Unit } from "w3ts";
 
 export abstract class TowerType {
     public abstract unitTypeId: number;

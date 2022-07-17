@@ -1,18 +1,18 @@
 import { GameMap } from "Game/GameMap";
 import { Effect, MapPlayer, Unit } from "w3ts";
-import { CreepBaseUnit } from "./CreepBaseUnit";
 import { DefenseTypes } from "./DefenseTypes";
 import { TargetFlags } from "./TargetFlags";
 import { CreepDefaults } from "./CreepDefaults";
-import { CreepModifier } from "./CreepModifier";
-import { Color } from "Utility/Color";
-import { Scale } from "Utility/Scale";
 import { OverflowProtectionModifier } from "./Modifiers/OverflowProtectionModifier";
 import { BlinkModifier } from "./Modifiers/BlinkModifier";
 import { DecoyModifier } from "./Modifiers/DecoyModifier";
 import { Globals } from "../Utility/Globals";
 import { RandomNumberGenerator } from "../Utility/RandomNumberGenerator";
 import { LastStandModifier } from "./Modifiers/LastStandModifier";
+import type { Color } from "Utility/Color";
+import type { Scale } from "Utility/Scale";
+import type { CreepModifier } from "./CreepModifier";
+import type { CreepBaseUnit } from "./CreepBaseUnit";
 
 export interface CreepDamageEvent {
     spawnedCreeps: CreepBaseUnit[];

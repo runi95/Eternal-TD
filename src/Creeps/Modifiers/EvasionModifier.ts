@@ -1,5 +1,5 @@
 import { CreepModifier } from "Creeps/CreepModifier";
-import { Unit } from "w3ts";
+import type { Unit } from "w3ts";
 
 const evasionAbilityId: number = FourCC('A00F');
 export class EvasionModifier extends CreepModifier {

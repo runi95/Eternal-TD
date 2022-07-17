@@ -1,10 +1,11 @@
-import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { FrozenUnit } from "Utility/FrozenUnit";
 import { StunUtils } from "Utility/StunUtils";
 import { Group } from "Utility/Group";
-import { Point, Unit } from "w3ts";
+import { Point } from "w3ts";
 import { GameMap } from "Game/GameMap";
+import type { Unit } from "w3ts";
+import type { DamageEvent } from "../DamageEvent";
+import type { FrozenUnit } from "Utility/FrozenUnit";
 
 const obsidianStatueUnitTypeId: number = FourCC('h008');
 export class VillagerLethalDamageEvent implements DamageEvent {

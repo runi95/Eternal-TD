@@ -4,11 +4,10 @@ import { getRoundCreeps } from "./Rounds";
 import { DamageEngineGlobals } from "../Utility/DamageEngine/DamageEngineGlobals";
 import { DamageEngine } from "../Utility/DamageEngine/DamageEngine";
 import { DamageEventController } from "../Utility/DamageEngine/DamageEventController";
-import { Checkpoint } from "../Utility/Checkpoint";
 import { TowerUpgradeSystem } from "./TowerUpgradeSystem";
 import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
 import { TowerController } from "../Towers/TowerController";
-import { Effect, MapPlayer, Timer, Trigger } from "w3ts";
+import { Effect, MapPlayer, Trigger } from "w3ts";
 import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
 import { Commands } from "../Utility/Commands";
 import { MapRegionController } from "./MapRegionController";
@@ -17,6 +16,8 @@ import { Sounds } from "Utility/Sounds";
 import { GameMap } from "./GameMap";
 import { GameOptions } from "./GameOptions";
 import { Creep } from "Creeps/Creep";
+import type { Checkpoint } from "../Utility/Checkpoint";
+import type { Timer } from "w3ts";
 
 export class Game {
     private readonly damageEngineGlobals: DamageEngineGlobals;

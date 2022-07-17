@@ -1,8 +1,8 @@
 import { Frame, Trigger, MapPlayer } from "w3ts";
-import { Tower } from "../Towers/Tower";
 import { TowerController } from "../Towers/TowerController";
-import { TowerUpgrade } from "../Towers/TowerUpgrade";
 import { GameMap } from "./GameMap";
+import type { TowerUpgrade } from "../Towers/TowerUpgrade";
+import type { Tower } from "../Towers/Tower";
 import type { Unit } from "w3ts";
 
 export class TowerUpgradeSystem {

@@ -5,10 +5,11 @@ import { Tower } from "Towers/Tower";
 import { Group } from "Utility/Group";
 import { StunUtils } from "Utility/StunUtils";
 import { TimerUtils } from "Utility/TimerUtils";
-import { Point, Timer, Trigger, Unit } from "w3ts";
+import { Point, Trigger, Unit } from "w3ts";
 import { Players } from "w3ts/globals";
-import { TowerAbility } from "./TowerAbility";
 import { TowerAbilityType } from "./TowerAbilityType";
+import type { TowerAbility } from "./TowerAbility";
+import type { Timer } from "w3ts";
 
 interface ActiveTowerAbility {
     towers: AbilityTowerMeta[];

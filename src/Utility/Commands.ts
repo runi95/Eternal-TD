@@ -1,7 +1,8 @@
-import { MapPlayer, Trigger, Unit } from "w3ts";
+import { Trigger } from "w3ts";
 import { GameMap } from "../Game/GameMap";
 import { Group } from "./Group";
 import { Rasterizer } from "./Rasterizer";
+import type { MapPlayer, Unit } from "w3ts";
 
 const COMMAND_PREFIX = '-';
 

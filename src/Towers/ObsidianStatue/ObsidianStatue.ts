@@ -1,11 +1,9 @@
 import { TowerType } from "../TowerType";
-import { TowerUpgrade } from "../TowerUpgrade";
 import { ColdSnap } from "./Upgrades/Path1/ColdSnap";
 import { Permafrost } from "./Upgrades/Path1/Permafrost";
 import { EnhancedFreeze } from "./Upgrades/Path2/EnhancedFreeze";
 import { LargerRadius } from "./Upgrades/Path3/LargerRadius";
 import { ReFreeze } from "./Upgrades/Path3/ReFreeze";
-import { Unit } from "w3ts";
 import { IceShards } from "./Upgrades/Path1/IceShards";
 import { DeepFreeze } from "./Upgrades/Path2/DeepFreeze";
 import { FrostWyrm } from "./Upgrades/Path3/FrostWyrm";
@@ -13,6 +11,8 @@ import { ArcticWind } from "./Upgrades/Path2/ArcticWind";
 import { Embrittlement } from "./Upgrades/Path1/Embrittlement";
 import { SuperBrittle } from "./Upgrades/Path1/SuperBrittle";
 import { Snowstorm } from "./Upgrades/Path2/Snowstorm";
+import type { Unit } from "w3ts";
+import type { TowerUpgrade } from "../TowerUpgrade";
 
 export interface ObsidianStatueCustomData {
     range: number;

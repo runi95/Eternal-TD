@@ -1,12 +1,13 @@
-import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { TimerUtils } from "../../TimerUtils";
 import { ATTACK_TYPE_SIEGE } from "../GameSettings";
-import { Effect, Timer, Unit } from "w3ts";
+import { Effect } from "w3ts";
 import { Point } from "w3ts/handles/point";
 import { Group } from "../../Group";
-import { SapperCustomData } from "Towers/Sapper/Sapper";
 import { GameMap } from "../../../Game/GameMap";
+import type { Timer, Unit } from "w3ts";
+import type { DamageEvent } from "../DamageEvent";
+import type { SapperCustomData } from "Towers/Sapper/Sapper";
 
 const seaGiantUnitTypeId: number = FourCC('h004');
 const clusterBombsAbilityId: number = FourCC('A005');

@@ -1,5 +1,4 @@
 import { TowerType } from "../TowerType";
-import { TowerUpgrade } from "../TowerUpgrade";
 import { EvenFasterSpread } from "./Upgrades/Path1/EvenFasterSpread";
 import { FasterSpread } from "./Upgrades/Path1/FasterSpread";
 import { GreaterPermanentImmolation } from "./Upgrades/Path1/GreaterPermanentImmolation";
@@ -12,10 +11,11 @@ import { FurtherIncreasedEffectiveness } from "./Upgrades/Path3/FurtherIncreased
 import { IncreasedEffectiveness } from "./Upgrades/Path3/IncreasedEffectiveness";
 import { Overdrive } from "./Upgrades/Path3/Overdrive";
 import { ContaminationZone } from "./Upgrades/Path3/ContaminationZone";
-import { Unit } from "w3ts";
 import { Enlarge } from "./Upgrades/Path2/Enlarge";
 import { Pandemic } from "./Upgrades/Path2/Pandemic";
 import { Plague } from "./Upgrades/Path2/Plague";
+import type { Unit } from "w3ts";
+import type { TowerUpgrade } from "../TowerUpgrade";
 
 export interface AbominationCustomData {
     range: number;

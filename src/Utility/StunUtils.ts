@@ -1,8 +1,9 @@
 import { StunnedUnit } from './StunnedUnit';
 import { TimerUtils } from './TimerUtils';
 import { FrozenUnit } from './FrozenUnit';
-import { MapPlayer, Timer, Unit } from "w3ts";
+import { MapPlayer, Unit } from "w3ts";
 import { OrderId } from "w3ts/globals/order";
+import type { Timer } from "w3ts";
 
 const dummyUnitTypeId: number = FourCC('u007');
 const timedLifeBuffId: number = FourCC('BTLF');

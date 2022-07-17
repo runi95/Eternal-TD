@@ -1,6 +1,6 @@
 import { TimerUtils } from "../Utility/TimerUtils";
-import { Timer } from "w3ts";
 import { GameMap } from "Game/GameMap";
+import type { Timer } from "w3ts";
 
 export interface RegenUnit {
     remainingRegenTicks: number;
