@@ -98,7 +98,7 @@ export class MapRegionController {
             const r = this.regions[currentRegionId];
             const spawnedCreep = GameMap.SPAWNED_CREEP_MAP.get(Unit.fromEvent().id);
             if (r.target_cp_indx !== spawnedCreep.nextCheckpointIndex) {
-                // print(`enter wong wegion: expected ${r.target_cp_indx}, got ${spawnedCreep.nextCheckpointIndex}`);
+                // if (gameOptions.isDebugModeEnabled) print(`enter wong wegion: expected ${r.target_cp_indx}, got ${spawnedCreep.nextCheckpointIndex}`);
                 return;
             }
 
@@ -107,7 +107,7 @@ export class MapRegionController {
             }
             r.creeps[spawnedCreep.unitId] = spawnedCreep;
             spawnedCreep.currentRegion = currentRegionId;
-            print(`entered region ${r.regionId}`);
+            if (gameOptions.isDebugModeEnabled) print(`entered region ${r.regionId}`);
         })
     }
 
