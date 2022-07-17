@@ -30,7 +30,6 @@ export class Game {
     private readonly spells: Spells;
     private readonly towerUpgradeSystem: TowerUpgradeSystem;
     private readonly towerAbilitySystem: TowerAbilitySystem;
-    private readonly commandHandler: Commands;
     private readonly towerController: TowerController;
     private readonly mapRegionController: MapRegionController;
     private readonly builderUnitTypeId: number = FourCC('u001');
@@ -56,7 +55,6 @@ export class Game {
         this.creepRegenSystem = new CreepRegenSystem(this.timerUtils);
 
         this.spells = new Spells(this.towerAbilitySystem);
-        this.commandHandler = new Commands();
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 
@@ -121,6 +119,7 @@ export class Game {
         for (let i = 0; i < bj_MAX_PLAYERS; i++) {
             if (GetPlayerSlotState(Player(i)) === PLAYER_SLOT_STATE_PLAYING && GetPlayerController(Player(i)) === MAP_CONTROL_USER) {
                 GameMap.ONLINE_PLAYER_ID_LIST.push(i);
+                new Commands(MapPlayer.fromIndex(i));
 
                 SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 650);
                 // SetPlayerState(Player(i), PLAYER_STATE_RESOURCE_GOLD, 9999999);

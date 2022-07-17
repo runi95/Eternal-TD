@@ -1,27 +1,22 @@
-import { Game } from "../Game/Game";
 import { MapPlayer, Trigger, Unit } from "w3ts";
-import { Players } from "w3ts/globals";
 import { DrawPoint, DrawRect, RemoveAllDrawings } from "./Rasterizer";
 import { GameMap } from "../Game/GameMap";
+import { Group } from "./Group";
 
 const COMMAND_PREFIX = '-';
 
 export class Commands {
-    private commandTrigger: Trigger;
-    private selectedUnit: Unit | undefined;
-    private utilityTriggers: Record<string, Trigger> = {};
-    constructor() {
-        this.commandTrigger = new Trigger();
+    private readonly player: MapPlayer;
 
-        this.commandTrigger.addAction(() => this.handleCommand());
-        Players.forEach((player) => this.commandTrigger.registerPlayerChatEvent(player, '', false))
+    constructor(player: MapPlayer) {
+        this.player = player;
+
+        const trig = new Trigger();
+        trig.addAction(() => this.handleCommand());
+        trig.registerPlayerChatEvent(player, '', false);
     }
 
     private handleCommand(): void {
-        const player: MapPlayer | undefined = MapPlayer.fromEvent();
-        if (!player) {
-            return;
-        }
         const input = GetEventPlayerChatString();
         if (!input.startsWith(COMMAND_PREFIX)) {
             return;
@@ -33,7 +28,7 @@ export class Commands {
         switch (command) {
             case "draw":
                 if (args.length === 4) {
-                    // const point = Point.fromHandle(player.startLocationPoint);
+                    // const point = Point.fromHandle(this.player.startLocationPoint);
                     DrawRect(parseInt(args[0]), parseInt(args[1]), parseInt(args[2]), parseInt(args[3]));
                     //     print(`${point.x} ${point.y}, ${point.z}`)
                 }
@@ -41,32 +36,25 @@ export class Commands {
             case "clear":
                 RemoveAllDrawings()
                 break;
-
             case "coords":
-                if (this.selectedUnit) {
-                    print(`${this.selectedUnit.x}, ${this.selectedUnit.y}`);
-                    const tower = GameMap.BUILT_TOWER_MAP.get(this.selectedUnit.id);
+                let hasTowerSelected = false;
+                const grp = Group.fromHandle(GetUnitsSelectedAll(this.player.handle));
+                grp.for((u: Unit) => {
+                    const tower = GameMap.BUILT_TOWER_MAP.get(u.id);
                     if (tower) {
+                        print(`${u.x}, ${u.y}`);
+                        hasTowerSelected = true;
                         tower.visibleRegions.forEach((reg) => DrawPoint(reg.center.x, reg.center.y));
                     }
-                    break;
+                });
+
+                if (!hasTowerSelected) {
+                    print("Please select a tower first");
                 }
-                if (!this.utilityTriggers[`${player.id}-selectTrigger`]) {
-                    const t = new Trigger();
-                    t.registerAnyUnitEvent(EVENT_PLAYER_UNIT_SELECTED);
-                    t.addAction(() => {
-                        this.selectedUnit = Unit.fromEvent();
-                        // t.destroy();
-                        // this.utilityTriggers[`${player.id}-selectTrigger`] = undefined;
-                    })
-                    this.utilityTriggers[`${player.id}-selectTrigger`] = t;
-                    break;
-                }
-                print("Select a unit first");
                 break;
             case "zoom":
             case "cam":
-                if (GetLocalPlayer() === player.handle) {
+                if (GetLocalPlayer() === this.player.handle) {
                     const amount: number = parseInt(args[0]);
                     if (!amount) {
                         // player.sendMessage(Util.ColourString(COLOUR_CODES[COLOUR.RED], 'Invalid Amount'));
@@ -77,7 +65,7 @@ export class Commands {
                 }
                 break;
             case "tilt":
-                if (GetLocalPlayer() === player.handle) {
+                if (GetLocalPlayer() === this.player.handle) {
                     const amount: number = parseInt(args[0]);
 
                     SetCameraField(CAMERA_FIELD_ANGLE_OF_ATTACK, amount, 1);
