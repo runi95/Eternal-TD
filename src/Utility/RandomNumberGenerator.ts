@@ -4,7 +4,7 @@ export class RandomNumberGenerator {
     private static seed = 1;
 
     // Static only class
-    private constructor() { }
+    protected constructor() { }
 
     public static setSeed(seed: number): void {
         this.seed = seed & 0x7fffffff;

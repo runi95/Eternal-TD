@@ -32,15 +32,11 @@ const lesserVoidwalkerUnitTypeId: number = FourCC('o000');
 const timedLifeBuffId: number = FourCC('BTLF');
 export class TowerController {
     private readonly towerAbilitySystem: TowerAbilitySystem;
-    private readonly timerUtils: TimerUtils;
-    private readonly stunUtils: StunUtils;
     private readonly tickTowers: Map<number, Timer> = new Map();
     private readonly mapRegionController: MapRegionController;
 
-    constructor(towerAbilitySystem: TowerAbilitySystem, timerUtils: TimerUtils, stunUtils: StunUtils, mapRegionController: MapRegionController) {
+    constructor(towerAbilitySystem: TowerAbilitySystem, mapRegionController: MapRegionController) {
         this.towerAbilitySystem = towerAbilitySystem;
-        this.timerUtils = timerUtils;
-        this.stunUtils = stunUtils;
         this.mapRegionController = mapRegionController;
 
         const constTrig: Trigger = new Trigger();
@@ -92,7 +88,7 @@ export class TowerController {
         }
 
         if (this.tickTowers.has(originalHandleId)) {
-            this.timerUtils.releaseTimer(this.tickTowers.get(originalHandleId) as Timer);
+            TimerUtils.releaseTimer(this.tickTowers.get(originalHandleId) as Timer);
             this.tickTowers.delete(originalHandleId);
         }
 
@@ -110,7 +106,7 @@ export class TowerController {
     private addTickTower(tower: Tower): void {
         if (tower.unit.getAbilityLevel(tickTowerAbilityId) > 0) {
             // TODO: Remove towers from this map when the tower is sold
-            const t: Timer = this.timerUtils.newTimer();
+            const t: Timer = TimerUtils.newTimer();
             const tickFunction = this.getTowerTickFunction(tower.towerType.unitTypeId);
             t.start(BlzGetAbilityRealLevelField(tower.unit.getAbility(tickTowerAbilityId), ABILITY_RLF_COOLDOWN, 0), true, () => tickFunction(tower));
 
@@ -197,7 +193,7 @@ export class TowerController {
                             return;
 
                         const unitId = u.id;
-                        if (this.stunUtils.getFrozenUnit(unitId) !== undefined && !hasReFreeze)
+                        if (StunUtils.getFrozenUnit(unitId) !== undefined && !hasReFreeze)
                             return;
 
                         const creep = GameMap.SPAWNED_CREEP_MAP.get(unitId);
@@ -232,7 +228,7 @@ export class TowerController {
                         }
 
                         tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
-                        this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
+                        StunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
                     });
                     group.destroy();
                     loc.destroy();

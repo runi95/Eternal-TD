@@ -47,7 +47,8 @@ export class Creep {
         new Creep(creepBaseUnit, null, modifiers, nextCheckpointIndex, x, y, face);
     }
 
-    private constructor(creepBaseUnit: CreepBaseUnit, parent: Parent, modifiers: CreepModifier[], nextCheckpointIndex: number, x: number, y: number, face: number) {
+    // Static only class
+    protected constructor(creepBaseUnit: CreepBaseUnit, parent: Parent, modifiers: CreepModifier[], nextCheckpointIndex: number, x: number, y: number, face: number) {
         this._creepBaseUnit = creepBaseUnit;
         this._parent = parent;
         this._nextCheckpointIndex = nextCheckpointIndex;

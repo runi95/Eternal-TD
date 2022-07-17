@@ -8,12 +8,6 @@ import { GameMap } from "Game/GameMap";
 
 const obsidianStatueUnitTypeId: number = FourCC('h008');
 export class VillagerLethalDamageEvent implements DamageEvent {
-    private readonly stunUtils: StunUtils;
-
-    constructor(stunUtils: StunUtils) {
-        this.stunUtils = stunUtils;
-    }
-
     public event(globals: DamageEngineGlobals): void {
         const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
         if (playerId !== 23) {
@@ -26,8 +20,8 @@ export class VillagerLethalDamageEvent implements DamageEvent {
             globals.DamageEventAmount = overflowingDamage;
         }
 
-        this.stunUtils.removeStun(globals.DamageEventTargetUnitId);
-        const frozenUnit: FrozenUnit = this.stunUtils.getFrozenUnit(globals.DamageEventTargetUnitId);
+        StunUtils.removeStun(globals.DamageEventTargetUnitId);
+        const frozenUnit: FrozenUnit = StunUtils.getFrozenUnit(globals.DamageEventTargetUnitId);
         if (frozenUnit !== undefined) {
             if (globals.DamageEventSourceUnitTypeId !== obsidianStatueUnitTypeId) {
                 if (!frozenUnit.hasDeepFreeze || globals.DamageEventAmount > 1) {

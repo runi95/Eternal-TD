@@ -41,15 +41,10 @@ export class TowerAbilitySystem {
     private readonly buttons: framehandle[] = [];
     private readonly tooltips: framehandle[] = [];
     private readonly cooldownFrames: framehandle[] = [];
-    private readonly timerUtils: TimerUtils;
-    private readonly stunUtils: StunUtils;
 
     // TODO: Check for desyncs
 
-    constructor(timerUtils: TimerUtils, stunUtils: StunUtils) {
-        this.timerUtils = timerUtils;
-        this.stunUtils = stunUtils;
-
+    constructor() {
         Players.forEach(() => this.towerAbilities.push([]));
 
         const frameMargin = (FRAME_END_POS_X - FRAME_START_POS_X - (BUTTON_SIZE * MAX_FRAME_COUNT)) / (MAX_FRAME_COUNT - 1);
@@ -112,12 +107,12 @@ export class TowerAbilitySystem {
                         return;
                     }
 
-                    const t: Timer = this.timerUtils.newTimer();
+                    const t: Timer = TimerUtils.newTimer();
                     t.start(1, true, () => {
                         tower.cooldown--;
 
                         if (tower.cooldown <= 0) {
-                            this.timerUtils.releaseTimer(t);
+                            TimerUtils.releaseTimer(t);
                         }
                     });
 
@@ -134,14 +129,14 @@ export class TowerAbilitySystem {
                         activeAbility.visibleCooldown = minCooldown;
 
                         BlzFrameSetVisible(cooldownFrame, true);
-                        const t: Timer = this.timerUtils.newTimer();
+                        const t: Timer = TimerUtils.newTimer();
                         t.start(0.1, true, () => {
                             activeAbility.visibleCooldown -= 0.1;
                             BlzFrameSetValue(this.cooldownFrames[activeAbility.buttonIndex], ((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
 
                             if (activeAbility.visibleCooldown <= 0) {
                                 BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], false);
-                                this.timerUtils.releaseTimer(t);
+                                TimerUtils.releaseTimer(t);
                             }
                         });
                     }
@@ -181,7 +176,7 @@ export class TowerAbilitySystem {
 
             BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], true);
 
-            const t: Timer = this.timerUtils.newTimer();
+            const t: Timer = TimerUtils.newTimer();
             t.start(0.1, true, () => {
                 activeAbility.visibleCooldown -= 0.1;
                 BlzFrameSetValue(this.cooldownFrames[activeAbility.buttonIndex], ((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
@@ -190,17 +185,17 @@ export class TowerAbilitySystem {
                     if (this.towerAbilities[playerIndex][activeAbility.buttonIndex].visibleCooldown <= 0) {
                         BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], false);
                     }
-                    this.timerUtils.releaseTimer(t);
+                    TimerUtils.releaseTimer(t);
                 }
             });
         }
 
-        const t: Timer = this.timerUtils.newTimer();
+        const t: Timer = TimerUtils.newTimer();
         t.start(1, true, () => {
             abilTower.cooldown--;
 
             if (abilTower.cooldown <= 0) {
-                this.timerUtils.releaseTimer(t);
+                TimerUtils.releaseTimer(t);
             }
         });
 
@@ -320,7 +315,7 @@ export class TowerAbilitySystem {
 
                     upgradeTower(tower);
 
-                    const t: Timer = this.timerUtils.newTimer();
+                    const t: Timer = TimerUtils.newTimer();
                     t.start(15, false, () => {
                         for (let i = 0; i < units.length; i++) {
                             units[i].show = true;
@@ -330,7 +325,7 @@ export class TowerAbilitySystem {
                             dummyUnits[i].destroy();
                         }
 
-                        this.timerUtils.releaseTimer(t);
+                        TimerUtils.releaseTimer(t);
                     });
 
                     return true;
@@ -384,7 +379,7 @@ export class TowerAbilitySystem {
 
                     upgradeTower(tower);
 
-                    const t: Timer = this.timerUtils.newTimer();
+                    const t: Timer = TimerUtils.newTimer();
                     t.start(15, false, () => {
                         for (let i = 0; i < units.length; i++) {
                             units[i].show = true;
@@ -394,7 +389,7 @@ export class TowerAbilitySystem {
                             dummyUnits[i].destroy();
                         }
 
-                        this.timerUtils.releaseTimer(t);
+                        TimerUtils.releaseTimer(t);
                     });
 
                     return true;
@@ -455,7 +450,7 @@ export class TowerAbilitySystem {
                     const y = tower.unit.y;
                     let ticks = 0;
                     let unitCount = 0;
-                    const t: Timer = this.timerUtils.newTimer();
+                    const t: Timer = TimerUtils.newTimer();
                     t.start(0.1, true, () => {
                         ticks++;
 
@@ -476,7 +471,7 @@ export class TowerAbilitySystem {
                         loc.destroy();
 
                         if (ticks > pandemicDuration || unitCount >= pandemicMaxUnitCount) {
-                            this.timerUtils.releaseTimer(t);
+                            TimerUtils.releaseTimer(t);
                         }
                     });
 
@@ -512,7 +507,7 @@ export class TowerAbilitySystem {
                         }
 
                         tower.unit.damageTarget(u.handle, 1, true, true, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
-                        this.stunUtils.freezeUnit(u, snowstormDuration, false, false, false, false);
+                        StunUtils.freezeUnit(u, snowstormDuration, false, false, false, false);
                     });
                     group.destroy();
                     loc.destroy();

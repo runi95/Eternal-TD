@@ -8,12 +8,6 @@ import { Zeppelin } from "Creeps/Normal/Zeppelin";
 const skeletalOrcUnitTypeId: number = FourCC('h006');
 const skeletalHammerAbilityId: number = FourCC('A004');
 export class SkeletalOrcDamageEvent implements DamageEvent {
-    private readonly stunUtils: StunUtils;
-
-    constructor(stunUtils: StunUtils) {
-        this.stunUtils = stunUtils;
-    }
-
     public event(globals: DamageEngineGlobals): void {
         const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
         if (playerId !== 23) {
@@ -40,6 +34,6 @@ export class SkeletalOrcDamageEvent implements DamageEvent {
             }
         }
 
-        this.stunUtils.stunUnit(globals.DamageEventTarget as unit, stunDuration);
+        StunUtils.stunUnit(globals.DamageEventTarget as unit, stunDuration);
     }
 }

@@ -1,5 +1,3 @@
-import { StunUtils } from "../StunUtils";
-import { TimerUtils } from "../TimerUtils";
 import { DamageEngine } from "./DamageEngine";
 import { DamageReductionDamageEvent } from "./DamageEvents/DamageReductionDamageEvent";
 import { EmbrittlementDamageEvent } from "./DamageEvents/EmbrittlementDamageEvent";
@@ -12,7 +10,7 @@ import { VillagerLethalDamageEvent } from "./DamageEvents/VillagerLethalDamageEv
 import { VillagerTypeBonusDamageEvent } from "./DamageEvents/VillagerTypeBonusDamageEvent";
 
 export class DamageEventController {
-    constructor(damageEngine: DamageEngine, timerUtils: TimerUtils, stunUtils: StunUtils) {
+    constructor(damageEngine: DamageEngine) {
         // Initial damage events
         // damageEngine.addInitialDamageEvent(new MyInitialDamageEvent());
 
@@ -26,11 +24,11 @@ export class DamageEventController {
 
         // After damage events
         damageEngine.addAfterDamageEvent(new SapperDamageEvent());
-        damageEngine.addAfterDamageEvent(new SeaGiantDamageEvent(timerUtils));
-        damageEngine.addAfterDamageEvent(new SkeletalOrcDamageEvent(stunUtils));
-        damageEngine.addAfterDamageEvent(new FrostWyrmDamageEvent(stunUtils));
+        damageEngine.addAfterDamageEvent(new SeaGiantDamageEvent());
+        damageEngine.addAfterDamageEvent(new SkeletalOrcDamageEvent());
+        damageEngine.addAfterDamageEvent(new FrostWyrmDamageEvent());
 
         // Lethal damage events
-        damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent(stunUtils));
+        damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent());
     }
 }

@@ -11,12 +11,6 @@ import { GameMap } from "../../../Game/GameMap";
 const seaGiantUnitTypeId: number = FourCC('h004');
 const clusterBombsAbilityId: number = FourCC('A005');
 export class SeaGiantDamageEvent implements DamageEvent {
-    private readonly timerUtils: TimerUtils;
-
-    constructor(timerUtils: TimerUtils) {
-        this.timerUtils = timerUtils;
-    }
-
     public event(globals: DamageEngineGlobals): void {
         const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
         if (playerId !== 23) {
@@ -46,7 +40,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
         const { aoeDamage } = (tower.customData as SapperCustomData)
 
         let ticks = 21;
-        const t: Timer = this.timerUtils.newTimer();
+        const t: Timer = TimerUtils.newTimer();
         t.start(0.1, true, () => {
             ticks--;
 
@@ -64,7 +58,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
                 grp.destroy();
                 loc.destroy();
             } else if (clusterBombsLevel === 1 || (clusterBombsLevel === 2 && userData < 1)) {
-                this.timerUtils.releaseTimer(t);
+                TimerUtils.releaseTimer(t);
             } else if (ticks > 7) {
                 // Wait...
             } else {
@@ -83,7 +77,7 @@ export class SeaGiantDamageEvent implements DamageEvent {
             }
 
             if (ticks <= 0) {
-                this.timerUtils.releaseTimer(t);
+                TimerUtils.releaseTimer(t);
             }
         });
     }

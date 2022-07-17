@@ -5,40 +5,42 @@ import { Timer } from "w3ts";
 export class TimerUtils {
 
     // Settings
-    private QUANTITY = 256;
-    private MAX_SIZE = 8190;
+    private static readonly QUANTITY = 256;
+    private static readonly MAX_SIZE = 8190;
 
     // Globals
-    private timerQueue: LinkedList<Timer> = new LinkedList<Timer>();
+    private static readonly TIMER_QUEUE: LinkedList<Timer> = new LinkedList<Timer>();
 
-    constructor() {
-        for (let i = 0; i < this.QUANTITY; i++) {
-            this.timerQueue.add(new Timer());
+    // Static only class
+    protected constructor() { }
+
+    static {
+        for (let i = 0; i < this.QUANTITY - this.TIMER_QUEUE.getSize(); i++) {
+            this.TIMER_QUEUE.add(new Timer());
         }
     }
 
-    public newTimer(): Timer {
-        const t: Node<Timer> | undefined = this.timerQueue.pop();
+    public static newTimer(): Timer {
+        const t: Node<Timer> | undefined = this.TIMER_QUEUE.pop();
         if (t === undefined) {
-            BJDebugMsg('Warning: Exceeded timer QUANTITY, make sure all timers are getting recycled correctly!');
             return new Timer();
         }
 
         return t.value;
     }
 
-    public releaseTimer(t: Timer): void {
+    public static releaseTimer(t: Timer): void {
         if (t === undefined) {
-            return BJDebugMsg('Warning: attempt to release an undefined timer');
+            return print('Warning: attempt to release an undefined timer');
         }
 
-        if (this.timerQueue.getSize() === this.MAX_SIZE) {
-            BJDebugMsg('Warning: Timer stack is full, destroying timer!!');
+        if (this.TIMER_QUEUE.getSize() === this.MAX_SIZE) {
+            print('Warning: Timer stack is full, destroying timer!!');
             t.destroy();
             return;
         }
 
         t.pause();
-        this.timerQueue.add(t);
+        this.TIMER_QUEUE.add(t);
     }
 }

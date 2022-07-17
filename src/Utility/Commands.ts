@@ -1,7 +1,7 @@
 import { MapPlayer, Trigger, Unit } from "w3ts";
-import { DrawPoint, DrawRect, RemoveAllDrawings } from "./Rasterizer";
 import { GameMap } from "../Game/GameMap";
 import { Group } from "./Group";
+import { Rasterizer } from "./Rasterizer";
 
 const COMMAND_PREFIX = '-';
 
@@ -29,12 +29,12 @@ export class Commands {
             case "draw":
                 if (args.length === 4) {
                     // const point = Point.fromHandle(this.player.startLocationPoint);
-                    DrawRect(parseInt(args[0]), parseInt(args[1]), parseInt(args[2]), parseInt(args[3]));
+                    Rasterizer.DrawRect(parseInt(args[0]), parseInt(args[1]), parseInt(args[2]), parseInt(args[3]));
                     //     print(`${point.x} ${point.y}, ${point.z}`)
                 }
                 break;
             case "clear":
-                RemoveAllDrawings()
+                Rasterizer.RemoveAllDrawings()
                 break;
             case "coords":
                 let hasTowerSelected = false;
@@ -44,7 +44,7 @@ export class Commands {
                     if (tower) {
                         print(`${u.x}, ${u.y}`);
                         hasTowerSelected = true;
-                        tower.visibleRegions.forEach((reg) => DrawPoint(reg.center.x, reg.center.y));
+                        tower.visibleRegions.forEach((reg) => Rasterizer.DrawPoint(reg.center.x, reg.center.y));
                     }
                 });
 

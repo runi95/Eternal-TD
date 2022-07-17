@@ -6,7 +6,6 @@ import { DamageEngine } from "../Utility/DamageEngine/DamageEngine";
 import { DamageEventController } from "../Utility/DamageEngine/DamageEventController";
 import { Checkpoint } from "../Utility/Checkpoint";
 import { TowerUpgradeSystem } from "./TowerUpgradeSystem";
-import { Tower } from "../Towers/Tower";
 import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
 import { StunUtils } from "../Utility/StunUtils";
 import { TowerController } from "../Towers/TowerController";
@@ -21,12 +20,10 @@ import { GameOptions } from "./GameOptions";
 import { Creep } from "Creeps/Creep";
 
 export class Game {
-    private readonly timerUtils: TimerUtils;
     private readonly damageEngineGlobals: DamageEngineGlobals;
     private readonly damageEngine: DamageEngine;
     private readonly damageEventController: DamageEventController;
     private readonly creepRegenSystem: CreepRegenSystem;
-    private readonly stunUtils: StunUtils;
     private readonly spells: Spells;
     private readonly towerUpgradeSystem: TowerUpgradeSystem;
     private readonly towerAbilitySystem: TowerAbilitySystem;
@@ -40,19 +37,17 @@ export class Game {
     private readonly gameMap: GameMap;
 
     constructor() {
-        this.timerUtils = new TimerUtils();
         this.gameOptions = new GameOptions();
         this.gameMap = new GameMap();
         this.damageEngineGlobals = new DamageEngineGlobals();
-        this.damageEngine = new DamageEngine(this.timerUtils, this.damageEngineGlobals);
-        this.stunUtils = new StunUtils(this.timerUtils);
-        this.damageEventController = new DamageEventController(this.damageEngine, this.timerUtils, this.stunUtils);
-        this.towerAbilitySystem = new TowerAbilitySystem(this.timerUtils, this.stunUtils);
+        this.damageEngine = new DamageEngine(this.damageEngineGlobals);
+        this.damageEventController = new DamageEventController(this.damageEngine);
+        this.towerAbilitySystem = new TowerAbilitySystem();
         this.mapRegionController = new MapRegionController(this.gameOptions);
-        this.towerController = new TowerController(this.towerAbilitySystem, this.timerUtils, this.stunUtils, this.mapRegionController);
+        this.towerController = new TowerController(this.towerAbilitySystem, this.mapRegionController);
         this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController);
 
-        this.creepRegenSystem = new CreepRegenSystem(this.timerUtils);
+        this.creepRegenSystem = new CreepRegenSystem();
 
         this.spells = new Spells(this.towerAbilitySystem);
 
@@ -130,7 +125,7 @@ export class Game {
             }
         }
 
-        const t: Timer = this.timerUtils.newTimer();
+        const t: Timer = TimerUtils.newTimer();
         t.start(1, false, () => {
             Sounds.START_OF_GAME.start();
             t.start(7, false, () => {
@@ -140,14 +135,14 @@ export class Game {
                     SetWidgetLife(this.castleUnit, 1);
                     Sounds.START_OF_GAME_2.start();
                     this.spawnRounds();
-                    this.timerUtils.releaseTimer(t);
+                    TimerUtils.releaseTimer(t);
                 });
             });
         });
     }
 
     private spawnRounds(): void {
-        const t: Timer = this.timerUtils.newTimer();
+        const t: Timer = TimerUtils.newTimer();
         const currentRound = GameMap.ROUND_INDEX;
         const round = getRoundCreeps(currentRound);
         const modifiers = [];
@@ -180,7 +175,7 @@ export class Game {
             }
 
             if (GameMap.ROUND_INDEX !== currentRound) {
-                this.timerUtils.releaseTimer(t);
+                TimerUtils.releaseTimer(t);
 
                 const currentGoldToDistribute = GameMap.PLAYER_GOLD_TO_DISTRIBUTE;
                 GameMap.PLAYER_GOLD_TO_DISTRIBUTE = 0;

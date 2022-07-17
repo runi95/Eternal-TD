@@ -13,12 +13,6 @@ import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
 
 const frostWyrmUnitTypeId: number = FourCC('h00G');
 export class FrostWyrmDamageEvent implements DamageEvent {
-    private readonly stunUtils: StunUtils
-
-    constructor(stunUtils: StunUtils) {
-        this.stunUtils = stunUtils;
-    }
-
     public event(globals: DamageEngineGlobals): void {
         const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
         if (playerId !== 23) {
@@ -85,7 +79,7 @@ export class FrostWyrmDamageEvent implements DamageEvent {
             unitCount++;
 
             tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
-            this.stunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
+            StunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
         });
         grp.destroy();
         loc.destroy();

@@ -3,9 +3,9 @@ import { Trigger, Unit } from "w3ts";
 import { Direction, directionCP, distance2D } from "../Utility/Checkpoint";
 import { Region } from "w3ts/handles/region";
 import { Rectangle } from "w3ts/handles/rect";
-import { DrawPoint } from "../Utility/Rasterizer";
 import { GameMap } from "./GameMap";
 import { GameOptions } from "./GameOptions";
+import { Rasterizer } from "../Utility/Rasterizer";
 
 const DRAW_EVERY_REGION_DEBUG = false;
 
@@ -24,7 +24,7 @@ export class MapRegionController {
                 case Direction.SOUTH:
                     for (let i = lastCP.y; i > GameMap.CHECKPOINTS[cpIndx].y; i = i - 128) {
                         if (gameOptions.isDebugModeEnabled && DRAW_EVERY_REGION_DEBUG) {
-                            DrawPoint(lastCP.x, i)
+                            Rasterizer.DrawPoint(lastCP.x, i)
                         }
                         const reg = new Region();
                         const rect = new Rectangle(lastCP.x - 128, i - 128, lastCP.x + 128, i)
@@ -41,7 +41,7 @@ export class MapRegionController {
                 case Direction.NORTH:
                     for (let i = lastCP.y + 128; i < GameMap.CHECKPOINTS[cpIndx].y; i = i + 128) {
                         if (gameOptions.isDebugModeEnabled && DRAW_EVERY_REGION_DEBUG) {
-                            DrawPoint(lastCP.x, i)
+                            Rasterizer.DrawPoint(lastCP.x, i)
                         }
                         const reg = new Region()
                         const rect = new Rectangle(lastCP.x - 128, i, lastCP.x + 128, i + 128)
@@ -58,7 +58,7 @@ export class MapRegionController {
                 case Direction.EAST:
                     for (let i = lastCP.x + 128; i < GameMap.CHECKPOINTS[cpIndx].x; i = i + 128) {
                         if (gameOptions.isDebugModeEnabled && DRAW_EVERY_REGION_DEBUG) {
-                            DrawPoint(i, lastCP.y)
+                            Rasterizer.DrawPoint(i, lastCP.y)
                         }
                         const reg = new Region()
                         const rect = new Rectangle(i, lastCP.y - 128, i + 128, lastCP.y + 128)
@@ -75,7 +75,7 @@ export class MapRegionController {
                 case Direction.WEST:
                     for (let i = lastCP.x - 128; i > GameMap.CHECKPOINTS[cpIndx].x; i = i - 128) {
                         if (gameOptions.isDebugModeEnabled && DRAW_EVERY_REGION_DEBUG) {
-                            DrawPoint(i, lastCP.y)
+                            Rasterizer.DrawPoint(i, lastCP.y)
                         }
                         const reg = new Region()
                         const rect = new Rectangle(i - 128, lastCP.y - 128, i, lastCP.y + 128)

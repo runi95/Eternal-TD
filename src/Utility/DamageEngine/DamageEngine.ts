@@ -72,13 +72,11 @@ export class DamageEngine {
     private readonly LIMBO: number = 16;
     private readonly t1: Trigger = new Trigger();
     private readonly t2: Trigger = new Trigger();
-    private readonly timerUtils: TimerUtils;
     private readonly damageEngineGlobals: DamageEngineGlobals;
 
-    constructor(timerUtils: TimerUtils, damageEngineGlobals: DamageEngineGlobals) {
-        this.timerUtils = timerUtils;
+    constructor(damageEngineGlobals: DamageEngineGlobals) {
         this.damageEngineGlobals = damageEngineGlobals;
-        this.alarm = this.timerUtils.newTimer();
+        this.alarm = TimerUtils.newTimer();
 
         this.t1.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DAMAGING);
         this.t1.addCondition(() => this.t1Condition());

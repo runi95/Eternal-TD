@@ -7,18 +7,14 @@ import { OrderId } from "w3ts/globals/order";
 const dummyUnitTypeId: number = FourCC('u007');
 const timedLifeBuffId: number = FourCC('BTLF');
 const permafrostAbilityId: number = FourCC('A00A');
+const stunAbilityId: number = FourCC('A003');
+const freezeAbilityId: number = FourCC('A009');
 export class StunUtils {
-    private readonly stunAbilityId: number = FourCC('A003');
-    private readonly freezeAbilityId: number = FourCC('A009');
-    private readonly stunnedUnits: Map<number, StunnedUnit>;
-    private readonly frozenUnits: Map<number, FrozenUnit>;
-    private readonly timerUtils: TimerUtils;
+    private static readonly STUNNED_UNITS_MAP: Map<number, StunnedUnit> = new Map<number, StunnedUnit>();
+    private static readonly FROZEN_UNITS_MAP: Map<number, FrozenUnit> = new Map<number, FrozenUnit>();
 
-    constructor(timerUtils: TimerUtils) {
-        this.timerUtils = timerUtils;
-        this.stunnedUnits = new Map<number, StunnedUnit>();
-        this.frozenUnits = new Map<number, FrozenUnit>();
-    }
+    // Static only class
+    protected constructor() { }
 
     /**
      * Stun a unit for a certain amount of time
@@ -26,28 +22,28 @@ export class StunUtils {
      * @param u - The unit to stun
      * @param duration - The duration (in seconds) to stun the unit for
      */
-    public stunUnit(u: unit, duration: number): void {
+    public static stunUnit(u: unit, duration: number): void {
         const handleId: number = GetHandleIdBJ(u);
-        if (this.frozenUnits.has(handleId)) {
+        if (this.FROZEN_UNITS_MAP.has(handleId)) {
             return;
-        } else if (this.stunnedUnits.has(handleId)) {
-            (this.stunnedUnits.get(handleId) as StunnedUnit).addDuration(duration);
+        } else if (this.STUNNED_UNITS_MAP.has(handleId)) {
+            (this.STUNNED_UNITS_MAP.get(handleId) as StunnedUnit).addDuration(duration);
         } else {
             const stunnedUnit: StunnedUnit = new StunnedUnit(u, duration);
-            this.stunnedUnits.set(handleId, stunnedUnit);
-            UnitAddAbility(stunnedUnit.getUnit(), this.stunAbilityId);
+            this.STUNNED_UNITS_MAP.set(handleId, stunnedUnit);
+            UnitAddAbility(stunnedUnit.getUnit(), stunAbilityId);
             BlzPauseUnitEx(stunnedUnit.getUnit(), true);
-            const t: Timer = this.timerUtils.newTimer();
+            const t: Timer = TimerUtils.newTimer();
             t.start(0.05, true, () => {
                 stunnedUnit.addDuration(-0.05);
                 if (stunnedUnit.getDuration() <= 0) {
-                    UnitRemoveAbility(stunnedUnit.getUnit(), this.stunAbilityId);
-                    if (!this.frozenUnits.has(handleId)) {
+                    UnitRemoveAbility(stunnedUnit.getUnit(), stunAbilityId);
+                    if (!this.FROZEN_UNITS_MAP.has(handleId)) {
                         BlzPauseUnitEx(stunnedUnit.getUnit(), false);
                     }
 
-                    this.stunnedUnits.delete(handleId);
-                    this.timerUtils.releaseTimer(t);
+                    this.STUNNED_UNITS_MAP.delete(handleId);
+                    TimerUtils.releaseTimer(t);
                 }
             });
         }
@@ -60,7 +56,7 @@ export class StunUtils {
      * @param u - The unit to freeze
      * @param duration - The duration (in seconds) to freeze the unit for
      */
-    public freezeUnit(
+    public static freezeUnit(
         u: Unit,
         duration: number,
         permafrost: boolean,
@@ -69,7 +65,7 @@ export class StunUtils {
         hasDeepFreeze: boolean,
     ): void {
         const handleId: number = u.id;
-        if (this.frozenUnits.has(handleId)) {
+        if (this.FROZEN_UNITS_MAP.has(handleId)) {
             if (refreeze) {
                 const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost, hasIceShards, hasDeepFreeze);
                 if (frozenUnit.getDuration() < duration) {
@@ -80,15 +76,15 @@ export class StunUtils {
             return;
         }
 
-        if (this.stunnedUnits.has(handleId)) {
-            this.stunnedUnits.get(handleId)?.setDuration(0);
+        if (this.STUNNED_UNITS_MAP.has(handleId)) {
+            this.STUNNED_UNITS_MAP.get(handleId)?.setDuration(0);
         }
 
         const frozenUnit: FrozenUnit = new FrozenUnit(u, duration, permafrost, hasIceShards, hasDeepFreeze);
-        this.frozenUnits.set(handleId, frozenUnit);
-        frozenUnit.getUnit().addAbility(this.freezeAbilityId);
+        this.FROZEN_UNITS_MAP.set(handleId, frozenUnit);
+        frozenUnit.getUnit().addAbility(freezeAbilityId);
         frozenUnit.getUnit().pauseEx(true);
-        const t: Timer = this.timerUtils.newTimer();
+        const t: Timer = TimerUtils.newTimer();
         t.start(0.05, true, () => {
             frozenUnit.addDuration(-0.05);
             if (frozenUnit.getDuration() <= 0) {
@@ -98,27 +94,27 @@ export class StunUtils {
                     dummy.applyTimedLife(timedLifeBuffId, 1);
                     dummy.issueTargetOrder(OrderId.Slow, frozenUnit.getUnit())
                 }
-                frozenUnit.getUnit().removeAbility(this.freezeAbilityId);
+                frozenUnit.getUnit().removeAbility(freezeAbilityId);
                 frozenUnit.getUnit().pauseEx(false);
-                this.frozenUnits.delete(handleId);
-                this.timerUtils.releaseTimer(t);
+                this.FROZEN_UNITS_MAP.delete(handleId);
+                TimerUtils.releaseTimer(t);
             }
         });
     }
 
-    public getFrozenUnit(handleId: number): FrozenUnit | undefined {
-        return this.frozenUnits.get(handleId);
+    public static getFrozenUnit(handleId: number): FrozenUnit | undefined {
+        return this.FROZEN_UNITS_MAP.get(handleId);
     }
 
-    public unfreezeUnit(handleId: number) {
-        this.frozenUnits.get(handleId)?.setDuration(0);
+    public static unfreezeUnit(handleId: number) {
+        this.FROZEN_UNITS_MAP.get(handleId)?.setDuration(0);
     }
 
-    public removeStun(handleId: number) {
-        this.stunnedUnits.get(handleId)?.setDuration(0);
+    public static removeStun(handleId: number) {
+        this.STUNNED_UNITS_MAP.get(handleId)?.setDuration(0);
     }
 
-    public clearAllStuns(): void {
-        this.stunnedUnits.forEach((stunnedUnit: StunnedUnit) => stunnedUnit.setDuration(0));
+    public static clearAllStuns(): void {
+        this.STUNNED_UNITS_MAP.forEach((stunnedUnit: StunnedUnit) => stunnedUnit.setDuration(0));
     }
 }
