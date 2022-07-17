@@ -48,7 +48,7 @@ export class Game {
 
         this.creepRegenSystem = new CreepRegenSystem();
 
-        this.spells = new Spells(this.towerAbilitySystem);
+        this.spells = new Spells(this.towerAbilitySystem, this.towerUpgradeSystem);
 
         this.castleUnit = CreateUnit(Player(23), this.castleUnitTypeId, this.castleLocation.x, this.castleLocation.y, bj_UNIT_FACING);
 

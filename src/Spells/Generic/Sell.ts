@@ -1,15 +1,17 @@
 import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
-import { Tower } from "Towers/Tower";
 import { MapPlayer, Trigger, Unit } from "w3ts";
 import { OrderId } from "w3ts/globals/order";
 import { GameMap } from "../../Game/GameMap";
+import { TowerUpgradeSystem } from "../../Game/TowerUpgradeSystem";
 
 export class Sell {
     private readonly towerAbilitySystem: TowerAbilitySystem;
+    private readonly towerUpgradeSystem: TowerUpgradeSystem;
     private readonly trig: Trigger = new Trigger();
 
-    constructor(towerAbilitySystem: TowerAbilitySystem) {
+    constructor(towerAbilitySystem: TowerAbilitySystem, towerUpgradeSystem: TowerUpgradeSystem) {
         this.towerAbilitySystem = towerAbilitySystem;
+        this.towerUpgradeSystem = towerUpgradeSystem;
         this.trig.addCondition(() => this.condition());
         this.trig.addAction(() => this.action());
         this.trig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ISSUED_ORDER);
@@ -27,6 +29,7 @@ export class Sell {
         this.towerAbilitySystem.removeTowerAbility(owningPlayer.id, GameMap.BUILT_TOWER_MAP.get(trig.id));
         GameMap.BUILT_TOWER_MAP.delete(trig.id);
         this.towerAbilitySystem.render();
+        this.towerUpgradeSystem.deselectUnit(trig);
         trig.destroy();
     }
 }

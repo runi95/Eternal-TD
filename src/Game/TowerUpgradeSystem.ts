@@ -3,13 +3,12 @@ import { Tower } from "../Towers/Tower";
 import { TowerController } from "../Towers/TowerController";
 import { TowerUpgrade } from "../Towers/TowerUpgrade";
 import { GameMap } from "./GameMap";
-
-// FIXME: Upgrade menu is still visible after selling a tower
+import type { Unit } from "w3ts";
 
 export class TowerUpgradeSystem {
-    private readonly towerController: TowerController;
     private selectedTower: Tower | null = null;
 
+    private readonly towerController: TowerController;
     private readonly originFrameGameUi: Frame;
     private readonly menu: Frame;
     private readonly upgradePathIconFrames: Frame[][];
@@ -68,6 +67,13 @@ export class TowerUpgradeSystem {
         });
         selectUnitTrig.registerPlayerUnitEvent(MapPlayer.fromIndex(0), EVENT_PLAYER_UNIT_SELECTED, undefined);
         this.menu.setFocus(false);
+    }
+
+    public deselectUnit(unit: Unit) {
+        if (unit.id === this.selectedTower.unit.id) {
+            this.selectedTower = null;
+            this.menu.setVisible(false);
+        }
     }
 
     private renderSelectedTowerUpgrades(): void {
