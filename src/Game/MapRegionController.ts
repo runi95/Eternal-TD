@@ -107,7 +107,7 @@ export class MapRegionController {
             }
             r.creeps[spawnedCreep.unitId] = spawnedCreep;
             spawnedCreep.currentRegion = currentRegionId;
-            print(`entred region ${r.regionId}`);
+            print(`entered region ${r.regionId}`);
         })
     }
 
