@@ -13,6 +13,7 @@ import { SuperBrittle } from "./Upgrades/Path1/SuperBrittle";
 import { Snowstorm } from "./Upgrades/Path2/Snowstorm";
 import type { Unit } from "w3ts";
 import type { TowerUpgrade } from "../TowerUpgrade";
+import { AbsoluteZero } from "./Upgrades/Path2/AbsoluteZero";
 
 export interface ObsidianStatueCustomData {
     range: number;
@@ -45,6 +46,7 @@ export class ObsidianStatue extends TowerType {
             new DeepFreeze(),
             new ArcticWind(),
             new Snowstorm(),
+            new AbsoluteZero()
         ],
         [
             new LargerRadius(),
