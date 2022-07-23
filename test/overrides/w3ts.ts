@@ -431,6 +431,9 @@ export class Unit {
     public orderAtY: number = 0;
     public exploded: boolean = false;
 
+    private static UNIT_COUNTER: number = 1;
+
+    private readonly _id: number;
     private readonly _owner: MapPlayer | number;
     private readonly _unitId: number;
     private readonly _x: number;
@@ -439,6 +442,7 @@ export class Unit {
     private readonly _skinId: number | undefined;
 
     constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number, skinId?: number) {
+        this._id = Unit.UNIT_COUNTER++;
         this._owner = owner;
         this._unitId = unitId;
         this._x = x;
@@ -464,5 +468,9 @@ export class Unit {
 
     public setExploded(exploded: boolean): void {
         this.exploded = exploded;
+    }
+
+    public get id(): number {
+        return this._id;
     }
 }
