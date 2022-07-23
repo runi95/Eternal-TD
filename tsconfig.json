@@ -1,4 +1,22 @@
 {
+  "ts-node": {
+    "require": [
+      "./test/overrides/index.ts",
+      "module-alias/register"
+    ],
+    "compilerOptions": {
+      "module": "CommonJS",
+      "moduleResolution": "Node",
+      "types": [
+        "node"
+      ],
+      "paths": {
+        "w3ts": [
+          "../test/overrides/w3ts"
+        ]
+      }
+    }
+  },
   "compilerOptions": {
     "baseUrl": "./src",
     "allowJs": true,
