@@ -1,6 +1,6 @@
-import { AbsoluteZeroAbility } from "TowerAbilities/AbsoluteZeroAbility";
-import { TowerAbility } from "TowerAbilities/TowerAbility";
-import { ObsidianStatueCustomData } from "Towers/ObsidianStatue/ObsidianStatue";
+import { AbsoluteZeroAbility } from "../../../../TowerAbilities/AbsoluteZeroAbility";
+import { TowerAbility } from "../../../../TowerAbilities/TowerAbility";
+import { ObsidianStatueCustomData } from "../../../../Towers/ObsidianStatue/ObsidianStatue";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 

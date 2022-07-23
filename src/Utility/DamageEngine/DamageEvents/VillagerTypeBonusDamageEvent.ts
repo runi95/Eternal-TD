@@ -1,12 +1,12 @@
 import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { GameMap } from "Game/GameMap";
-import { Creep } from "Creeps/Creep";
-import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
-import { PurpleVillager } from "Creeps/Normal/PurpleVillager";
-import { LargeVillager } from "Creeps/Normal/LargeVillager";
-import { Zeppelin } from "Creeps/Normal/Zeppelin";
-import type { Tower } from "Towers/Tower";
+import { GameMap } from "../../../Game/GameMap";
+import { Creep } from "../../../Creeps/Creep";
+import { FortifiedVillager } from "../../../Creeps/Normal/FortifiedVillager";
+import { PurpleVillager } from "../../../Creeps/Normal/PurpleVillager";
+import { LargeVillager } from "../../../Creeps/Normal/LargeVillager";
+import { Zeppelin } from "../../../Creeps/Normal/Zeppelin";
+import type { Tower } from "../../../Towers/Tower";
 
 export class VillagerTypeBonusDamageEvent implements DamageEvent {
     public event(globals: DamageEngineGlobals): void {

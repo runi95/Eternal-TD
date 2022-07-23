@@ -1,4 +1,4 @@
-import { Scale } from "Utility/Scale";
+import { Scale } from "../Utility/Scale";
 import { DefenseTypes } from "./DefenseTypes";
 import { TargetFlags } from "./TargetFlags";
 

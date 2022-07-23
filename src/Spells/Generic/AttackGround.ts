@@ -1,4 +1,4 @@
-import { Spell } from 'Spells/Spell';
+import { Spell } from '../Spell';
 import { Unit } from "w3ts";
 import { OrderId } from "w3ts/globals/order";
 

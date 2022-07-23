@@ -1,6 +1,6 @@
-import { CreepBaseUnit } from "Creeps/CreepBaseUnit";
-import { DefenseTypes } from "Creeps/DefenseTypes";
-import { Color } from "Utility/Color";
+import { CreepBaseUnit } from "../CreepBaseUnit";
+import { DefenseTypes } from "../DefenseTypes";
+import { Color } from "../../Utility/Color";
 import { PinkVillager } from "./PinkVillager";
 
 export class BlackVillager extends CreepBaseUnit {

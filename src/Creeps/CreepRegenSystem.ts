@@ -1,5 +1,5 @@
 import { TimerUtils } from "../Utility/TimerUtils";
-import { GameMap } from "Game/GameMap";
+import { GameMap } from "../Game/GameMap";
 import type { Timer } from "w3ts";
 
 export interface RegenUnit {

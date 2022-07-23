@@ -1,4 +1,4 @@
-import { CreepModifier } from "Creeps/CreepModifier";
+import { CreepModifier } from "../CreepModifier";
 
 export class BlinkModifier extends CreepModifier {
     public static readonly BLINK_DISTANCE = 192;

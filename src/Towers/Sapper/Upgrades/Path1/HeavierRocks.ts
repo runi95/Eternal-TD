@@ -1,4 +1,4 @@
-import { SapperCustomData } from "Towers/Sapper/Sapper";
+import { SapperCustomData } from "../../../Sapper/Sapper";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 

@@ -1,4 +1,4 @@
-import { TowerAbilitySystem } from "TowerAbilities/TowerAbilitySystem";
+import { TowerAbilitySystem } from "../../TowerAbilities/TowerAbilitySystem";
 import { MapPlayer, Trigger, Unit } from "w3ts";
 import { OrderId } from "w3ts/globals/order";
 import { GameMap } from "../../Game/GameMap";

@@ -1,5 +1,5 @@
-import { CreepBaseUnit } from "Creeps/CreepBaseUnit";
-import { Scale } from "Utility/Scale";
+import { CreepBaseUnit } from "../CreepBaseUnit";
+import { Scale } from "../../Utility/Scale";
 import { Color } from "../../Utility/Color";
 import { RainbowVillager } from "./RainbowVillager";
 

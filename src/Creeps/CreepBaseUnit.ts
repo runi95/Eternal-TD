@@ -1,5 +1,5 @@
-import { Color } from "Utility/Color";
-import { Scale } from "Utility/Scale";
+import { Color } from "../Utility/Color";
+import { Scale } from "../Utility/Scale";
 import { CreepDefaults } from "./CreepDefaults";
 import { DefenseTypes } from "./DefenseTypes";
 import { TargetFlags } from "./TargetFlags";

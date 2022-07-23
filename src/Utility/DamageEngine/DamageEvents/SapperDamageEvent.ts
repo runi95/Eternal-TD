@@ -5,7 +5,7 @@ import { Group } from "../../Group";
 import { GameMap } from "../../../Game/GameMap";
 import type { Unit } from "w3ts";
 import type { DamageEvent } from "../DamageEvent";
-import type { SapperCustomData } from "Towers/Sapper/Sapper";
+import type { SapperCustomData } from "../../../Towers/Sapper/Sapper";
 
 const sapperUnitTypeId: number = FourCC('h003');
 const seaGiantUnitTypeId: number = FourCC('h004');

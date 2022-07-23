@@ -1,4 +1,4 @@
-import { VoidwalkerCustomData } from "Towers/Voidwalker/Voidwalker";
+import { VoidwalkerCustomData } from "../../../Voidwalker/Voidwalker";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 

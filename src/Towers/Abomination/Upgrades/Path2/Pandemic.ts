@@ -1,5 +1,5 @@
-import { PandemicAbility } from "TowerAbilities/PandemicAbility";
-import { TowerAbility } from "TowerAbilities/TowerAbility";
+import { PandemicAbility } from "../../../../TowerAbilities/PandemicAbility";
+import { TowerAbility } from "../../../../TowerAbilities/TowerAbility";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 

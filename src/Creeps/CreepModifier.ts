@@ -1,7 +1,7 @@
 import { DefenseTypes } from "./DefenseTypes";
 import { TargetFlags } from "./TargetFlags";
-import type { Color } from "Utility/Color";
-import type { Scale } from "Utility/Scale";
+import type { Color } from "../Utility/Color";
+import type { Scale } from "../Utility/Scale";
 import type { Unit } from "w3ts";
 
 export type CreepModifierApplyFunction = (unit: Unit) => void;

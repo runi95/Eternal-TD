@@ -8,14 +8,14 @@ import { TowerUpgradeSystem } from "./TowerUpgradeSystem";
 import { CreepRegenSystem } from "../Creeps/CreepRegenSystem";
 import { TowerController } from "../Towers/TowerController";
 import { Effect, MapPlayer, Trigger, FogModifier, Unit } from "w3ts";
-import { RandomNumberGenerator } from "Utility/RandomNumberGenerator";
+import { RandomNumberGenerator } from "../Utility/RandomNumberGenerator";
 import { Commands } from "../Utility/Commands";
 import { MapRegionController } from "./MapRegionController";
 import { TowerAbilitySystem } from "../TowerAbilities/TowerAbilitySystem";
-import { Sounds } from "Utility/Sounds";
+import { Sounds } from "../Utility/Sounds";
 import { GameMap } from "./GameMap";
 import { GameOptions } from "./GameOptions";
-import { Creep } from "Creeps/Creep";
+import { Creep } from "../Creeps/Creep";
 import type { Checkpoint } from "../Utility/Checkpoint";
 import type { Timer } from "w3ts";
 

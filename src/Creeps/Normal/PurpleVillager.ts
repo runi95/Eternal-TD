@@ -1,5 +1,5 @@
-import { CreepBaseUnit } from "Creeps/CreepBaseUnit";
-import { DefenseTypes } from "Creeps/DefenseTypes";
+import { CreepBaseUnit } from "../CreepBaseUnit";
+import { DefenseTypes } from "../DefenseTypes";
 import { Color } from "../../Utility/Color";
 import { PinkVillager } from "./PinkVillager";
 

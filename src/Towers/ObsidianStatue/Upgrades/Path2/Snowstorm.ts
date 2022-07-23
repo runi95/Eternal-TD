@@ -1,6 +1,6 @@
-import { SnowstormAbility } from "TowerAbilities/SnowstormAbility";
-import { TowerAbility } from "TowerAbilities/TowerAbility";
-import { ObsidianStatueCustomData } from "Towers/ObsidianStatue/ObsidianStatue";
+import { SnowstormAbility } from "../../../../TowerAbilities/SnowstormAbility";
+import { TowerAbility } from "../../../../TowerAbilities/TowerAbility";
+import { ObsidianStatueCustomData } from "../../../../Towers/ObsidianStatue/ObsidianStatue";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 

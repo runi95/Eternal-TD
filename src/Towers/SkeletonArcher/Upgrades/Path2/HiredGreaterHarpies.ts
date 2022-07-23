@@ -1,4 +1,4 @@
-import { HireGreaterHarpyAbility } from "TowerAbilities/HireGreaterHarpyAbility";
+import { HireGreaterHarpyAbility } from "../../../../TowerAbilities/HireGreaterHarpyAbility";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 

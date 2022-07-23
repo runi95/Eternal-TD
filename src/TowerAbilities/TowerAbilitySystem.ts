@@ -1,10 +1,10 @@
-import { InvisibilityModifier } from "Creeps/Modifiers/InvisibilityModifier";
-import { Zeppelin } from "Creeps/Normal/Zeppelin";
-import { GameMap } from "Game/GameMap";
-import { Tower } from "Towers/Tower";
-import { Group } from "Utility/Group";
-import { StunUtils } from "Utility/StunUtils";
-import { TimerUtils } from "Utility/TimerUtils";
+import { InvisibilityModifier } from "../Creeps/Modifiers/InvisibilityModifier";
+import { Zeppelin } from "../Creeps/Normal/Zeppelin";
+import { GameMap } from "../Game/GameMap";
+import { Tower } from "../Towers/Tower";
+import { Group } from "../Utility/Group";
+import { StunUtils } from "../Utility/StunUtils";
+import { TimerUtils } from "../Utility/TimerUtils";
 import { Point, Trigger, Unit } from "w3ts";
 import { Players } from "w3ts/globals";
 import { TowerAbilityType } from "./TowerAbilityType";

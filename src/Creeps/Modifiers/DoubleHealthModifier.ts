@@ -1,4 +1,4 @@
-import { CreepModifier } from "Creeps/CreepModifier";
+import { CreepModifier } from "../CreepModifier";
 
 export class DoubleHealthModifier extends CreepModifier {
     public static readonly DOUBLE_HEALTH_MODIFIER = new DoubleHealthModifier();

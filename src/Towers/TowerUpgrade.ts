@@ -1,4 +1,4 @@
-import { TowerAbility } from "TowerAbilities/TowerAbility";
+import { TowerAbility } from "../TowerAbilities/TowerAbility";
 import { Tower } from "./Tower";
 
 export abstract class TowerUpgrade {

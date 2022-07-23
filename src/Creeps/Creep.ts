@@ -1,4 +1,4 @@
-import { GameMap } from "Game/GameMap";
+import { GameMap } from "../Game/GameMap";
 import { Effect, MapPlayer, Unit } from "w3ts";
 import { DefenseTypes } from "./DefenseTypes";
 import { TargetFlags } from "./TargetFlags";
@@ -9,8 +9,8 @@ import { DecoyModifier } from "./Modifiers/DecoyModifier";
 import { Globals } from "../Utility/Globals";
 import { RandomNumberGenerator } from "../Utility/RandomNumberGenerator";
 import { LastStandModifier } from "./Modifiers/LastStandModifier";
-import type { Color } from "Utility/Color";
-import type { Scale } from "Utility/Scale";
+import type { Color } from "../Utility/Color";
+import type { Scale } from "../Utility/Scale";
 import type { CreepModifier } from "./CreepModifier";
 import type { CreepBaseUnit } from "./CreepBaseUnit";
 

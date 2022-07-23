@@ -1,4 +1,4 @@
-import { AttackTypes } from "Towers/AttackTypes";
+import { AttackTypes } from "../../../AttackTypes";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 

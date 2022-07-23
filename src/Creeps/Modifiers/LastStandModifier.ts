@@ -1,4 +1,4 @@
-import { CreepModifier } from "Creeps/CreepModifier";
+import { CreepModifier } from "../CreepModifier";
 
 export class LastStandModifier extends CreepModifier {
     public static readonly LAST_STAND_MODIFIER = new LastStandModifier();

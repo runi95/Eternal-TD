@@ -1,4 +1,4 @@
-import { ZeppelinCrushAbility } from "TowerAbilities/ZeppelinCrushAbility";
+import { ZeppelinCrushAbility } from "../../../../TowerAbilities/ZeppelinCrushAbility";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 

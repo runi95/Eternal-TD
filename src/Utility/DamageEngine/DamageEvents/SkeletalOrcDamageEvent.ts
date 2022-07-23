@@ -1,9 +1,9 @@
 import { DamageEvent } from "../DamageEvent";
 import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { StunUtils } from "../../StunUtils";
-import { GameMap } from "Game/GameMap";
-import { Creep } from "Creeps/Creep";
-import { Zeppelin } from "Creeps/Normal/Zeppelin";
+import { GameMap } from "../../../Game/GameMap";
+import { Creep } from "../../../Creeps/Creep";
+import { Zeppelin } from "../../../Creeps/Normal/Zeppelin";
 
 const skeletalOrcUnitTypeId: number = FourCC('h006');
 const skeletalHammerAbilityId: number = FourCC('A004');

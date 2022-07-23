@@ -1,4 +1,4 @@
-import { CreepModifier } from "Creeps/CreepModifier";
+import { CreepModifier } from "../CreepModifier";
 
 export class DecoyModifier extends CreepModifier {
     public static readonly DECOY_MODIFIER = new DecoyModifier();

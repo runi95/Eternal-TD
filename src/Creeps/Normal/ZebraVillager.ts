@@ -1,4 +1,4 @@
-import { CreepBaseUnit } from "Creeps/CreepBaseUnit";
+import { CreepBaseUnit } from "../CreepBaseUnit";
 import { Color } from "../../Utility/Color";
 import { BlackVillager } from "./BlackVillager";
 import { WhiteVillager } from "./WhiteVillager";

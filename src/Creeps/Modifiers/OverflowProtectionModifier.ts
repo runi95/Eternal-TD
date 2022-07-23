@@ -1,4 +1,4 @@
-import { CreepModifier } from "Creeps/CreepModifier";
+import { CreepModifier } from "../CreepModifier";
 
 export class OverflowProtectionModifier extends CreepModifier {
     public static readonly OVERFLOW_PROTECTION_MODIFIER = new OverflowProtectionModifier();

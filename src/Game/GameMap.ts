@@ -1,6 +1,6 @@
 import { Rectangle } from "w3ts";
-import type { Checkpoint } from "Utility/Checkpoint";
-import type { Creep } from "Creeps/Creep";
+import type { Checkpoint } from "../Utility/Checkpoint";
+import type { Creep } from "../Creeps/Creep";
 import type { CreepModifier } from "../Creeps/CreepModifier";
 import type { Tower } from "../Towers/Tower";
 

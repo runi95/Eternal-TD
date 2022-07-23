@@ -1,4 +1,4 @@
-import { CreepModifier } from "Creeps/CreepModifier";
+import { CreepModifier } from "../CreepModifier";
 
 export class DamageReductionModifier extends CreepModifier {
     public static readonly DAMAGE_REDUCTION_MODIFIER = new DamageReductionModifier();

@@ -1,4 +1,4 @@
-import { WendigoSmashAbility } from "TowerAbilities/WendigoSmashAbility";
+import { WendigoSmashAbility } from "../../../../TowerAbilities/WendigoSmashAbility";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 

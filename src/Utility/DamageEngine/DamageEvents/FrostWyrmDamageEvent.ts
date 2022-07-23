@@ -2,12 +2,12 @@ import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { ATTACK_TYPE_NORMAL } from "../GameSettings";
 import { Point } from "w3ts/handles/point";
 import { Group } from "../../Group";
-import { StunUtils } from "Utility/StunUtils";
-import { ObsidianStatueCustomData } from "Towers/ObsidianStatue/ObsidianStatue";
-import { DefenseTypes } from "Creeps/DefenseTypes";
-import { GameMap } from "Game/GameMap";
-import { InvisibilityModifier } from "Creeps/Modifiers/InvisibilityModifier";
-import { FortifiedVillager } from "Creeps/Normal/FortifiedVillager";
+import { StunUtils } from "../../StunUtils";
+import { ObsidianStatueCustomData } from "../../../Towers/ObsidianStatue/ObsidianStatue";
+import { DefenseTypes } from "../../../Creeps/DefenseTypes";
+import { GameMap } from "../../../Game/GameMap";
+import { InvisibilityModifier } from "../../../Creeps/Modifiers/InvisibilityModifier";
+import { FortifiedVillager } from "../../../Creeps/Normal/FortifiedVillager";
 import type { Unit } from "w3ts";
 import type { DamageEvent } from "../DamageEvent";
 

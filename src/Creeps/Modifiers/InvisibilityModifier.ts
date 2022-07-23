@@ -1,6 +1,6 @@
-import { CreepModifier } from "Creeps/CreepModifier";
-import { TargetFlags } from "Creeps/TargetFlags";
-import { Color } from "Utility/Color";
+import { CreepModifier } from "../CreepModifier";
+import { TargetFlags } from "../TargetFlags";
+import { Color } from "../../Utility/Color";
 
 export class InvisibilityModifier extends CreepModifier {
     public static readonly INVISIBILITY_MODIFIER = new InvisibilityModifier();
