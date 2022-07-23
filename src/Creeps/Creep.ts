@@ -176,8 +176,8 @@ export class Creep {
         damageAmount -= modifiedHealth;
 
         let spawnedCreeps: CreepBaseUnit[] = [];
-        for (let i = 0; i < this._creepBaseUnit.children.length && damageAmount > 0; i++) {
-            const creepDamageEvent = this.dealDamageToBaseUnits(this._creepBaseUnit.children[i], damageAmount);
+        for (let i = 0; i < creepBaseUnit.children.length; i++) {
+            const creepDamageEvent = this.dealDamageToBaseUnits(creepBaseUnit.children[i], damageAmount);
             damageAmount = creepDamageEvent.overflowingDamage;
             spawnedCreeps = spawnedCreeps.concat(creepDamageEvent.spawnedCreeps);
         }
