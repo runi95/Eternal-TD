@@ -431,7 +431,7 @@ export class Unit {
     public orderAtY: number = 0;
     public exploded: boolean = false;
 
-    private static UNIT_COUNTER: number = 1;
+    private static _UNIT_COUNTER: number = 0;
 
     private readonly _id: number;
     private readonly _owner: MapPlayer | number;
@@ -442,7 +442,7 @@ export class Unit {
     private readonly _skinId: number | undefined;
 
     constructor(owner: MapPlayer | number, unitId: number, x: number, y: number, face: number, skinId?: number) {
-        this._id = Unit.UNIT_COUNTER++;
+        this._id = ++Unit._UNIT_COUNTER;
         this._owner = owner;
         this._unitId = unitId;
         this._x = x;
@@ -472,5 +472,9 @@ export class Unit {
 
     public get id(): number {
         return this._id;
+    }
+
+    public static get UNIT_COUNTER(): number {
+        return Unit._UNIT_COUNTER;
     }
 }
