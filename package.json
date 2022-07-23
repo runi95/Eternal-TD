@@ -47,6 +47,6 @@
     }
   },
   "_moduleAliases": {
-    "w3ts": "test/overrides/w3ts.ts"
+    "w3ts": "test/overrides/w3ts"
   }
 }
