@@ -6,8 +6,7 @@ export class Rasterizer {
     // Static only class
     protected constructor() { }
 
-    public static DrawRect(x1: number, y1: number, x2: number, y2: number): void {
-        const imagePath: string = 'Doodads/Cinematic/FireRockSmall/FireRockSmall.mdx';
+    public static DrawRect(x1: number, y1: number, x2: number, y2: number, imagePath: string = 'Doodads/Cinematic/FireRockSmall/FireRockSmall.mdx'): void {
         for (let x: number = x1; x < x2; x = x + 16) {
             this.EFFECTS.push(new Effect(imagePath, x, y1));
         }
@@ -25,8 +24,7 @@ export class Rasterizer {
         }
     }
 
-    public static DrawPoint(x: number, y: number, modelname?: string): void {
-        const imagePath: string = modelname || 'war3mapImported/PlasmaLeakMedium.mdx';
+    public static DrawPoint(x: number, y: number, imagePath: string = 'war3mapImported/PlasmaLeakMedium.mdx'): void {
         this.EFFECTS.push(new Effect(imagePath, x, y));
     }
 
