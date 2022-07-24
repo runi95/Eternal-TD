@@ -1,6 +1,6 @@
 import { CreepRegion } from "../Creeps/CreepRegion";
 import { Trigger, Unit } from "w3ts";
-import { Checkpoint, distance2D } from "../Utility/Checkpoint";
+import { Checkpoint, euclideanDistance } from "../Utility/Checkpoint";
 import { Region } from "w3ts/handles/region";
 import { Rectangle } from "w3ts/handles/rect";
 import { GameMap } from "./GameMap";
@@ -65,6 +65,6 @@ export class MapRegionController {
     }
 
     public static getVisibleRegions(unit: Unit): CreepRegion[] {
-        return MapRegionController.regionLookup.filter((region) => distance2D({ x: unit.x, y: unit.y }, region.center) <= unit.acquireRange + 0.5 * MapRegionController.CHECKPOINT_DISTANCE);
+        return MapRegionController.regionLookup.filter((region) => euclideanDistance({ x: unit.x, y: unit.y }, region.center) <= unit.acquireRange + 0.5 * MapRegionController.CHECKPOINT_DISTANCE);
     }
 }
