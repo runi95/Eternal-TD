@@ -9,15 +9,16 @@ export class Unit {
     public order: string | OrderId = OrderId.Stop;
     public orderAtX: number = 0;
     public orderAtY: number = 0;
+    public acquireRange: number = 0;
     public exploded: boolean = false;
+    public x: number;
+    public y: number;
 
     private static _UNIT_COUNTER: number = 0;
 
     private readonly _id: number;
     private readonly _owner: MapPlayer | number;
     private readonly _unitId: number;
-    private readonly _x: number;
-    private readonly _y: number;
     private readonly _face: number;
     private readonly _skinId: number | undefined;
 
@@ -25,8 +26,8 @@ export class Unit {
         this._id = ++Unit._UNIT_COUNTER;
         this._owner = owner;
         this._unitId = unitId;
-        this._x = x;
-        this._y = y;
+        this.x = x;
+        this.y = y;
         this._face = face;
         this._skinId = skinId;
     }

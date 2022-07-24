@@ -5,7 +5,6 @@ import { TowerType } from "./TowerType";
 import towerTypeMap from "./TowerTypes";
 import { Trigger, Unit } from "w3ts";
 import { RandomNumberGenerator } from "../Utility/RandomNumberGenerator";
-import { MapRegionController } from "../Game/MapRegionController";
 import { DefenseTypes } from "../Creeps/DefenseTypes";
 import { TowerAbilitySystem } from "../TowerAbilities/TowerAbilitySystem";
 import { Group } from "../Utility/Group";
@@ -34,11 +33,9 @@ const timedLifeBuffId: number = FourCC('BTLF');
 export class TowerController {
     private readonly towerAbilitySystem: TowerAbilitySystem;
     private readonly tickTowers: Map<number, Timer> = new Map();
-    private readonly mapRegionController: MapRegionController;
 
-    constructor(towerAbilitySystem: TowerAbilitySystem, mapRegionController: MapRegionController) {
+    constructor(towerAbilitySystem: TowerAbilitySystem) {
         this.towerAbilitySystem = towerAbilitySystem;
-        this.mapRegionController = mapRegionController;
 
         const constTrig: Trigger = new Trigger();
         constTrig.addAction(() => {
@@ -54,7 +51,7 @@ export class TowerController {
             }
 
             const trigHandleId: number = trig.id;
-            const tower: Tower = new Tower(trig, towerType, this.mapRegionController.getVisibleRegions(trig));
+            const tower: Tower = new Tower(trig, towerType);
             tower.towerType.applyInitialUnitValues(trig);
 
             GameMap.BUILT_TOWER_MAP.set(trigHandleId, tower);

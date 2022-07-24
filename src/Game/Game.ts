@@ -44,7 +44,7 @@ export class Game {
         this.damageEventController = new DamageEventController(this.damageEngine);
         this.towerAbilitySystem = new TowerAbilitySystem();
         this.mapRegionController = new MapRegionController(this.gameOptions);
-        this.towerController = new TowerController(this.towerAbilitySystem, this.mapRegionController);
+        this.towerController = new TowerController(this.towerAbilitySystem);
         this.towerUpgradeSystem = new TowerUpgradeSystem(this.towerController);
 
         this.creepRegenSystem = new CreepRegenSystem();

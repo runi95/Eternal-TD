@@ -1,6 +1,7 @@
 import type { TowerType } from "./TowerType";
 import type { CreepRegion } from "../Creeps/CreepRegion";
 import type { Unit } from "w3ts";
+import { MapRegionController } from "../Game/MapRegionController";
 
 export class Tower {
     public readonly towerType: TowerType;
@@ -13,7 +14,7 @@ export class Tower {
     public largeVillagerBonusDamage: number = 0;
     public zeppelinVillagerBonusDamage: number = 0;
 
-    constructor(unit: Unit, towerType: TowerType, visibleRegions: CreepRegion[], pathUpgrades: number[] = [0, 0, 0]) {
+    constructor(unit: Unit, towerType: TowerType, visibleRegions: CreepRegion[] = MapRegionController.getVisibleRegions(unit), pathUpgrades: number[] = [0, 0, 0]) {
         this.unit = unit;
         this.towerType = towerType;
         this.pathUpgrades = pathUpgrades;
