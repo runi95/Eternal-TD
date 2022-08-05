@@ -8,6 +8,7 @@ export class EliteDefender extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
+        tower.zeppelinVillagerBonusDamage += 1;
         tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.5, 0);
     }
 }
