@@ -15,6 +15,7 @@ import type { Unit } from "w3ts";
 import type { TowerUpgrade } from "../TowerUpgrade";
 import { AbsoluteZero } from "./Upgrades/Path2/AbsoluteZero";
 import { Icicles } from "./Upgrades/Path3/Icicles";
+import { IcicleImpale } from "./Upgrades/Path3/IcicleImpale";
 
 export interface ObsidianStatueCustomData {
     range: number;
@@ -55,6 +56,7 @@ export class ObsidianStatue extends TowerType {
             new ReFreeze(),
             new FrostWyrm(),
             new Icicles(),
+            new IcicleImpale()
         ]
     ];
     public unitTypeId: number = FourCC('h008');
