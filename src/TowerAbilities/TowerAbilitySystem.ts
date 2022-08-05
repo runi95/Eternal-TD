@@ -10,6 +10,10 @@ import { Players } from "w3ts/globals";
 import { TowerAbilityType } from "./TowerAbilityType";
 import type { TowerAbility } from "./TowerAbility";
 import type { Timer } from "w3ts";
+import { FortifiedVillager } from "../Creeps/Normal/FortifiedVillager";
+import { ObsidianStatueCustomData } from "../Towers/ObsidianStatue/ObsidianStatue";
+import { WhiteVillager } from "../Creeps/Normal/WhiteVillager";
+import { ZebraVillager } from "../Creeps/Normal/ZebraVillager";
 
 interface ActiveTowerAbility {
     towers: AbilityTowerMeta[];
@@ -486,6 +490,7 @@ export class TowerAbilitySystem {
                 const snowstorm = () => {
                     const x = tower.unit.x;
                     const y = tower.unit.y;
+                    const { hasColdSnap } = tower.customData as ObsidianStatueCustomData;
 
                     const loc = new Point(x, y);
                     const group: Group = Group.fromRange(1500, loc);
@@ -500,10 +505,17 @@ export class TowerAbilitySystem {
                         if (!snowstormBlizzard) {
                             if (creep.hasModifier(InvisibilityModifier.INVISIBILITY_MODIFIER)) {
                                 snowstormDuration = 3;
-                            }
-
-                            if (creep.creepBaseUnit.name === Zeppelin.name) {
-                                snowstormDuration = 3;
+                            } else {
+                                switch (creep.creepBaseUnit.name) {
+                                    case WhiteVillager.name:
+                                    case ZebraVillager.name:
+                                    case Zeppelin.name:
+                                        snowstormDuration = 3;
+                                    case FortifiedVillager.name:
+                                        if (!hasColdSnap) return;
+                                    default:
+                                        break;
+                                }
                             }
                         }
 
