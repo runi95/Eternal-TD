@@ -1,3 +1,4 @@
+import { setUnitAttackTargetsAllowed, TargetFlags } from "../../../../Creeps/TargetFlags";
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
@@ -10,7 +11,6 @@ export class NightVision extends TowerUpgrade {
     public applyUpgrade(tower: Tower): void {
         // TODO: Increase damage done to invisible units by +2
 
-        // Allows targetting (wards) units with the invisiblity modifier
-        BlzSetUnitWeaponIntegerField(tower.unit.handle, UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED, 0, 22);
+        setUnitAttackTargetsAllowed(tower.unit, 0, TargetFlags.GROUND, TargetFlags.AIR, TargetFlags.WARD);
     }
 }
