@@ -13,6 +13,7 @@ import type { Color } from "../Utility/Color";
 import type { Scale } from "../Utility/Scale";
 import type { CreepModifier } from "./CreepModifier";
 import type { CreepBaseUnit } from "./CreepBaseUnit";
+import { MapRegionController } from "../Game/MapRegionController";
 
 export interface CreepDamageEvent {
     spawnedCreeps: CreepBaseUnit[];
@@ -26,7 +27,6 @@ export type Parent = {
 
 export class Creep {
     public readonly unitId: number;
-    public currentRegion: number | null = null;
 
     private readonly modifiers: CreepModifier[];
     private readonly modifierNameCheckMap: Map<string, boolean> = new Map();
@@ -34,6 +34,7 @@ export class Creep {
     private _nextCheckpointIndex: number;
     private _creepBaseUnit: CreepBaseUnit;
     private _parent: Parent;
+    private _currentRegionId: number | null = null;
 
     // Precalculated modifier values
     private readonly healthAddend: number;
@@ -183,6 +184,15 @@ export class Creep {
         }
 
         return { spawnedCreeps, overflowingDamage: damageAmount };
+    }
+
+    public get currentRegionId(): number {
+        return this._currentRegionId;
+    }
+
+    public set currentRegionId(currentRegion: number) {
+        this._currentRegionId = currentRegion;
+        MapRegionController.REGIONS[this._currentRegionId].triggerCreepEnterEvents(this.unit);
     }
 
     public get creepBaseUnit(): CreepBaseUnit {

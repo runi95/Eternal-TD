@@ -55,11 +55,7 @@ export class MapRegionController {
                 return;
             }
 
-            if (spawnedCreep.currentRegion !== null && MapRegionController.REGIONS[spawnedCreep.currentRegion]) {
-                delete MapRegionController.REGIONS[spawnedCreep.currentRegion].creeps[spawnedCreep.unitId];
-            }
-            r.creeps[spawnedCreep.unitId] = spawnedCreep;
-            spawnedCreep.currentRegion = currentRegionId;
+            spawnedCreep.currentRegionId = currentRegionId;
             if (gameOptions.isDebugModeEnabled) print(`entered region ${r.regionId}`);
         })
     }

@@ -5,10 +5,10 @@ import { MapRegionController } from "../Game/MapRegionController";
 
 export class Tower {
     public readonly towerType: TowerType;
-    public pathUpgrades: number[];
+    public readonly pathUpgrades: number[];
+    public readonly customData: unknown;
+    public readonly visibleRegions: CreepRegion[];
     public unit: Unit;
-    public customData: unknown;
-    public visibleRegions: CreepRegion[];
     public fortifiedVillagerBonusDamage: number = 0;
     public purpleVillagerBonusDamage: number = 0;
     public largeVillagerBonusDamage: number = 0;
