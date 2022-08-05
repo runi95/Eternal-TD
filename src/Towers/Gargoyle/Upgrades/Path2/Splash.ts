@@ -2,14 +2,13 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 import type { GargoyleCustomData } from "../../Gargoyle";
 
-export class IncreasedDamage extends TowerUpgrade {
-    public name = "Increased Damage";
+export class Splash extends TowerUpgrade {
+    public name = "Splash";
     public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
-    public cost = 380;
+    public cost = 485;
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        (tower.customData as GargoyleCustomData).hasIncreasedDamage = true;
-        tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 2, 0);
+        (tower.customData as GargoyleCustomData).hasSplash = true;
     }
 }
