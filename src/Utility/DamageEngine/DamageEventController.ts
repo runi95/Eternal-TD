@@ -2,7 +2,7 @@ import { DamageEngine } from "./DamageEngine";
 import { DamageReductionDamageEvent } from "./DamageEvents/DamageReductionDamageEvent";
 import { EmbrittlementDamageEvent } from "./DamageEvents/EmbrittlementDamageEvent";
 import { FrostWyrmDamageEvent } from "./DamageEvents/FrostWyrmDamageEvent";
-import { GargoyleSplashDamageEvent } from "./DamageEvents/GargoyleSplashDamageEvent";
+import { GargoyleWeakSplashDamageEvent } from "./DamageEvents/GargoyleWeakSplashDamageEvent";
 import { SapperDamageEvent } from "./DamageEvents/SapperDamageEvent";
 import { SeaGiantDamageEvent } from "./DamageEvents/SeaGiantDamageEvent";
 import { SkeletalOrcDamageEvent } from "./DamageEvents/SkeletalOrcDamageEvent";
@@ -19,7 +19,7 @@ export class DamageEventController {
         damageEngine.addInitialDamageModificationEvent(new EmbrittlementDamageEvent());
         damageEngine.addInitialDamageModificationEvent(new SuperBrittleDamageEvent());
         damageEngine.addInitialDamageModificationEvent(new VillagerTypeBonusDamageEvent());
-        damageEngine.addInitialDamageModificationEvent(new GargoyleSplashDamageEvent());
+        damageEngine.addInitialDamageModificationEvent(new GargoyleWeakSplashDamageEvent());
 
         // Final damage modification events
         damageEngine.addFinalDamageModificationEvent(new DamageReductionDamageEvent());

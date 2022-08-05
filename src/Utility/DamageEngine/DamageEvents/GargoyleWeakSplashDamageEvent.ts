@@ -8,7 +8,7 @@ import type { GargoyleCustomData } from "../../../Towers/Gargoyle/Gargoyle";
 import { FortifiedVillager } from "../../../Creeps/Normal/FortifiedVillager";
 
 const gargoyleUnitTypeId: number = FourCC('h009');
-export class GargoyleSplashDamageEvent implements DamageEvent {
+export class GargoyleWeakSplashDamageEvent implements DamageEvent {
     public event(globals: DamageEngineGlobals): void {
         const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
         if (playerId !== 23) return;
