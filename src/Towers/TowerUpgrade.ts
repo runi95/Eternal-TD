@@ -9,5 +9,6 @@ export abstract class TowerUpgrade {
     public abstract applyUpgrade(tower: Tower): void;
 
     public newUnitTypeId?: number = undefined;
+    public newUnitSkinTypeId?: number = undefined;
     public readonly ability?: TowerAbility = undefined;
 }

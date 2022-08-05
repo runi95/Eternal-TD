@@ -81,6 +81,8 @@ export class TowerController {
             }
 
             SelectUnitForPlayerSingle(unit.handle, GetTriggerPlayer());
+        } else if (upgrade.newUnitSkinTypeId !== undefined) {
+            tower.unit.skin = upgrade.newUnitSkinTypeId;
         } else {
             upgrade.applyUpgrade(tower);
         }
