@@ -14,7 +14,7 @@ export class Tower {
     public largeVillagerBonusDamage: number = 0;
     public zeppelinVillagerBonusDamage: number = 0;
 
-    constructor(unit: Unit, towerType: TowerType, visibleRegions: CreepRegion[] = MapRegionController.getVisibleRegions(unit), pathUpgrades: number[] = [0, 0, 0]) {
+    constructor(unit: Unit, towerType: TowerType, visibleRegions: CreepRegion[] = MapRegionController.getVisibleRegions(unit.x, unit.y, unit.acquireRange + 0.5 * MapRegionController.CHECKPOINT_DISTANCE), pathUpgrades: number[] = [0, 0, 0]) {
         this.unit = unit;
         this.towerType = towerType;
         this.pathUpgrades = pathUpgrades;

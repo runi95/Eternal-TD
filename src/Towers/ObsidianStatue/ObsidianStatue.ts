@@ -14,6 +14,7 @@ import { Snowstorm } from "./Upgrades/Path2/Snowstorm";
 import type { Unit } from "w3ts";
 import type { TowerUpgrade } from "../TowerUpgrade";
 import { AbsoluteZero } from "./Upgrades/Path2/AbsoluteZero";
+import { Icicles } from "./Upgrades/Path3/Icicles";
 
 export interface ObsidianStatueCustomData {
     range: number;
@@ -27,6 +28,7 @@ export interface ObsidianStatueCustomData {
     hasDeepFreeze: boolean;
     hasEmbrittlement: boolean;
     hasSuperBrittle: boolean;
+    hasIcicles: boolean;
 }
 
 const tickTowerAbilityId: number = FourCC('A008');
@@ -52,6 +54,7 @@ export class ObsidianStatue extends TowerType {
             new LargerRadius(),
             new ReFreeze(),
             new FrostWyrm(),
+            new Icicles(),
         ]
     ];
     public unitTypeId: number = FourCC('h008');
@@ -69,6 +72,7 @@ export class ObsidianStatue extends TowerType {
             hasDeepFreeze: false,
             hasEmbrittlement: false,
             hasSuperBrittle: false,
+            hasIcicles: false,
         };
     }
 

@@ -56,11 +56,11 @@ export class MapRegionController {
             }
 
             spawnedCreep.currentRegionId = currentRegionId;
-            if (gameOptions.isDebugModeEnabled) print(`entered region ${r.regionId}`);
+            // if (gameOptions.isDebugModeEnabled) print(`entered region ${r.regionId}`);
         })
     }
 
-    public static getVisibleRegions(unit: Unit): CreepRegion[] {
-        return MapRegionController.regionLookup.filter((region) => euclideanDistance({ x: unit.x, y: unit.y }, region.center) <= unit.acquireRange + 0.5 * MapRegionController.CHECKPOINT_DISTANCE);
+    public static getVisibleRegions(x: number, y: number, range: number): CreepRegion[] {
+        return MapRegionController.regionLookup.filter((region) => euclideanDistance({ x, y }, region.center) <= range);
     }
 }
