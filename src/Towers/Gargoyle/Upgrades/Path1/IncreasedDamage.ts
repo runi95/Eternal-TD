@@ -11,5 +11,6 @@ export class IncreasedDamage extends TowerUpgrade {
     public applyUpgrade(tower: Tower): void {
         (tower.customData as GargoyleCustomData).hasIncreasedDamage = true;
         tower.unit.setBaseDamage(tower.unit.getBaseDamage(0) + 2, 0);
+        tower.unit.setBaseDamage(tower.unit.getBaseDamage(1) + 2, 1);
     }
 }
