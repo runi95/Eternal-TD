@@ -1,5 +1,6 @@
 import { TowerType } from "../TowerType";
 import { TowerUpgrade } from "../TowerUpgrade";
+import { CripplingShot } from "./Upgrades/Path1/CripplingShot";
 import { DeadlyShot } from "./Upgrades/Path1/DeadlyShot";
 import { FurtherIncreasedDamage } from "./Upgrades/Path1/FurtherIncreasedDamage";
 import { IncreasedDamage } from "./Upgrades/Path1/IncreasedDamage";
@@ -17,7 +18,8 @@ export class Gargoyle extends TowerType {
             new IncreasedDamage(),
             new FurtherIncreasedDamage(),
             new DeadlyShot(),
-            new ZeppelinCrasher()
+            new ZeppelinCrasher(),
+            new CripplingShot()
         ],
         [
             new NightVision(),

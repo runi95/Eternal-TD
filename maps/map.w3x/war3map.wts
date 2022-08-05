@@ -774,3 +774,15 @@ STRING 190
 Attacks immobilize Zeppelins for <A00G,HeroDur1> seconds.
 }
 
+STRING 191
+// Abilities: A00G (Zeppelin Crasher), Tip (Tooltip - Normal)
+{
+Crippling Shot
+}
+
+STRING 192
+// Abilities: A00G (Zeppelin Crasher), Ubertip (Tooltip - Normal - Extended)
+{
+Attacks immobilize Zeppelins for <A00G,HeroDur2> seconds.
+}
+
