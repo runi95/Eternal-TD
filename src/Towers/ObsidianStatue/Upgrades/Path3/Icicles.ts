@@ -4,7 +4,7 @@ import { ObsidianStatueCustomData } from "../../ObsidianStatue";
 
 export class Icicles extends TowerUpgrade {
     public name = "Icicles";
-    public icon = "ReplaceableTextures/CommandButtons/BTNFrostBolt.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNColdArrows.blp";
     public cost = 2970;
     public description = "TODO: Write description";
 

@@ -6,7 +6,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class AbsoluteZero extends TowerUpgrade {
     public name = "Absolute Zero";
-    public icon = "ReplaceableTextures/CommandButtons/BTNBreathOfFrost.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNIceShard.blp";
     public cost = 21600;
     public description = "TODO: Write description";
     public ability?: TowerAbility = new AbsoluteZeroAbility();
