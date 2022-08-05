@@ -202,8 +202,6 @@ export class TowerController {
                         if (BlzGetUnitIntegerField(u.handle, UNIT_IF_DEFENSE_TYPE) === DefenseTypes.HEAVY)
                             return;
 
-                        unitCount++;
-
                         if (hasEmbrittlement) {
                             const dummy = new Unit(tower.unit.owner, dummyUnitTypeId, u.x, u.y, bj_UNIT_FACING);
                             dummy.addAbility(embrittlementAbilityId);
@@ -225,6 +223,7 @@ export class TowerController {
                             return;
                         }
 
+                        unitCount++;
                         tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
                         StunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
                     });
