@@ -8,6 +8,6 @@ export class FullyAutomatic extends TowerUpgrade {
     public description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
-        tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.5, 0)
+        tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.5, 0);
     }
 }
