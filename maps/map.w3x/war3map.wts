@@ -750,3 +750,27 @@ STRING 186
 Sheep (Decoy)
 }
 
+STRING 187
+// Abilities: A00G (Zeppelin Crasher), EditorSuffix (Editor Suffix)
+{
+(Bash)
+}
+
+STRING 188
+// Abilities: A00G (Zeppelin Crasher), Name (Name)
+{
+Zeppelin Crasher
+}
+
+STRING 189
+// Abilities: A00G (Zeppelin Crasher), Tip (Tooltip - Normal)
+{
+Zeppelin Crasher
+}
+
+STRING 190
+// Abilities: A00G (Zeppelin Crasher), Ubertip (Tooltip - Normal - Extended)
+{
+Attacks immobilize Zeppelins for <A00G,HeroDur1> seconds.
+}
+
