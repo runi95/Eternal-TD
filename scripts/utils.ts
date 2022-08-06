@@ -207,7 +207,9 @@ export function createMapFromFiles(output: string, mapFiles: IMapFile[], saveAsF
       const stat = fs.lstatSync(output);
       if (stat.isDirectory()) throw new Error(`Unable to save map as file over existing dir with same name: "${output}"`);
     } catch (err) {
-      if (err?.code !== "ENOENT") {
+      if (err?.code === "ENOENT") {
+        fs.mkdirsSync(path.dirname(output));
+      } else {
         throw err;
       }
     }
