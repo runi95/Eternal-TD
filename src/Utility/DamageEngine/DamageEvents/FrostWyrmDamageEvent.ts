@@ -56,7 +56,6 @@ export class FrostWyrmDamageEvent implements DamageEvent {
         if (hasIcicles) {
             const towerUnitId = tower.unit.id;
             const visibleRegions = MapRegionController.getVisibleRegions(targ.x, targ.y, range);
-            print(`visibleRegions.length: ${visibleRegions.length}, range: ${range}`);
             for (const visibleRegion of visibleRegions) {
                 let maxHits = 3;
                 visibleRegion.addCreepEnterEvent(towerUnitId, (u: Unit) => {
