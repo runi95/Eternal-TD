@@ -1,10 +1,10 @@
+import luamin from "luamin";
 import { execSync } from "child_process";
 import { writeFileSync } from "fs";
+import { createLogger, format, transports } from "winston";
+import type { Format } from "logform";
 import * as fs from "fs-extra";
 import * as path from "path";
-import { createLogger, format, transports } from "winston";
-const { combine, timestamp, printf } = format;
-const luamin = require('luamin');
 
 export interface IProjectConfig {
   mapFolder: string;
@@ -14,19 +14,14 @@ export interface IProjectConfig {
   launchArgs: string[];
   winePath?: string;
   winePrefix?: string;
-}
+};
 
 /**
  * Load an object from a JSON file.
  * @param fname The JSON file
  */
-export function loadJsonFile(fname: string) {
-  try {
-    return JSON.parse(fs.readFileSync(fname).toString());
-  } catch (e) {
-    logger.error(e.toString());
-    return {};
-  }
+export function loadJsonFile<T>(fname: string): T {
+  return JSON.parse(fs.readFileSync(fname).toString());
 }
 
 /**
@@ -46,7 +41,7 @@ export function toArrayBuffer(b: Buffer): ArrayBuffer {
  * Convert a ArrayBuffer to Buffer
  * @param ab
  */
-export function toBuffer(ab: ArrayBuffer) {
+export function toBuffer(ab: ArrayBuffer): Buffer {
   var buf = Buffer.alloc(ab.byteLength);
   var view = new Uint8Array(ab);
   for (var i = 0; i < buf.length; ++i) {
@@ -59,7 +54,7 @@ export function toBuffer(ab: ArrayBuffer) {
  * Recursively retrieve a list of files in a directory.
  * @param dir The path of the directory
  */
-export function getFilesInDirectory(dir: string) {
+export function getFilesInDirectory(dir: string): string[] {
   const files: string[] = [];
   fs.readdirSync(dir).forEach(file => {
     let fullPath = path.join(dir, file);
@@ -79,7 +74,7 @@ export function getFilesInDirectory(dir: string) {
  * Replaces all instances of the include directive with the contents of the specified file.
  * @param contents war3map.lua
  */
-export function processScriptIncludes(contents: string) {
+export function processScriptIncludes(contents: string): string {
   const regex = /include\(([^)]+)\)/gm;
   let matches;
   while ((matches = regex.exec(contents)) !== null) {
@@ -90,12 +85,21 @@ export function processScriptIncludes(contents: string) {
   return contents;
 }
 
-function updateTSConfig(mapFolder: string) {
-  const tsconfig = loadJsonFile('tsconfig.json');
-  const plugin = tsconfig.compilerOptions.plugins[0];
+interface TSConfig {
+  compilerOptions?: {
+    plugins?: any[]
+  };
+  tstl?: {
+    luaBundleEntry?: string;
+  }
+};
+
+function updateTSConfig(mapFolder: string): void {
+  const tsconfig = loadJsonFile<TSConfig>('tsconfig.json');
+  const plugin = tsconfig?.compilerOptions?.plugins?.[0];
 
   plugin.mapDir = `maps/${mapFolder}`.replace(/\\/g, '/');
-  plugin.entryFile = tsconfig.tstl.luaBundleEntry.replace(/\\/g, '/');
+  plugin.entryFile = tsconfig.tstl?.luaBundleEntry?.replace(/\\/g, '/');
   plugin.outputDir = `dist/${mapFolder}`.replace(/\\/g, '/');
 
   writeFileSync('tsconfig.json', JSON.stringify(tsconfig, undefined, 2));
@@ -104,14 +108,12 @@ function updateTSConfig(mapFolder: string) {
 /**
  *
  */
-export function compileMap(config: IProjectConfig) {
+export function compileMap(config: IProjectConfig): void {
   if (!config.mapFolder) {
-    logger.error(`Could not find key "mapFolder" in config.json`);
-    return false;
+    throw new Error('Could not find key "mapFolder" in config.json');
   }
 
   const tsLua = "./dist/tstl_output.lua";
-
   if (fs.existsSync(tsLua)) {
     fs.unlinkSync(tsLua);
   }
@@ -126,40 +128,31 @@ export function compileMap(config: IProjectConfig) {
   execSync('tstl -p tsconfig.json', { stdio: 'inherit' });
 
   if (!fs.existsSync(tsLua)) {
-    logger.error(`Could not find "${tsLua}"`);
-    return false;
+    throw new Error(`Could not find "${tsLua}"`);
   }
 
   // Merge the TSTL output with war3map.lua
   const mapLua = `./dist/${config.mapFolder}/war3map.lua`;
 
   if (!fs.existsSync(mapLua)) {
-    logger.error(`Could not find "${mapLua}"`);
-    return false;
+    throw new Error(`Could not find "${mapLua}"`);
   }
 
-  try {
-    let contents = fs.readFileSync(mapLua).toString() + fs.readFileSync(tsLua).toString();
-    contents = processScriptIncludes(contents);
+  let contents = fs.readFileSync(mapLua).toString() + fs.readFileSync(tsLua).toString();
+  contents = processScriptIncludes(contents);
 
-    if (config.minifyScript) {
-      logger.info(`Minifying script...`);
-      contents = luamin.minify(contents.toString());
-    }
-    //contents = luamin.minify(contents);
-    fs.writeFileSync(mapLua, contents);
-  } catch (err) {
-    logger.error(err.toString());
-    return false;
+  if (config.minifyScript) {
+    logger.info(`Minifying script...`);
+    contents = luamin.minify(contents.toString());
   }
-
-  return true;
+  //contents = luamin.minify(contents);
+  fs.writeFileSync(mapLua, contents);
 }
 
 /**
  * Formatter for log messages.
  */
-const loggerFormatFunc = printf(({ level, message, timestamp }) => {
+const loggerFormatFunc: Format = format.printf(({ level, message, timestamp }) => {
   return `[${timestamp.replace("T", " ").split(".")[0]}] ${level}: ${message}`;
 });
 
@@ -169,16 +162,16 @@ const loggerFormatFunc = printf(({ level, message, timestamp }) => {
 export const logger = createLogger({
   transports: [
     new transports.Console({
-      format: combine(
+      format: format.combine(
         format.colorize(),
-        timestamp(),
+        format.timestamp(),
         loggerFormatFunc
       ),
     }),
     new transports.File({
       filename: "project.log",
-      format: combine(
-        timestamp(),
+      format: format.combine(
+        format.timestamp(),
         loggerFormatFunc
       ),
     }),

@@ -1,14 +1,10 @@
 import { execFile, execSync } from "child_process";
-import { loadJsonFile, logger, compileMap, IProjectConfig } from "./utils";
+import { loadJsonFile, logger, compileMap } from "./utils";
+import type { IProjectConfig } from "./utils";
 
-function main() {
-  const config: IProjectConfig = loadJsonFile("config.json");
-  const result = compileMap(config);
-
-  if (!result) {
-    logger.error(`Failed to compile map.`);
-    return;
-  }
+function main(): void {
+  const config = loadJsonFile<IProjectConfig>("config.json");
+  compileMap(config);
 
   const cwd = process.cwd();
   const filename = `${cwd}/dist/${config.mapFolder}`;
@@ -28,4 +24,10 @@ function main() {
   }
 }
 
-main();
+try {
+  main();
+} catch (err) {
+  logger.error(err.toString());
+  logger.error(`Failed to compile map.`);
+  process.exit(1);
+}
