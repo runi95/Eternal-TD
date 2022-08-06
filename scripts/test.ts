@@ -1,5 +1,5 @@
-import {execFile, execSync} from "child_process";
-import {loadJsonFile, logger, compileMap, IProjectConfig} from "./utils";
+import { execFile, execSync } from "child_process";
+import { loadJsonFile, logger, compileMap, IProjectConfig } from "./utils";
 
 function main() {
   const config: IProjectConfig = loadJsonFile("config.json");
@@ -15,7 +15,7 @@ function main() {
 
   logger.info(`Launching map "${filename.replace(/\\/g, "/")}"...`);
 
-  if(config.winePath) {
+  if (config.winePath) {
     const wineFilename = `"Z:${filename}"`
     const prefix = config.winePrefix ? `WINEPREFIX=${config.winePrefix}` : ''
     execSync(`${prefix} ${config.winePath} "${config.gameExecutable}" ${["-loadfile", wineFilename, ...config.launchArgs].join(' ')}`, { stdio: 'ignore' });
