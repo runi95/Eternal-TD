@@ -200,7 +200,7 @@ export function createMapFromFiles(output: string, mapFiles: IMapFile[], saveAsF
     for (const mapFile of mapFiles) {
       const buildFilePath = `${output}/${mapFile.filePath}`;
       fs.mkdirsSync(path.dirname(buildFilePath));
-      fs.writeFileSync(buildFilePath, mapFile.content);
+      fs.writeFileSync(buildFilePath, Buffer.from(mapFile.content));
     }
   } else {
     try {
