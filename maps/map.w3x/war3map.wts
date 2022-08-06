@@ -798,3 +798,39 @@ STRING 196
 (Bash)
 }
 
+STRING 197
+// Abilities: S000 (Commander), EditorSuffix (Editor Suffix)
+{
+(Endurance Aura)
+}
+
+STRING 198
+// Abilities: S000 (Commander), Name (Name)
+{
+Commander
+}
+
+STRING 199
+// Abilities: S000 (Commander), Tip (Tooltip - Normal)
+{
+Commander
+}
+
+STRING 200
+// Abilities: S000 (Commander), Ubertip (Tooltip - Normal - Extended)
+{
+Increases the attack rate of all Gargoyle towers by <S000,DataB1%>%.
+}
+
+STRING 201
+// Buffs/Effects: B005 (), Bufftip (Tooltip)
+{
+Commander Aura
+}
+
+STRING 202
+// Buffs/Effects: B005 (), Buffubertip (Tooltip - Extended)
+{
+This unit is under the effects of Commander Aura; it has increased attack rate.
+}
+

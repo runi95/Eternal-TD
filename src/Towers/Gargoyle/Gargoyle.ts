@@ -6,6 +6,7 @@ import { FurtherIncreasedDamage } from "./Upgrades/Path1/FurtherIncreasedDamage"
 import { IncreasedDamage } from "./Upgrades/Path1/IncreasedDamage";
 import { ZeppelinCrasher } from "./Upgrades/Path1/ZeppelinCrasher";
 import { BouncingMissile } from "./Upgrades/Path2/BouncingMissile";
+import { Commander } from "./Upgrades/Path2/Commander";
 import { NightVision } from "./Upgrades/Path2/NightVision";
 import { ObsidianForm } from "./Upgrades/Path2/ObsidianForm";
 import { WeakSplash } from "./Upgrades/Path2/WeakSplash";
@@ -37,7 +38,8 @@ export class Gargoyle extends TowerType {
             new NightVision(),
             new WeakSplash(),
             new BouncingMissile(),
-            new ObsidianForm()
+            new ObsidianForm(),
+            new Commander()
         ],
         [
             new FastFiring(),
