@@ -3,6 +3,7 @@ import { DamageReductionDamageEvent } from "./DamageEvents/DamageReductionDamage
 import { EmbrittlementDamageEvent } from "./DamageEvents/EmbrittlementDamageEvent";
 import { FrostWyrmDamageEvent } from "./DamageEvents/FrostWyrmDamageEvent";
 import { GargoyleWeakSplashDamageEvent } from "./DamageEvents/GargoyleWeakSplashDamageEvent";
+import { ObsidianFormDamageEvent } from "./DamageEvents/ObsidianFormDamageEvent";
 import { SapperDamageEvent } from "./DamageEvents/SapperDamageEvent";
 import { SeaGiantDamageEvent } from "./DamageEvents/SeaGiantDamageEvent";
 import { SkeletalOrcDamageEvent } from "./DamageEvents/SkeletalOrcDamageEvent";
@@ -20,6 +21,7 @@ export class DamageEventController {
         damageEngine.addInitialDamageModificationEvent(new SuperBrittleDamageEvent());
         damageEngine.addInitialDamageModificationEvent(new VillagerTypeBonusDamageEvent());
         damageEngine.addInitialDamageModificationEvent(new GargoyleWeakSplashDamageEvent());
+        damageEngine.addInitialDamageModificationEvent(new ObsidianFormDamageEvent());
 
         // Final damage modification events
         damageEngine.addFinalDamageModificationEvent(new DamageReductionDamageEvent());

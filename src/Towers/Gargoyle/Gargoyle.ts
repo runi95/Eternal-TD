@@ -7,6 +7,7 @@ import { IncreasedDamage } from "./Upgrades/Path1/IncreasedDamage";
 import { ZeppelinCrasher } from "./Upgrades/Path1/ZeppelinCrasher";
 import { BouncingMissile } from "./Upgrades/Path2/BouncingMissile";
 import { NightVision } from "./Upgrades/Path2/NightVision";
+import { ObsidianForm } from "./Upgrades/Path2/ObsidianForm";
 import { WeakSplash } from "./Upgrades/Path2/WeakSplash";
 import { EliteDefender } from "./Upgrades/Path3/EliteDefender";
 import { EvenFasterFiring } from "./Upgrades/Path3/EvenFasterFiring";
@@ -17,6 +18,7 @@ import { SemiAutomatic } from "./Upgrades/Path3/SemiAutomatic";
 export interface GargoyleCustomData {
     hasSplash: boolean;
     hasIncreasedDamage: boolean;
+    hasObsidianForm: boolean;
     areaOfEffect: number;
     maxUnitCount: number;
     aoeDamage: number;
@@ -34,7 +36,8 @@ export class Gargoyle extends TowerType {
         [
             new NightVision(),
             new WeakSplash(),
-            new BouncingMissile()
+            new BouncingMissile(),
+            new ObsidianForm()
         ],
         [
             new FastFiring(),
@@ -50,6 +53,7 @@ export class Gargoyle extends TowerType {
         return {
             hasSplash: false,
             hasIncreasedDamage: false,
+            hasObsidianForm: false,
             areaOfEffect: 150,
             maxUnitCount: 10,
             aoeDamage: 1

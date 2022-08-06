@@ -6,17 +6,28 @@ import { GameMap } from "../../../Game/GameMap";
 import type { Unit } from "w3ts";
 import type { DamageEvent } from "../DamageEvent";
 import type { FrozenUnit } from "../../../Utility/FrozenUnit";
+import type { GargoyleCustomData } from "../../../Towers/Gargoyle/Gargoyle";
 
 const obsidianStatueUnitTypeId: number = FourCC('h008');
+const gargoyleUnitTypeId: number = FourCC('h009');
 export class VillagerLethalDamageEvent implements DamageEvent {
     public event(globals: DamageEngineGlobals): void {
         const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
-        if (playerId !== 23) {
-            return;
+        if (playerId !== 23) return;
+
+        let ignoreModifiers = false;
+        if (globals.DamageEventSourceUnitTypeId === gargoyleUnitTypeId) {
+            const tower = GameMap.BUILT_TOWER_MAP.get(globals.DamageEventSourceUnitId);
+            if (tower !== undefined) {
+                const { hasObsidianForm } = (tower.customData as GargoyleCustomData);
+                if (hasObsidianForm) {
+                    ignoreModifiers = true;
+                }
+            }
         }
 
         const spawnedCreep = GameMap.SPAWNED_CREEP_MAP.get(globals.DamageEventTargetUnitId as number);
-        const overflowingDamage = spawnedCreep.dealLethalDamage(Math.floor(Math.abs(globals.LethalDamageHP)));
+        const overflowingDamage = spawnedCreep.dealLethalDamage(Math.floor(Math.abs(globals.LethalDamageHP)), ignoreModifiers);
         if (overflowingDamage !== -1) {
             globals.DamageEventAmount = overflowingDamage;
         }

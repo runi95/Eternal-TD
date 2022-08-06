@@ -786,3 +786,15 @@ STRING 192
 Attacks immobilize Zeppelins for <A00G,HeroDur2> seconds.
 }
 
+STRING 194
+// Abilities: A00H (Obsidian Form), Name (Name)
+{
+Obsidian Form
+}
+
+STRING 196
+// Abilities: A00H (Obsidian Form), EditorSuffix (Editor Suffix)
+{
+(Bash)
+}
+

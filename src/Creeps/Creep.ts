@@ -111,6 +111,14 @@ export class Creep {
         return !!this.modifierNameCheckMap.get(modifier.name);
     }
 
+    public removeModifier(modifier: CreepModifier): boolean {
+        const creepModifier = this.modifierNameCheckMap.get(modifier.name);
+        if (!creepModifier) return false;
+
+        const res = this.modifierNameCheckMap.delete(modifier.name);
+        return res;
+    }
+
     public regrow(): void {
         if (this._parent === null) return;
         this._creepBaseUnit = this._parent.creepBaseUnit;
@@ -118,13 +126,13 @@ export class Creep {
         this.applyStats();
     }
 
-    public dealLethalDamage(damageAmount: number): number {
+    public dealLethalDamage(damageAmount: number, ignoreModifiers: boolean = false): number {
         const x = this.unit.x;
         const y = this.unit.y;
         const facing = this.unit.facing;
 
         let spawnedCreeps: CreepBaseUnit[] = [];
-        if (this.hasModifier(OverflowProtectionModifier.OVERFLOW_PROTECTION_MODIFIER)) {
+        if (!ignoreModifiers && this.hasModifier(OverflowProtectionModifier.OVERFLOW_PROTECTION_MODIFIER)) {
             spawnedCreeps = this._creepBaseUnit.children;
             damageAmount = 0;
             this.modifierNameCheckMap.delete(OverflowProtectionModifier.OVERFLOW_PROTECTION_MODIFIER.name);
@@ -136,7 +144,7 @@ export class Creep {
             }
         }
 
-        if (spawnedCreeps.length === 0 && this.hasModifier(LastStandModifier.LAST_STAND_MODIFIER)) {
+        if (!ignoreModifiers && spawnedCreeps.length === 0 && this.hasModifier(LastStandModifier.LAST_STAND_MODIFIER)) {
             this.modifierNameCheckMap.delete(LastStandModifier.LAST_STAND_MODIFIER.name);
             return 0;
         }
@@ -156,7 +164,7 @@ export class Creep {
             }
         }
 
-        if (spawnedCreeps.length === 0 && this.hasModifier(DecoyModifier.DECOY_MODIFIER) && RandomNumberGenerator.random(1, 4) === 4) {
+        if (!ignoreModifiers && spawnedCreeps.length === 0 && this.hasModifier(DecoyModifier.DECOY_MODIFIER) && RandomNumberGenerator.random(1, 4) === 4) {
             const eff = new Effect("Abilities/Spells/Human/Polymorph/PolyMorphTarget.mdl", x, y);
             const decoy = new Unit(MapPlayer.fromIndex(23), DecoyModifier.DECOY_UNIT_ID, x, y, facing);
             decoy.setExploded(true);
