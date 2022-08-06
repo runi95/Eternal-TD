@@ -98,7 +98,7 @@ export class Creep {
         this.applyStats();
 
         for (const applyEffect of applyEffects) {
-            (applyEffect as any)(this.unit); // FIXME: Why do we have to do "as any" here?
+            applyEffect(this.unit);
         }
 
         this.unit.issueOrderAt("move", GameMap.CHECKPOINTS[nextCheckpointIndex].x, GameMap.CHECKPOINTS[nextCheckpointIndex].y);
