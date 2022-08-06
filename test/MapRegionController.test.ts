@@ -41,7 +41,7 @@ test('getVisibleRegions() should only retrive regions within range of the given 
     const unit = new Unit(0, 0, x, y, 0);
     const acquireRange = 320.0;
     unit.acquireRange = acquireRange;
-    const visibleRegions = MapRegionController.getVisibleRegions(unit);
+    const visibleRegions = MapRegionController.getVisibleRegions(unit.x, unit.y, acquireRange + 0.5 * MapRegionController.CHECKPOINT_DISTANCE);
 
     for (const visibleRegion of visibleRegions) {
         const dist = Math.sqrt(Math.pow(x - visibleRegion.center.x, 2) + Math.pow(y - visibleRegion.center.y, 2));
