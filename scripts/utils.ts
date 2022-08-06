@@ -1,152 +1,233 @@
-import luamin from "luamin";
-import { execSync } from "child_process";
-import { writeFileSync } from "fs";
+import War3Map from "mdx-m3-viewer/dist/cjs/parsers/w3x/map";
 import { createLogger, format, transports } from "winston";
+import { createDiagnosticReporter, transpileProject } from "typescript-to-lua";
+import { DiagnosticCategory, ExitStatus } from "typescript";
+import { TextEncoder } from "util";
+import type { SourceFile } from "typescript";
 import type { Format } from "logform";
+import * as luamin from "luamin";
 import * as fs from "fs-extra";
 import * as path from "path";
 
-export interface IProjectConfig {
-  mapFolder: string;
-  minifyScript: string;
-  gameExecutable: string;
-  outputFolder: string;
-  launchArgs: string[];
+interface IConfigFile {
+  mapPath?: string;
+  outDir?: string;
+  saveAsFolder?: boolean;
+  minifyScript?: boolean;
+
+  gameExecutable?: string;
+  launchArgs?: string[];
   winePath?: string;
   winePrefix?: string;
-};
-
-/**
- * Load an object from a JSON file.
- * @param fname The JSON file
- */
-export function loadJsonFile<T>(fname: string): T {
-  return JSON.parse(fs.readFileSync(fname).toString());
 }
 
-/**
- * Convert a Buffer to ArrayBuffer
- * @param buf
- */
-export function toArrayBuffer(b: Buffer): ArrayBuffer {
-  var ab = new ArrayBuffer(b.length);
-  var view = new Uint8Array(ab);
-  for (var i = 0; i < b.length; ++i) {
-    view[i] = b[i];
-  }
-  return ab;
-}
+export class ProjectConfigurationLoader {
+  private static PROJECT_CONFIG_FILE_NAME = "project-config.json" || process.env.PROJECT_CONFIG_FILE_PATH;
+  private static USER_CONFIG_FILE_NAME = "config.json";
 
-/**
- * Convert a ArrayBuffer to Buffer
- * @param ab
- */
-export function toBuffer(ab: ArrayBuffer): Buffer {
-  var buf = Buffer.alloc(ab.byteLength);
-  var view = new Uint8Array(ab);
-  for (var i = 0; i < buf.length; ++i) {
-    buf[i] = view[i];
-  }
-  return buf;
-}
+  // Build configuration
+  private _mapPath?: string;
+  private _outDir: string = "./dist";
+  private _saveAsFolder: boolean = false;
+  private _minifyScript: boolean = false;
 
-/**
- * Recursively retrieve a list of files in a directory.
- * @param dir The path of the directory
- */
-export function getFilesInDirectory(dir: string): string[] {
-  const files: string[] = [];
-  fs.readdirSync(dir).forEach(file => {
-    let fullPath = path.join(dir, file);
-    if (fs.lstatSync(fullPath).isDirectory()) {
-      const d = getFilesInDirectory(fullPath);
-      for (const n of d) {
-        files.push(n);
+  // Run configuration
+  private _gameExecutable?: string;
+  private _winePath?: string;
+  private _winePrefix?: string;
+  private _launchArgs: string[] = [];
+
+  private constructor() { }
+
+  public static load(): ProjectConfigurationLoader {
+    const configurationLoader = new ProjectConfigurationLoader();
+
+    try {
+      const projectConfigFile = fs.readFileSync(ProjectConfigurationLoader.PROJECT_CONFIG_FILE_NAME);
+      const projectConfig = JSON.parse(projectConfigFile.toString());
+      configurationLoader.setConfigFromJSON(projectConfig);
+      logger.debug(`${ProjectConfigurationLoader.PROJECT_CONFIG_FILE_NAME} loaded`);
+    } catch (err) {
+      if (err?.code === "ENOENT") {
+        logger.warn(`Missing project configuration file: ${ProjectConfigurationLoader.PROJECT_CONFIG_FILE_NAME}`);
+      } else {
+        throw err;
       }
-    } else {
-      files.push(fullPath);
     }
-  });
-  return files;
-};
 
-/**
- * Replaces all instances of the include directive with the contents of the specified file.
- * @param contents war3map.lua
- */
-export function processScriptIncludes(contents: string): string {
-  const regex = /include\(([^)]+)\)/gm;
-  let matches;
-  while ((matches = regex.exec(contents)) !== null) {
-    const filename = matches[1].replace(/"/g, "").replace(/'/g, "");
-    const fileContents = fs.readFileSync(filename);
-    contents = contents.substr(0, regex.lastIndex - matches[0].length) + "\n" + fileContents + "\n" + contents.substr(regex.lastIndex);
+    try {
+      const configOverrideFile = fs.readFileSync(ProjectConfigurationLoader.USER_CONFIG_FILE_NAME);
+      const configOverrides = JSON.parse(configOverrideFile.toString());
+      configurationLoader.setConfigFromJSON(configOverrides);
+      logger.debug(`${ProjectConfigurationLoader.USER_CONFIG_FILE_NAME} loaded`);
+    } catch (err) {
+      if (err?.code === "ENOENT") {
+        logger.debug(`User configuration file ${ProjectConfigurationLoader.USER_CONFIG_FILE_NAME} does not exist`);
+      } else {
+        throw err;
+      }
+    }
+
+    return configurationLoader;
   }
-  return contents;
+
+  private setConfigFromJSON(json: IConfigFile) {
+    if (json.mapPath) this._mapPath = json.mapPath;
+    if (json.outDir) this._outDir = json.outDir;
+    if (json.saveAsFolder) this._saveAsFolder = json.saveAsFolder;
+    if (json.minifyScript) this._minifyScript = json.minifyScript;
+    if (json.gameExecutable) this._gameExecutable = json.gameExecutable;
+    if (json.launchArgs) this._launchArgs = json.launchArgs;
+    if (json.winePath) this._winePath = json.winePath;
+    if (json.winePrefix) this._winePrefix = json.winePrefix;
+  }
+
+  public get mapPath(): string | undefined {
+    return process.env.PROJECT_MAP_NAME ?? this._mapPath;
+  }
+
+  public get outDir(): string {
+    return process.env.PROJECT_OUT_DIR ?? this._outDir;
+  }
+
+  public get saveAsFolder(): boolean {
+    return process.env.PROJECT_SAVE_AS_FOLDER ? process.env.PROJECT_SAVE_AS_FOLDER.toLowerCase() === "true" || process.env.PROJECT_SAVE_AS_FOLDER === "1" : this._saveAsFolder;
+  }
+
+  public get minifyScript(): boolean {
+    return process.env.PROJECT_MINIFY_SCRIPT ? process.env.PROJECT_MINIFY_SCRIPT.toLowerCase() === "true" || process.env.PROJECT_MINIFY_SCRIPT === "1" : this._minifyScript;
+  }
+
+  public get gameExecutable(): string | undefined {
+    return process.env.PROJECT_GAME_EXECUTABLE ?? this._gameExecutable;
+  }
+
+  public get launchArgs(): string[] {
+    return process.env.PROJECT_LAUNCH_ARGS_CSV ? process.env.PROJECT_LAUNCH_ARGS_CSV.split(",") : this._launchArgs;
+  }
+
+  public get winePath(): string | undefined {
+    return process.env.PROJECT_WINE_PATH ?? this._winePath;
+  }
+
+  public get winePrefix(): string | undefined {
+    return process.env.PROJECT_WINE_PREFIX ?? this._winePrefix;
+  }
 }
 
-interface TSConfig {
-  compilerOptions?: {
-    plugins?: any[]
+function getFilesInDirectory(dir: string): string[] {
+  const filePaths: string[] = [];
+  const walk = (dirPath: string) => {
+    const dirFiles = fs.readdirSync(dirPath);
+    for (const file of dirFiles) {
+      const filePath = path.join(dirPath, file);
+      const fileStat = fs.lstatSync(filePath);
+      if (fileStat.isDirectory()) {
+        walk(filePath);
+        continue;
+      }
+
+      filePaths.push(filePath);
+    }
   };
-  tstl?: {
-    luaBundleEntry?: string;
-  }
-};
+  walk(dir);
 
-function updateTSConfig(mapFolder: string): void {
-  const tsconfig = loadJsonFile<TSConfig>('tsconfig.json');
-  const plugin = tsconfig?.compilerOptions?.plugins?.[0];
-
-  plugin.mapDir = `maps/${mapFolder}`.replace(/\\/g, '/');
-  plugin.entryFile = tsconfig.tstl?.luaBundleEntry?.replace(/\\/g, '/');
-  plugin.outputDir = `dist/${mapFolder}`.replace(/\\/g, '/');
-
-  writeFileSync('tsconfig.json', JSON.stringify(tsconfig, undefined, 2));
+  return filePaths;
 }
 
-/**
- *
- */
-export function compileMap(config: IProjectConfig): void {
-  if (!config.mapFolder) {
-    throw new Error('Could not find key "mapFolder" in config.json');
-  }
+interface IMapFile {
+  filePath: string;
+  content: ArrayBuffer;
+}
+export function compileMap(mapPath: string, outDir: string, minifyScript: boolean, saveAsFolder: boolean): void {
+  logger.info(`Building "${mapPath}"...`);
+  const war3mapLuaPath = `${mapPath}/war3map.lua`;
+  if (fs.existsSync(`${mapPath}/war3map.j`)) throw new Error(`Detected an unexpected war3map.j file in map, please check map options and ensure that the "Script Language" is set to "Lua" and NOT "JASS"`);
+  if (!fs.existsSync(war3mapLuaPath)) throw new Error(`Unable to find the original lua script file "${war3mapLuaPath}"`);
+  const war3mapLua = fs.readFileSync(war3mapLuaPath);
 
-  const tsLua = "./dist/tstl_output.lua";
-  if (fs.existsSync(tsLua)) {
-    fs.unlinkSync(tsLua);
-  }
-
-  logger.info(`Building "${config.mapFolder}"...`);
-  fs.copySync(`./maps/${config.mapFolder}`, `./dist/${config.mapFolder}`);
-
-  logger.info("Modifying tsconfig.json to work with war3-transformer...");
-  updateTSConfig(config.mapFolder);
+  const files: IMapFile[] = getFilesInDirectory(mapPath).map((filePath) => ({
+    filePath: path.relative(mapPath, filePath),
+    content: fs.readFileSync(filePath)
+  }));
 
   logger.info("Transpiling TypeScript to Lua...");
-  execSync('tstl -p tsconfig.json', { stdio: 'inherit' });
 
-  if (!fs.existsSync(tsLua)) {
-    throw new Error(`Could not find "${tsLua}"`);
+  const reportDiagnostic = createDiagnosticReporter(true);
+  const textEncoder = new TextEncoder();
+  const result = transpileProject("tsconfig.json", {
+    luaBundle: "war3map.lua"
+  }, (fileName: string, data: string, _writeByteOrderMark: boolean, _onError?: unknown, _sourceFiles?: readonly SourceFile[]) => {
+    let mergedLuaFiles = war3mapLua.toString("utf8") + data;
+    if (minifyScript) {
+      logger.info(`Minifying lua script...`);
+      mergedLuaFiles = luamin.minify(mergedLuaFiles);
+    }
+
+    files.push({
+      filePath: path.basename(fileName),
+      content: textEncoder.encode(mergedLuaFiles)
+    });
+  });
+
+  result.diagnostics.forEach(reportDiagnostic);
+  if (result.diagnostics.filter(d => d.category === DiagnosticCategory.Error).length > 0) {
+    process.exit(result.emitSkipped ? ExitStatus.DiagnosticsPresent_OutputsSkipped : ExitStatus.DiagnosticsPresent_OutputsGenerated);
   }
 
-  // Merge the TSTL output with war3map.lua
-  const mapLua = `./dist/${config.mapFolder}/war3map.lua`;
+  createMapFromFiles(`${outDir}/${path.basename(mapPath)}`, files, saveAsFolder);
+}
 
-  if (!fs.existsSync(mapLua)) {
-    throw new Error(`Could not find "${mapLua}"`);
+/**
+ * Creates a w3x archive from a directory
+ * @param output The output filename
+ * @param dir The directory to create the archive from
+ */
+export function createMapFromFiles(output: string, mapFiles: IMapFile[], saveAsFolder: boolean): void {
+  logger.info(`Saving map to "${output}"...`);
+  if (saveAsFolder) {
+    try {
+      const stat = fs.lstatSync(output);
+      if (!stat.isDirectory()) throw new Error(`Unable to save map as dir over existing file with same name: "${output}"`);
+    } catch (err) {
+      if (err?.code === "ENOENT") {
+        fs.mkdirsSync(output);
+      } else {
+        throw err;
+      }
+    }
+
+    for (const mapFile of mapFiles) {
+      const buildFilePath = `${output}/${mapFile.filePath}`;
+      fs.mkdirsSync(path.dirname(buildFilePath));
+      fs.writeFileSync(buildFilePath, mapFile.content);
+    }
+  } else {
+    try {
+      const stat = fs.lstatSync(output);
+      if (stat.isDirectory()) throw new Error(`Unable to save map as file over existing dir with same name: "${output}"`);
+    } catch (err) {
+      if (err?.code !== "ENOENT") {
+        throw err;
+      }
+    }
+
+    const map = new War3Map();
+    map.archive.resizeHashtable(mapFiles.length);
+    for (const mapFile of mapFiles) {
+      const imported = map.import(mapFile.filePath, mapFile.content);
+      if (!imported) {
+        throw new Error(`Failed to import ${mapFile.filePath}`);
+      }
+    }
+
+    const result = map.save();
+    if (!result) {
+      throw new Error("Failed to save archive.");
+    }
+
+    fs.writeFileSync(output, new Uint8Array(result));
   }
-
-  let contents = fs.readFileSync(mapLua).toString() + fs.readFileSync(tsLua).toString();
-  contents = processScriptIncludes(contents);
-
-  if (config.minifyScript) {
-    logger.info(`Minifying script...`);
-    contents = luamin.minify(contents.toString());
-  }
-  //contents = luamin.minify(contents);
-  fs.writeFileSync(mapLua, contents);
 }
 
 /**

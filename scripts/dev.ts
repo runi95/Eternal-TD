@@ -1,13 +1,15 @@
-import { loadJsonFile, logger } from "./utils";
-import War3TSTLHelper from "war3tstlhelper";
-import type { IProjectConfig } from "./utils";
+import { logger, ProjectConfigurationLoader } from "./utils";
+import * as War3TSTLHelper from "war3tstlhelper";
 import * as fs from "fs-extra";
 
 function main(): void {
-    const config = loadJsonFile<IProjectConfig>("config.json");
+    const config = ProjectConfigurationLoader.load();
+    if (!config.mapPath) {
+        throw new Error("Unable to create definitions file without the 'mapPath' configured");
+    }
 
     // Create definitions file for generated globals
-    const luaFile = `./maps/${config.mapFolder}/war3map.lua`;
+    const luaFile = `${config.mapPath}/war3map.lua`;
     const contents = fs.readFileSync(luaFile, "utf8");
     const parser = new War3TSTLHelper(contents);
     const result = parser.genTSDefinitions();
@@ -16,8 +18,8 @@ function main(): void {
 
 try {
     main();
+    logger.info("Definitions successfully created!");
 } catch (err) {
     logger.error(err.toString());
-    logger.error('An error occurred while trying to generate definition files');
     process.exit(1);
 }

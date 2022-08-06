@@ -7,8 +7,8 @@
     "start": "npm run build:dev",
     "build:dev": "ts-node --transpile-only scripts/test.ts",
     "build:release": "ts-node --transpile-only scripts/build.ts",
-    "watch": "npm-watch",
     "build:defs": "ts-node scripts/dev",
+    "watch": "npm-watch",
     "test": "ava"
   },
   "author": "runi95",

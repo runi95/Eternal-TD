@@ -36,10 +36,7 @@
     },
     "plugins": [
       {
-        "transform": "war3-transformer",
-        "mapDir": "maps/map.w3x",
-        "entryFile": "./src/main.ts",
-        "outputDir": "dist/map.w3x"
+        "transform": "war3-transformer"
       }
     ],
     "types": [
