@@ -258,5 +258,6 @@ export const logger = createLogger({
         loggerFormatFunc
       ),
     }),
-  ]
+  ],
+  level: process.env.LOG_LEVEL || "info"
 });
