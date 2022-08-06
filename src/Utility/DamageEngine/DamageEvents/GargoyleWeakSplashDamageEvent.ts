@@ -42,7 +42,7 @@ export class GargoyleWeakSplashDamageEvent implements DamageEvent {
                 if (creep.creepBaseUnit.name === FortifiedVillager.name) return;
             }
 
-            u.damageTarget(u.handle, aoeDamage, true, false, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+            tower.unit.damageTarget(u.handle, aoeDamage, true, false, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
         });
         grp.destroy();
         loc.destroy();
