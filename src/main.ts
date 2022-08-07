@@ -1,13 +1,8 @@
+import { addScriptHook, W3TS_HOOK } from "w3ts/hooks";
 import { Log, LogLevel } from './lib/Serilog/Serilog';
 import { StringSink } from './lib/Serilog/Sinks/StringSink';
 import { Game } from './Game/Game';
-import { addScriptHook, W3TS_HOOK } from "w3ts/hooks";
-
-const oldFourCC = FourCC;
-globalThis['FourCC'] = (id: string) => {
-    const a: number = oldFourCC(id);
-    return a;
-};
+import "./global-overrides";
 
 Log.Init([new StringSink(LogLevel.Error, print)]);
 
