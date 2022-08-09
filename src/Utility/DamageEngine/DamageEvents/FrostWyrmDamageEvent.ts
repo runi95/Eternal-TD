@@ -14,7 +14,6 @@ import { TimerUtils } from "../../TimerUtils";
 import { MapRegionController } from "../../../Game/MapRegionController";
 
 const frostWyrmUnitTypeId: number = FourCC('h00G');
-const dummyUnitTypeId: number = FourCC('u007');
 export class FrostWyrmDamageEvent implements DamageEvent {
     public event(globals: DamageEngineGlobals): void {
         const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
