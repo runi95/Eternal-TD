@@ -67,34 +67,6 @@ export class FrostWyrmDamageEvent implements DamageEvent {
                     UnitDamageTarget(trig, u.handle, 2, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
                 });
             }
-
-            // const t: Timer = TimerUtils.newTimer();
-
-            // let tick = 20;
-            // let maxHits = 3;
-            // t.start(0.1, true, () => {
-            //     tick--;
-
-            //     const iciclePoint: Point = new Point(GetUnitX(targ), GetUnitY(targ));
-            //     const icicleGroup: Group = Group.fromRange(100, iciclePoint);
-
-            //     icicleGroup.for((u: Unit) => {
-            //         if (maxHits <= 0) return;
-            //         if (u.owner.id !== 23) return;
-            //         if (u.handle === targ) return;
-            //         if (!u.isAlive()) return;
-
-            //         maxHits--;
-            //         UnitDamageTarget(trig, u.handle, 2, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
-            //     });
-
-            //     icicleGroup.destroy();
-            //     iciclePoint.destroy();
-
-            //     if (tick <= 0 || maxHits <= 0) {
-            //         TimerUtils.releaseTimer(t);
-            //     }
-            // });
         }
 
         const loc: Point = new Point(targ.x, targ.y);
