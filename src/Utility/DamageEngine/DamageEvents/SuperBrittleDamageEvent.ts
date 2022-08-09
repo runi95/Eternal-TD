@@ -1,18 +1,13 @@
 import { DamageEvent } from "../DamageEvent";
-import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { ATTACK_TYPE_CHAOS } from "../GameSettings";
+import { ExtendedDamageInstance } from "../DamageEventController";
 
 const superBrittleBuffId: number = FourCC('B003');
 export class SuperBrittleDamageEvent implements DamageEvent {
-    public event(globals: DamageEngineGlobals): void {
-        const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
-        if (playerId !== 23) {
-            return;
-        }
-
-        if (UnitHasBuffBJ(globals.DamageEventTarget as unit, superBrittleBuffId)) {
-            globals.DamageEventAttackT = ATTACK_TYPE_CHAOS;
-            globals.DamageEventAmount += 4;
+    public event(damageInstance: ExtendedDamageInstance): void {
+        if (damageInstance.targetOwningPlayerId !== 23) return;
+        if (UnitHasBuffBJ(damageInstance.target, superBrittleBuffId)) {
+            damageInstance.attackType = ATTACK_TYPE_CHAOS;
+            damageInstance.damage += 4;
         }
     }
 }

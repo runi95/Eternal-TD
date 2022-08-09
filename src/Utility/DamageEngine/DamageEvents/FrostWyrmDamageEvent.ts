@@ -1,5 +1,3 @@
-import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { ATTACK_TYPE_NORMAL } from "../GameSettings";
 import { Point } from "w3ts/handles/point";
 import { Group } from "../../Group";
 import { StunUtils } from "../../StunUtils";
@@ -8,34 +6,18 @@ import { DefenseTypes } from "../../../Creeps/DefenseTypes";
 import { GameMap } from "../../../Game/GameMap";
 import { InvisibilityModifier } from "../../../Creeps/Modifiers/InvisibilityModifier";
 import { FortifiedVillager } from "../../../Creeps/Normal/FortifiedVillager";
-import { Effect, Timer, Unit } from "w3ts";
-import type { DamageEvent } from "../DamageEvent";
-import { TimerUtils } from "../../TimerUtils";
+import { Unit } from "w3ts";
 import { MapRegionController } from "../../../Game/MapRegionController";
+import type { DamageEvent } from "../DamageEvent";
+import type { ExtendedDamageInstance } from "../DamageEventController";
 
 const frostWyrmUnitTypeId: number = FourCC('h00G');
 export class FrostWyrmDamageEvent implements DamageEvent {
-    public event(globals: DamageEngineGlobals): void {
-        const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
-        if (playerId !== 23) {
-            return;
-        }
-
-        if (globals.DamageEventSourceUnitTypeId !== frostWyrmUnitTypeId) {
-            return;
-        }
-
-        if (globals.DamageEventAttackT !== ATTACK_TYPE_NORMAL) {
-            return;
-        }
-
-        const trig: unit = globals.DamageEventSource as unit;
-        const damageEventTarget: unit = globals.DamageEventTarget as unit;
-
-        const tower = GameMap.BUILT_TOWER_MAP.get(GetHandleId(trig));
-        if (tower === undefined) {
-            return;
-        }
+    public event(damageInstance: ExtendedDamageInstance): void {
+        if (damageInstance.tower === undefined) return;
+        if (damageInstance.targetOwningPlayerId !== 23) return;
+        if (damageInstance.sourceUnitTypeId !== frostWyrmUnitTypeId) return;
+        if (damageInstance.attackType !== ATTACK_TYPE_NORMAL) return;
 
         const {
             range,
@@ -48,22 +30,21 @@ export class FrostWyrmDamageEvent implements DamageEvent {
             hasDeepFreeze,
             hasColdSnap,
             hasIcicles,
-        } = tower.customData as ObsidianStatueCustomData;
+        } = damageInstance.tower.customData as ObsidianStatueCustomData;
 
-        const targ = Unit.fromHandle(damageEventTarget);
+        const targ = Unit.fromHandle(damageInstance.target);
         StunUtils.freezeUnit(targ, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
         if (hasIcicles) {
-            const towerUnitId = tower.unit.id;
             const visibleRegions = MapRegionController.getVisibleRegions(targ.x, targ.y, range);
             for (const visibleRegion of visibleRegions) {
                 let maxHits = 3;
-                visibleRegion.addCreepEnterEvent(towerUnitId, (u: Unit) => {
+                visibleRegion.addCreepEnterEvent(damageInstance.sourceUnitId, (u: Unit) => {
                     if (maxHits <= 0) return;
                     if (u === targ) return;
                     if (!u.isAlive()) return;
 
                     maxHits--;
-                    UnitDamageTarget(trig, u.handle, 2, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+                    UnitDamageTarget(damageInstance.source, u.handle, 2, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
                 });
             }
         }
@@ -99,7 +80,7 @@ export class FrostWyrmDamageEvent implements DamageEvent {
 
             unitCount++;
 
-            tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+            damageInstance.tower.unit.damageTarget(u.handle, damageAmount, true, false, ATTACK_TYPE_CHAOS, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
             StunUtils.freezeUnit(u, freezeDuration, hasPermafrost, hasReFreeze, hasIceShards, hasDeepFreeze);
         });
         grp.destroy();

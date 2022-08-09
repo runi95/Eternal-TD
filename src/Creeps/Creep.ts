@@ -172,7 +172,7 @@ export class Creep {
             eff.destroy();
         }
 
-        return isUnitReused ? damageAmount : -1;
+        return isUnitReused ? (this._creepBaseUnit.health + this.healthAddend) * this.healthMultiplier - damageAmount : -damageAmount;
     }
 
     public dealDamageToBaseUnits(creepBaseUnit: CreepBaseUnit, damageAmount: number): CreepDamageEvent {

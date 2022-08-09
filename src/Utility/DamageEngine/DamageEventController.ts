@@ -1,4 +1,4 @@
-import { DamageEngine } from "./DamageEngine";
+import { DamageEngine, DamageEventType, DamageInstance } from "./DamageEngine";
 import { DamageReductionDamageEvent } from "./DamageEvents/DamageReductionDamageEvent";
 import { EmbrittlementDamageEvent } from "./DamageEvents/EmbrittlementDamageEvent";
 import { FrostWyrmDamageEvent } from "./DamageEvents/FrostWyrmDamageEvent";
@@ -10,29 +10,57 @@ import { SkeletalOrcDamageEvent } from "./DamageEvents/SkeletalOrcDamageEvent";
 import { SuperBrittleDamageEvent } from "./DamageEvents/SuperBrittleDamageEvent";
 import { VillagerLethalDamageEvent } from "./DamageEvents/VillagerLethalDamageEvent";
 import { VillagerTypeBonusDamageEvent } from "./DamageEvents/VillagerTypeBonusDamageEvent";
+import type { Tower } from "../../Towers/Tower";
+import { GameMap } from "../../Game/GameMap";
+import { Creep } from "../../Creeps/Creep";
+
+export interface ExtendedDamageInstance extends DamageInstance {
+    sourceOwningPlayer: player;
+    targetOwningPlayer: player;
+    sourceOwningPlayerId: number;
+    targetOwningPlayerId: number;
+    sourceUnitId: number;
+    targetUnitId: number;
+    sourceUnitTypeId: number;
+    targetUnitTypeId: number;
+    tower: Tower | undefined;
+    creep: Creep;
+}
 
 export class DamageEventController {
-    constructor(damageEngine: DamageEngine) {
-        // Initial damage events
-        // damageEngine.addInitialDamageEvent(new MyInitialDamageEvent());
+    constructor() {
+        DamageEngine.registerTransformer((d: ExtendedDamageInstance) => {
+            d.sourceOwningPlayer = GetOwningPlayer(d.source);
+            d.targetOwningPlayer = GetOwningPlayer(d.target);
+            d.sourceOwningPlayerId = GetPlayerId(d.sourceOwningPlayer);
+            d.targetOwningPlayerId = GetPlayerId(d.targetOwningPlayer);
+            d.sourceUnitId = GetHandleId(d.source);
+            d.targetUnitId = GetHandleId(d.target);
+            d.sourceUnitTypeId = GetUnitTypeId(d.source);
+            d.targetUnitTypeId = GetUnitTypeId(d.target);
+            d.tower = GameMap.BUILT_TOWER_MAP.get(d.sourceUnitId);
+            d.creep = GameMap.SPAWNED_CREEP_MAP.get(d.targetUnitId);
 
-        // Initial damage modification events
-        damageEngine.addInitialDamageModificationEvent(new EmbrittlementDamageEvent());
-        damageEngine.addInitialDamageModificationEvent(new SuperBrittleDamageEvent());
-        damageEngine.addInitialDamageModificationEvent(new VillagerTypeBonusDamageEvent());
-        damageEngine.addInitialDamageModificationEvent(new GargoyleWeakSplashDamageEvent());
-        damageEngine.addInitialDamageModificationEvent(new ObsidianFormDamageEvent());
+            return d;
+        });
 
-        // Final damage modification events
-        damageEngine.addFinalDamageModificationEvent(new DamageReductionDamageEvent());
+        // Pre damage events
+        DamageEngine.register(new EmbrittlementDamageEvent(), DamageEventType.PreDamageEvent);
+        DamageEngine.register(new SuperBrittleDamageEvent(), DamageEventType.PreDamageEvent);
+
+        // On damage events
+        DamageEngine.register(new VillagerTypeBonusDamageEvent(), DamageEventType.OnDamageEvent);
+        DamageEngine.register(new GargoyleWeakSplashDamageEvent(), DamageEventType.OnDamageEvent);
+        DamageEngine.register(new ObsidianFormDamageEvent(), DamageEventType.OnDamageEvent);
+        DamageEngine.register(new DamageReductionDamageEvent(), DamageEventType.OnDamageEvent);
 
         // After damage events
-        damageEngine.addAfterDamageEvent(new SapperDamageEvent());
-        damageEngine.addAfterDamageEvent(new SeaGiantDamageEvent());
-        damageEngine.addAfterDamageEvent(new SkeletalOrcDamageEvent());
-        damageEngine.addAfterDamageEvent(new FrostWyrmDamageEvent());
+        DamageEngine.register(new SapperDamageEvent(), DamageEventType.AfterDamageEvent);
+        DamageEngine.register(new SeaGiantDamageEvent(), DamageEventType.AfterDamageEvent);
+        DamageEngine.register(new SkeletalOrcDamageEvent(), DamageEventType.AfterDamageEvent);
+        DamageEngine.register(new FrostWyrmDamageEvent(), DamageEventType.AfterDamageEvent);
 
         // Lethal damage events
-        damageEngine.addLethalDamageEvent(new VillagerLethalDamageEvent());
+        DamageEngine.register(new VillagerLethalDamageEvent(), DamageEventType.LethalDamageEvent);
     }
 }

@@ -1,28 +1,19 @@
 import { DamageEvent } from "../DamageEvent";
-import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { GameMap } from "../../../Game/GameMap";
 import { DamageReductionModifier } from "../../../Creeps/Modifiers/DamageReductionModifier";
 import type { GargoyleCustomData } from "../../../Towers/Gargoyle/Gargoyle";
+import type { ExtendedDamageInstance } from "../DamageEventController";
 
 const gargoyleUnitTypeId: number = FourCC('h009');
 export class DamageReductionDamageEvent implements DamageEvent {
-    public event(globals: DamageEngineGlobals): void {
-        const tower = GameMap.BUILT_TOWER_MAP.get(globals.DamageEventSourceUnitId);
-        if (!tower)
-            return;
-
-        if (globals.DamageEventSourceUnitTypeId === gargoyleUnitTypeId) {
-            const { hasObsidianForm } = (tower.customData as GargoyleCustomData);
+    public event(damageInstance: ExtendedDamageInstance): void {
+        if (damageInstance.sourceUnitTypeId === gargoyleUnitTypeId) {
+            const { hasObsidianForm } = (damageInstance.tower.customData as GargoyleCustomData);
             if (hasObsidianForm) return;
         }
 
-        const creep = GameMap.SPAWNED_CREEP_MAP.get(globals.DamageEventTargetUnitId);
-        if (!creep)
+        if (!damageInstance.creep.hasModifier(DamageReductionModifier.DAMAGE_REDUCTION_MODIFIER))
             return;
 
-        if (!creep.hasModifier(DamageReductionModifier.DAMAGE_REDUCTION_MODIFIER))
-            return;
-
-        globals.DamageEventAmount -= 1;
+        damageInstance.damage -= 1;
     }
 }

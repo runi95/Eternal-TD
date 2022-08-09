@@ -1,44 +1,28 @@
-import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { TimerUtils } from "../../TimerUtils";
-import { ATTACK_TYPE_SIEGE } from "../GameSettings";
 import { Effect } from "w3ts";
 import { Point } from "w3ts/handles/point";
 import { Group } from "../../Group";
-import { GameMap } from "../../../Game/GameMap";
 import type { Timer, Unit } from "w3ts";
 import type { DamageEvent } from "../DamageEvent";
 import type { SapperCustomData } from "../../../Towers/Sapper/Sapper";
+import type { ExtendedDamageInstance } from "../DamageEventController";
 
 const seaGiantUnitTypeId: number = FourCC('h004');
 const clusterBombsAbilityId: number = FourCC('A005');
 export class SeaGiantDamageEvent implements DamageEvent {
-    public event(globals: DamageEngineGlobals): void {
-        const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
-        if (playerId !== 23) {
-            return;
-        }
+    public event(damageInstance: ExtendedDamageInstance): void {
+        if (damageInstance.tower === undefined) return;
+        if (damageInstance.targetOwningPlayerId !== 23) return;
+        if (damageInstance.sourceUnitTypeId !== seaGiantUnitTypeId) return;
+        if (damageInstance.attackType !== ATTACK_TYPE_SIEGE) return;
 
-        if (globals.DamageEventSourceUnitTypeId !== seaGiantUnitTypeId) {
-            return;
-        }
+        const clusterBombsLevel: number = GetUnitAbilityLevel(damageInstance.source, clusterBombsAbilityId);
+        const x: number = GetUnitX(damageInstance.target);
+        const y: number = GetUnitY(damageInstance.target);
+        const userData: number = (GetUnitUserData(damageInstance.source) + 1) % 2;
+        SetUnitUserData(damageInstance.source, userData);
 
-        if (globals.DamageEventAttackT !== ATTACK_TYPE_SIEGE) {
-            return;
-        }
-
-        const trig: unit = globals.DamageEventSource as unit;
-        const tower = GameMap.BUILT_TOWER_MAP.get(GetHandleId(trig));
-        if (tower === undefined) {
-            return;
-        }
-
-        const clusterBombsLevel: number = GetUnitAbilityLevel(trig, clusterBombsAbilityId);
-        const x: number = GetUnitX(globals.DamageEventTarget as unit);
-        const y: number = GetUnitY(globals.DamageEventTarget as unit);
-        const userData: number = (GetUnitUserData(globals.DamageEventSource as unit) + 1) % 2;
-        SetUnitUserData(globals.DamageEventSource as unit, userData);
-
-        const { aoeDamage } = (tower.customData as SapperCustomData)
+        const { aoeDamage } = (damageInstance.tower.customData as SapperCustomData)
 
         let ticks = 21;
         const t: Timer = TimerUtils.newTimer();

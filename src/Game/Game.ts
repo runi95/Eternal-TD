@@ -1,7 +1,6 @@
 import { TimerUtils } from "../Utility/TimerUtils";
 import { Spells } from "../Spells/Spells";
 import { getRoundCreeps } from "./Rounds";
-import { DamageEngineGlobals } from "../Utility/DamageEngine/DamageEngineGlobals";
 import { DamageEngine } from "../Utility/DamageEngine/DamageEngine";
 import { DamageEventController } from "../Utility/DamageEngine/DamageEventController";
 import { TowerUpgradeSystem } from "./TowerUpgradeSystem";
@@ -20,7 +19,6 @@ import type { Checkpoint } from "../Utility/Checkpoint";
 import type { Timer } from "w3ts";
 
 export class Game {
-    private readonly damageEngineGlobals: DamageEngineGlobals;
     private readonly damageEngine: DamageEngine;
     private readonly damageEventController: DamageEventController;
     private readonly creepRegenSystem: CreepRegenSystem;
@@ -39,9 +37,8 @@ export class Game {
     constructor() {
         this.gameOptions = new GameOptions();
         this.gameMap = new GameMap();
-        this.damageEngineGlobals = new DamageEngineGlobals();
-        this.damageEngine = new DamageEngine(this.damageEngineGlobals);
-        this.damageEventController = new DamageEventController(this.damageEngine);
+        this.damageEngine = new DamageEngine();
+        this.damageEventController = new DamageEventController();
         this.towerAbilitySystem = new TowerAbilitySystem();
         this.mapRegionController = new MapRegionController(this.gameOptions);
         this.towerController = new TowerController(this.towerAbilitySystem);

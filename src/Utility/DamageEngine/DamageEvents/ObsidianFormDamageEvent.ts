@@ -1,32 +1,21 @@
-import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { GameMap } from "../../../Game/GameMap";
 import { CreepRegenSystem } from "../../../Creeps/CreepRegenSystem";
 import { RegenModifier } from "../../../Creeps/Modifiers/RegenModifier";
 import type { DamageEvent } from "../DamageEvent";
 import type { GargoyleCustomData } from "../../../Towers/Gargoyle/Gargoyle";
+import type { ExtendedDamageInstance } from "../DamageEventController";
 
 const gargoyleUnitTypeId: number = FourCC('h009');
 export class ObsidianFormDamageEvent implements DamageEvent {
-    public event(globals: DamageEngineGlobals): void {
-        const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
-        if (playerId !== 23) return;
+    public event(damageInstance: ExtendedDamageInstance): void {
+        if (damageInstance.tower === undefined) return;
+        if (damageInstance.targetOwningPlayerId !== 23) return;
+        if (damageInstance.sourceUnitTypeId !== gargoyleUnitTypeId) return;
 
-        if (globals.DamageEventSourceUnitTypeId !== gargoyleUnitTypeId) return;
-
-        const trig: unit = globals.DamageEventSource as unit;
-        const targ: unit = globals.DamageEventTarget as unit;
-        const tower = GameMap.BUILT_TOWER_MAP.get(GetHandleId(trig));
-        if (tower === undefined) return;
-
-        const { hasObsidianForm } = (tower.customData as GargoyleCustomData);
+        const { hasObsidianForm } = (damageInstance.tower.customData as GargoyleCustomData);
         if (!hasObsidianForm) return;
 
-        const targUnitId = GetHandleId(targ);
-        const creep = GameMap.SPAWNED_CREEP_MAP.get(targUnitId);
-
-        if (!creep) return;
-        if (!CreepRegenSystem.REGEN_UNIT_MAP.has(targUnitId)) return;
-        creep.removeModifier(RegenModifier.REGEN_MODIFIER);
-        CreepRegenSystem.REGEN_UNIT_MAP.delete(targUnitId);
+        if (!CreepRegenSystem.REGEN_UNIT_MAP.has(damageInstance.targetUnitId)) return;
+        damageInstance.creep.removeModifier(RegenModifier.REGEN_MODIFIER);
+        CreepRegenSystem.REGEN_UNIT_MAP.delete(damageInstance.targetUnitId);
     }
 }

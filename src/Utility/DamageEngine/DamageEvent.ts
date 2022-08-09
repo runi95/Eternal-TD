@@ -1,5 +1,5 @@
-import { DamageEngineGlobals } from './DamageEngineGlobals';
+import { DamageInstance } from './DamageEngine';
 
 export interface DamageEvent {
-    event(globals: DamageEngineGlobals): void;
+    event(globals: DamageInstance): void;
 }

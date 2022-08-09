@@ -1,30 +1,25 @@
-import { DamageEngineGlobals } from "../DamageEngineGlobals";
 import { Point } from "w3ts/handles/point";
 import { Group } from "../../Group";
 import { GameMap } from "../../../Game/GameMap";
+import { FortifiedVillager } from "../../../Creeps/Normal/FortifiedVillager";
 import type { Unit } from "w3ts";
 import type { DamageEvent } from "../DamageEvent";
 import type { GargoyleCustomData } from "../../../Towers/Gargoyle/Gargoyle";
-import { FortifiedVillager } from "../../../Creeps/Normal/FortifiedVillager";
+import type { ExtendedDamageInstance } from "../DamageEventController";
 
 const gargoyleUnitTypeId: number = FourCC('h009');
 export class GargoyleWeakSplashDamageEvent implements DamageEvent {
-    public event(globals: DamageEngineGlobals): void {
-        const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
-        if (playerId !== 23) return;
-        if (globals.DamageEventSourceUnitTypeId !== gargoyleUnitTypeId) return;
-        if (!globals.IsDamageRanged) return;
+    public event(damageInstance: ExtendedDamageInstance): void {
+        if (damageInstance.tower === undefined) return;
+        if (damageInstance.targetOwningPlayerId !== 23) return;
+        if (damageInstance.sourceUnitTypeId !== gargoyleUnitTypeId) return;
+        if (!damageInstance.isRanged) return;
 
-        const trig: unit = globals.DamageEventSource as unit;
-        const targ: unit = globals.DamageEventTarget as unit;
-        const tower = GameMap.BUILT_TOWER_MAP.get(GetHandleId(trig));
-        if (tower === undefined) return;
-
-        const { hasSplash, hasIncreasedDamage, areaOfEffect, maxUnitCount, aoeDamage } = (tower.customData as GargoyleCustomData);
+        const { hasSplash, hasIncreasedDamage, areaOfEffect, maxUnitCount, aoeDamage } = (damageInstance.tower.customData as GargoyleCustomData);
         if (!hasSplash) return;
 
-        const x: number = GetUnitX(targ);
-        const y: number = GetUnitY(targ);
+        const x: number = GetUnitX(damageInstance.target);
+        const y: number = GetUnitY(damageInstance.target);
         const loc: Point = new Point(x, y);
         const grp: Group = Group.fromRange(areaOfEffect, loc);
         let unitCount = 0;
@@ -33,7 +28,7 @@ export class GargoyleWeakSplashDamageEvent implements DamageEvent {
             if (u.owner.id !== 23) return;
 
             const unitId = u.id;
-            if (unitId === globals.DamageEventSourceUnitId) return;
+            if (unitId === damageInstance.sourceUnitId) return;
 
             unitCount++; // We purposefully want to count the immune FortifiedVillager here
             if (!hasIncreasedDamage) {
@@ -42,7 +37,7 @@ export class GargoyleWeakSplashDamageEvent implements DamageEvent {
                 if (creep.creepBaseUnit.name === FortifiedVillager.name) return;
             }
 
-            tower.unit.damageTarget(u.handle, aoeDamage, true, false, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+            damageInstance.tower.unit.damageTarget(u.handle, aoeDamage, true, false, ATTACK_TYPE_PIERCE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
         });
         grp.destroy();
         loc.destroy();

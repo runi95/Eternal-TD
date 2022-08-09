@@ -1,18 +1,17 @@
 import { DamageEvent } from "../DamageEvent";
-import { DamageEngineGlobals } from "../DamageEngineGlobals";
-import { ATTACK_TYPE_CHAOS } from "../GameSettings";
+import type { ExtendedDamageInstance } from "../DamageEventController";
 
 const embrittlementBuffId: number = FourCC('B002');
 export class EmbrittlementDamageEvent implements DamageEvent {
-    public event(globals: DamageEngineGlobals): void {
-        const playerId: number = globals.DamageEventTargetOwningPlayerId as number;
+    public event(damageInstance: ExtendedDamageInstance): void {
+        const playerId: number = damageInstance.targetOwningPlayerId;
         if (playerId !== 23) {
             return;
         }
 
-        if (UnitHasBuffBJ(globals.DamageEventTarget as unit, embrittlementBuffId)) {
-            globals.DamageEventAttackT = ATTACK_TYPE_CHAOS;
-            globals.DamageEventAmount += 1;
+        if (UnitHasBuffBJ(damageInstance.target, embrittlementBuffId)) {
+            damageInstance.attackType = ATTACK_TYPE_CHAOS;
+            damageInstance.damage += 1;
         }
     }
 }
