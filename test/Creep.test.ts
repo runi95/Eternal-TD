@@ -30,7 +30,7 @@ test.serial('Dealing lethal damage to a RedVillager should not spawn any creeps'
     t.is(Unit.UNIT_COUNTER, 1);
     const N = 10;
     for (let i = 0; i < N; i++) {
-        t.is(redVillager.dealLethalDamage(i), -1);
+        t.is(redVillager.dealLethalDamage(i), -i);
         t.is(redVillager.creepBaseUnit, RedVillager.RED_VILLAGER);
     }
     t.is(Unit.UNIT_COUNTER, 1);
@@ -47,14 +47,14 @@ test.serial('Dealing more than exact lethal damage to a BlueVillager should not 
 
     const N = 10;
     for (let i = 0; i < N; i++) {
-        t.is(blueVillager.dealLethalDamage(i + 1), -1);
+        t.is(blueVillager.dealLethalDamage(i + 1), -i);
         t.is(blueVillager.creepBaseUnit, BlueVillager.BLUE_VILLAGER);
     }
 });
 
 test.serial('Dealing exact lethal damage to a BlueVillager should transform it into a RedVillager', t => {
     t.is(blueVillager.creepBaseUnit, BlueVillager.BLUE_VILLAGER);
-    t.is(blueVillager.dealLethalDamage(0), 0);
+    t.is(blueVillager.dealLethalDamage(0), 1);
     t.is(blueVillager.creepBaseUnit, RedVillager.RED_VILLAGER);
 });
 
@@ -66,6 +66,6 @@ test.serial('Dealing 1 more than exact lethal damage to a YellowVillager should 
     const expectedUnitId = unitCounter + 1;
     const yellowVillager = GameMap.SPAWNED_CREEP_MAP.get(expectedUnitId) as Creep;
     t.is(yellowVillager.creepBaseUnit, YellowVillager.YELLOW_VILLAGER);
-    t.is(yellowVillager.dealLethalDamage(1), 0);
+    t.is(yellowVillager.dealLethalDamage(1), 1);
     t.is(yellowVillager.creepBaseUnit, BlueVillager.BLUE_VILLAGER);
 });
