@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class BouncingMissile extends TowerUpgrade {
     public name = "Bouncing Missile";
-    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNAbsorbMagic.blp";
     public cost = 3455;
     public description = "TODO: Write description";
 

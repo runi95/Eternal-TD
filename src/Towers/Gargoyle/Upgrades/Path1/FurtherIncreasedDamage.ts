@@ -4,7 +4,7 @@ import type { GargoyleCustomData } from "../../Gargoyle";
 
 export class FurtherIncreasedDamage extends TowerUpgrade {
     public name = "Further Increased Damage";
-    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNImprovedCreatureAttack.blp";
     public cost = 1620;
     public description = "TODO: Write description";
 

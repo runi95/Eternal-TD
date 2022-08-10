@@ -4,7 +4,7 @@ import type { GargoyleCustomData } from "../../Gargoyle";
 
 export class WeakSplash extends TowerUpgrade {
     public name = "Weak Splash";
-    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNExhumeCorpses.blp";
     public cost = 485;
     public description = "TODO: Write description";
 

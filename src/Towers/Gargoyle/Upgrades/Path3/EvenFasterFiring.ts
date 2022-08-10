@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class EvenFasterFiring extends TowerUpgrade {
     public name = "Even Faster Firing";
-    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNCannibalize.blp";
     public cost = 430;
     public description = "TODO: Write description";
 

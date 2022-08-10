@@ -4,7 +4,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 const commanderAbilityId = FourCC('S000');
 export class Commander extends TowerUpgrade {
     public name = "Commander";
-    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNCommandAura.dds";
     public cost = 14040;
     public description = "TODO: Write description";
 

@@ -3,7 +3,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class SemiAutomatic extends TowerUpgrade {
     public name = "Semi-Automatic";
-    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNNecromancerAdept.blp";
     public cost = 3780;
     public description = "TODO: Write description";
 

@@ -5,7 +5,7 @@ import type { GargoyleCustomData } from "../../Gargoyle";
 const zeppelinCrasherAbilityId: number = FourCC('A00G');
 export class CripplingShot extends TowerUpgrade {
     public name = "Crippling Shot";
-    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNCripple.blp";
     public cost = 36720;
     public description = "TODO: Write description";
 
