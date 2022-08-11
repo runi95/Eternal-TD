@@ -19,6 +19,7 @@ export class TowerUpgradeSystem {
     private readonly upgradePathIconFrames: Frame[][];
     private readonly upgradePathTextFrames: Frame[][];
     private readonly upgradePathEnabled: boolean[][];
+    private readonly upgradePathLockedIconFrames: Frame[][];
 
     constructor(towerController: TowerController) {
         this.towerController = towerController;
@@ -32,9 +33,11 @@ export class TowerUpgradeSystem {
         const x = -0.046875;
         const y = -0.075;
         this.upgradePathIconFrames = [[], [], []];
+        this.upgradePathLockedIconFrames = [[], [], []];
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 5; j++) {
                 this.upgradePathIconFrames[i].push(this.createUpgradePathIconFrame(this.menu, x + i * 0.046875, y + j * 0.0375));
+                this.upgradePathLockedIconFrames[i].push(this.createUpgradePathIconFrame(this.menu, x + i * 0.046875, y + j * 0.0375, "ReplaceableTextures/CommandButtons/BTNLockAndChains.dds"));
             }
         }
 
@@ -101,10 +104,11 @@ export class TowerUpgradeSystem {
             for (let j = 0; j < 5; j++) {
                 let icon = "UI/Widgets/EscMenu/Human/Quest-Unknown.dds";
                 let text = "";
+                let isPathAvailable = false;
                 if (this.selectedTower !== null && this.selectedTower.towerType.upgrades[i] && this.selectedTower.towerType.upgrades[i][j]) {
                     const pathA: number = this.selectedTower.pathUpgrades[(i + 1) % 3];
                     const pathB: number = this.selectedTower.pathUpgrades[(i + 2) % 3];
-                    const isPathAvailable = (pathA === 0 || pathB === 0) && (j < 2 || (pathA < 3 && pathB < 3));
+                    isPathAvailable = (pathA === 0 || pathB === 0) && (j < 2 || (pathA < 3 && pathB < 3));
                     const isEnabled: boolean = j === this.selectedTower.pathUpgrades[i] && isPathAvailable;
                     icon = this.selectedTower.towerType.upgrades[i][j].icon;
                     if (!isEnabled) {
@@ -117,15 +121,16 @@ export class TowerUpgradeSystem {
 
                 this.upgradePathIconFrames[i][j].setTexture(icon, 0, true);
                 this.upgradePathTextFrames[i][j].setText(text);
+                this.upgradePathLockedIconFrames[i][j].visible = !isPathAvailable;
             }
         }
     }
 
-    private createUpgradePathIconFrame(parent: Frame, offsetX: number, offsetY: number): Frame {
+    private createUpgradePathIconFrame(parent: Frame, offsetX: number, offsetY: number, texture = "UI/Widgets/EscMenu/Human/Quest-Unknown.dds"): Frame {
         const iconFrame = new Frame('iconFrame', parent, -1, 0, 'BACKDROP', '');
         iconFrame.setSize(0.02625, 0.02625)
         iconFrame.setPoint(FRAMEPOINT_CENTER, parent, FRAMEPOINT_CENTER, offsetX, offsetY)
-        iconFrame.setTexture("UI/Widgets/EscMenu/Human/Quest-Unknown.dds", 0, true)
+        iconFrame.setTexture(texture, 0, true)
 
         return iconFrame;
     }
