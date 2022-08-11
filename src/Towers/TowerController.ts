@@ -40,6 +40,7 @@ export class TowerController {
         const constTrig: Trigger = new Trigger();
         constTrig.addAction(() => {
             const trig: Unit = Unit.fromEvent();
+            trig.pauseEx(true);
 
             trig.disableAbility(attackAbilityId, false, true);
             trig.disableAbility(851984, false, true);
@@ -58,6 +59,13 @@ export class TowerController {
             this.addTickTower(tower);
         });
         constTrig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_START);
+
+        const constEndTrig = new Trigger();
+        constEndTrig.addAction(() => {
+            const trig: Unit = Unit.fromEvent();
+            trig.pauseEx(false);
+        });
+        constEndTrig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH);
     }
 
     public upgradeTower(tower: Tower, upgrade: TowerUpgrade): boolean {
