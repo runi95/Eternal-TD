@@ -157,6 +157,9 @@ export class Creep {
             if (i === 0 && spawnedCreeps[0].unitTypeId === this._creepBaseUnit.unitTypeId) {
                 isUnitReused = true;
                 this._parent = newParent;
+                if (this._creepBaseUnit.unitSkinTypeId !== spawnedCreeps[0].unitSkinTypeId) {
+                    this.unit.skin = spawnedCreeps[0].unitSkinTypeId || CreepDefaults.UNIT_TYPE_ID;
+                }
                 this._creepBaseUnit = spawnedCreeps[0];
                 this.applyStats();
             } else {
