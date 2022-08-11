@@ -17,6 +17,7 @@ import { GameOptions } from "./GameOptions";
 import { Creep } from "../Creeps/Creep";
 import type { Checkpoint } from "../Utility/Checkpoint";
 import type { Timer } from "w3ts";
+import { MeatWagoCustomData } from "../Towers/MeatWagon/MeatWagon";
 
 export class Game {
     private readonly damageEngine: DamageEngine;
@@ -66,8 +67,14 @@ export class Game {
         meatWagonAutoAttackGroundTrigger.addAction(() => {
             const trig: unit = GetTriggerUnit();
             const attacker: unit = GetAttacker();
+            const tower = GameMap.BUILT_TOWER_MAP.get(GetHandleId(attacker));
+            if (tower === undefined) return;
+
             const x: number = GetUnitX(trig);
             const y: number = GetUnitY(trig);
+
+            (tower.customData as MeatWagoCustomData).attackTargetPositionX = x;
+            (tower.customData as MeatWagoCustomData).attackTargetPositionY = y;
 
             // Not allowed to attack ground if attack is hidden
             BlzUnitDisableAbility(attacker, attackAbilityId, false, false);
