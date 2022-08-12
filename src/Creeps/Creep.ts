@@ -1,7 +1,7 @@
 import { GameMap } from "../Game/GameMap";
 import { Effect, MapPlayer, Unit } from "w3ts";
 import { DefenseTypes } from "./DefenseTypes";
-import { TargetFlags } from "./TargetFlags";
+import { setUnitTargetAs, TargetFlags } from "./TargetFlags";
 import { CreepDefaults } from "./CreepDefaults";
 import { OverflowProtectionModifier } from "./Modifiers/OverflowProtectionModifier";
 import { BlinkModifier } from "./Modifiers/BlinkModifier";
@@ -14,6 +14,7 @@ import type { Scale } from "../Utility/Scale";
 import type { CreepModifier } from "./CreepModifier";
 import type { CreepBaseUnit } from "./CreepBaseUnit";
 import { MapRegionController } from "../Game/MapRegionController";
+import { InvisibilityModifier } from "./Modifiers/InvisibilityModifier";
 
 export interface CreepDamageEvent {
     spawnedCreeps: CreepBaseUnit[];
@@ -42,7 +43,7 @@ export class Creep {
     private readonly colorMask: Color;
     private readonly scaleOverride: Scale;
     private readonly defenseTypeOverride: DefenseTypes | undefined;
-    private readonly targetAsOverride: TargetFlags | undefined;
+    private targetAsOverride: TargetFlags | undefined;
 
     public static spawn(creepBaseUnit: CreepBaseUnit, modifiers: CreepModifier[] = [], nextCheckpointIndex: number = 1, x?: number, y?: number, face: number = 0): void {
         new Creep(creepBaseUnit, null, modifiers, nextCheckpointIndex, x, y, face);
@@ -239,6 +240,18 @@ export class Creep {
         }
     }
 
+    public removeInvisibility() {
+        this.removeModifier(InvisibilityModifier.INVISIBILITY_MODIFIER);
+        if (this.targetAsOverride === TargetFlags.WARD) {
+            this.targetAsOverride = undefined;
+        }
+
+        setUnitTargetAs(this.unit, CreepDefaults.TARGET_AS_FLAG);
+        this.colorMask.a = 1;
+        const creepColor = this.color;
+        this.unit.setVertexColor(creepColor.r, creepColor.g, creepColor.b, creepColor.a);
+    }
+
     private get color(): Color {
         return {
             r: Math.round(this._creepBaseUnit.color.r * this.colorMask.r),
@@ -275,7 +288,7 @@ export class Creep {
 
         const creepTargetAs = this.targetAsOverride || this.creepBaseUnit.targetAs || CreepDefaults.TARGET_AS_FLAG;
         if (creepTargetAs !== CreepDefaults.TARGET_AS_FLAG) {
-            BlzSetUnitIntegerField(this.unit.handle, UNIT_IF_TARGETED_AS, creepTargetAs);
+            setUnitTargetAs(this.unit, creepTargetAs);
         }
     }
 }

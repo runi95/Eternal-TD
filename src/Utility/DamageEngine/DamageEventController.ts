@@ -14,6 +14,7 @@ import type { Tower } from "../../Towers/Tower";
 import { GameMap } from "../../Game/GameMap";
 import { Creep } from "../../Creeps/Creep";
 import { MeatWagonShockwaveDamageEvent } from "./DamageEvents/MeatWagonShockwaveDamageEvent";
+import { MeatWagonFlareDamageEvent } from "./DamageEvents/MeatWagonFlareDamageEvent";
 
 export interface ExtendedDamageInstance extends DamageInstance {
     sourceOwningPlayer: player;
@@ -55,6 +56,7 @@ export class DamageEventController {
         DamageEngine.register(new ObsidianFormDamageEvent(), DamageEventType.OnDamageEvent);
         DamageEngine.register(new DamageReductionDamageEvent(), DamageEventType.OnDamageEvent);
         DamageEngine.register(new MeatWagonShockwaveDamageEvent(), DamageEventType.OnDamageEvent);
+        DamageEngine.register(new MeatWagonFlareDamageEvent(), DamageEventType.OnDamageEvent);
 
         // After damage events
         DamageEngine.register(new SapperDamageEvent(), DamageEventType.AfterDamageEvent);
