@@ -241,6 +241,8 @@ export class Creep {
     }
 
     public removeInvisibility() {
+        if (!this.hasModifier(InvisibilityModifier.INVISIBILITY_MODIFIER)) return;
+
         this.removeModifier(InvisibilityModifier.INVISIBILITY_MODIFIER);
         if (this.targetAsOverride === TargetFlags.WARD) {
             this.targetAsOverride = undefined;
