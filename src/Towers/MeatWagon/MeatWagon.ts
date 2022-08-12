@@ -8,6 +8,8 @@ import { RapidReload } from "./Upgrades/Path2/RapidReload";
 import { BurnyStuff } from "./Upgrades/Path3/BurnyStuff";
 import { ImprovedArtillery } from "./Upgrades/Path3/ImprovedArtillery";
 import { Shockwave } from "./Upgrades/Path1/Shockwave";
+import { TheBigOne } from "./Upgrades/Path1/TheBigOne";
+import { TheBiggestOne } from "./Upgrades/Path1/TheBiggestOne";
 
 export interface MeatWagoCustomData {
     attackTargetPositionX: number;
@@ -21,7 +23,9 @@ export class MeatWagon extends TowerType {
         [
             new BiggerBlast(),
             new WarSong(),
-            new Shockwave()
+            new Shockwave(),
+            new TheBigOne(),
+            new TheBiggestOne()
         ],
         [
             new FasterReload(),
