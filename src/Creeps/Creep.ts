@@ -115,8 +115,7 @@ export class Creep {
         const creepModifier = this.modifierNameCheckMap.get(modifier.name);
         if (!creepModifier) return false;
 
-        const res = this.modifierNameCheckMap.delete(modifier.name);
-        return res;
+        return this.modifierNameCheckMap.delete(modifier.name);;
     }
 
     public regrow(): void {
