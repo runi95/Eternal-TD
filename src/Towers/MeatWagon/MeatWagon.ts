@@ -12,6 +12,7 @@ import { TheBigOne } from "./Upgrades/Path1/TheBigOne";
 import { TheBiggestOne } from "./Upgrades/Path1/TheBiggestOne";
 import { Flare } from "./Upgrades/Path3/Flare";
 import { Purge } from "./Upgrades/Path3/Purge";
+import { BurningOil } from "./Upgrades/Path3/BurningOil";
 
 export interface MeatWagoCustomData {
     attackTargetPositionX: number;
@@ -44,7 +45,8 @@ export class MeatWagon extends TowerType {
             new ImprovedArtillery(),
             new BurnyStuff(),
             new Flare(),
-            new Purge()
+            new Purge(),
+            new BurningOil()
         ]
     ];
     public unitTypeId: number = FourCC('h00A');
