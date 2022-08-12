@@ -17,7 +17,6 @@ import { GameOptions } from "./GameOptions";
 import { Creep } from "../Creeps/Creep";
 import type { Checkpoint } from "../Utility/Checkpoint";
 import type { Timer } from "w3ts";
-import { MeatWagoCustomData } from "../Towers/MeatWagon/MeatWagon";
 
 export class Game {
     private readonly damageEngine: DamageEngine;
