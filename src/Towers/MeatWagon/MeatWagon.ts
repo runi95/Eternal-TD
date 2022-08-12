@@ -23,6 +23,7 @@ export interface MeatWagoCustomData {
     hasBurnyStuff: boolean;
     burnyStuffDamage: number;
     burnyStuffRate: number;
+    hasBurningOil: boolean;
 }
 
 export class MeatWagon extends TowerType {
@@ -58,7 +59,8 @@ export class MeatWagon extends TowerType {
             hasPurge: false,
             hasBurnyStuff: false,
             burnyStuffDamage: 1,
-            burnyStuffRate: 1.25
+            burnyStuffRate: 1.25,
+            hasBurningOil: false
         };
     }
 }
