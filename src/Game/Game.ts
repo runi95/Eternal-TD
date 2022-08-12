@@ -60,33 +60,6 @@ export class Game {
         });
         deathTrig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_DEATH);
 
-        const meatWagonAutoAttackGroundTrigger: Trigger = new Trigger();
-        const meatWagonUnitTypeId: number = FourCC('h00A');
-        const attackAbilityId: number = FourCC('Aatk');
-        meatWagonAutoAttackGroundTrigger.addCondition(() => GetUnitTypeId(GetAttacker()) === meatWagonUnitTypeId);
-        meatWagonAutoAttackGroundTrigger.addAction(() => {
-            const trig: unit = GetTriggerUnit();
-            const attacker: unit = GetAttacker();
-            const tower = GameMap.BUILT_TOWER_MAP.get(GetHandleId(attacker));
-            if (tower === undefined) return;
-
-            const x: number = GetUnitX(trig);
-            const y: number = GetUnitY(trig);
-
-            (tower.customData as MeatWagoCustomData).attackTargetPositionX = x;
-            (tower.customData as MeatWagoCustomData).attackTargetPositionY = y;
-
-            // Not allowed to attack ground if attack is hidden
-            BlzUnitDisableAbility(attacker, attackAbilityId, false, false);
-
-            // Issue order to attack ground
-            IssuePointOrderById(attacker, 851984, x, y);
-
-            // Hide attack again
-            BlzUnitDisableAbility(attacker, attackAbilityId, false, true);
-        });
-        meatWagonAutoAttackGroundTrigger.registerAnyUnitEvent(EVENT_PLAYER_UNIT_ATTACKED)
-
         for (let i = 0; i < GameMap.CHECKPOINTS.length; i++) {
             const trig: Trigger = new Trigger();
             trig.addCondition(() => GetPlayerId(GetOwningPlayer(GetEnteringUnit())) === 23)

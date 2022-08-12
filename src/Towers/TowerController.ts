@@ -3,7 +3,7 @@ import { TimerUtils } from "../Utility/TimerUtils";
 import { Tower } from "./Tower";
 import { TowerType } from "./TowerType";
 import towerTypeMap from "./TowerTypes";
-import { Trigger, Unit } from "w3ts";
+import { Point, Trigger, Unit } from "w3ts";
 import { RandomNumberGenerator } from "../Utility/RandomNumberGenerator";
 import { DefenseTypes } from "../Creeps/DefenseTypes";
 import { TowerAbilitySystem } from "../TowerAbilities/TowerAbilitySystem";
@@ -29,6 +29,7 @@ const abominationUnitTypeId: number = FourCC('h007');
 const obsidianStatueUnitTypeId: number = FourCC('h008');
 const voidwalkerUnitTypeId: number = FourCC('h00C');
 const lesserVoidwalkerUnitTypeId: number = FourCC('o000');
+const meatWagonUnitTypeId: number = FourCC('h00A');
 const timedLifeBuffId: number = FourCC('BTLF');
 export class TowerController {
     private readonly towerAbilitySystem: TowerAbilitySystem;
@@ -51,6 +52,11 @@ export class TowerController {
                 throw new Error(`Invalid argument; no TowerType of unitTypeId ${unitTypeId} exists!`);
             }
 
+            if (unitTypeId === meatWagonUnitTypeId) {
+                // Added via trigger so that the tower doesn't show up as a "worker" in UI in-game
+                trig.addType(UNIT_TYPE_PEON);
+            }
+
             const trigHandleId: number = trig.id;
             const tower: Tower = new Tower(trig, towerType);
             tower.towerType.applyInitialUnitValues(trig);
@@ -63,6 +69,10 @@ export class TowerController {
         const constEndTrig = new Trigger();
         constEndTrig.addAction(() => {
             const trig: Unit = Unit.fromEvent();
+            if (trig.typeId === meatWagonUnitTypeId) {
+                trig.issuePointOrder("channel", new Point(GameMap.CHECKPOINTS[0].x, GameMap.CHECKPOINTS[0].y));
+            }
+
             trig.pauseEx(false);
         });
         constEndTrig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_FINISH);

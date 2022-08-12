@@ -2,9 +2,10 @@ import { Spell } from '../Spell';
 import { Unit } from "w3ts";
 import { OrderId } from "w3ts/globals/order";
 import { GameMap } from '../../Game/GameMap';
-import { MeatWagoCustomData } from '../../Towers/MeatWagon/MeatWagon';
+import type { MeatWagoCustomData } from '../../Towers/MeatWagon/MeatWagon';
 
 const attackAbilityId: number = FourCC('Aatk');
+const meatWagonUnitTypeId: number = FourCC('h00A');
 export class AttackGround extends Spell {
     protected readonly abilityId: number = FourCC('A00B');
 
@@ -15,8 +16,10 @@ export class AttackGround extends Spell {
         const tower = GameMap.BUILT_TOWER_MAP.get(trig.id);
         if (tower === undefined) return;
 
-        (tower.customData as MeatWagoCustomData).attackTargetPositionX = x;
-        (tower.customData as MeatWagoCustomData).attackTargetPositionY = y;
+        if (trig.typeId === meatWagonUnitTypeId) {
+            (tower.customData as MeatWagoCustomData).attackTargetPositionX = x;
+            (tower.customData as MeatWagoCustomData).attackTargetPositionY = y;
+        }
 
         // Not allowed to attack ground if attack is hidden
         trig.disableAbility(attackAbilityId, false, false);
