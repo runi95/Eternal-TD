@@ -11,12 +11,12 @@ export class MeatWagonShockwaveDamageEvent implements DamageEvent {
         if (damageInstance.targetOwningPlayerId !== 23) return;
         if (damageInstance.sourceUnitTypeId !== meatWagonUnitTypeId) return;
 
-        const { hasShockwave, attackTargetPositionX, attackTargetPositionY } = (damageInstance.tower.customData as MeatWagoCustomData);
+        const { hasShockwave, attackTargetPositionX, attackTargetPositionY, stunAOERadius } = (damageInstance.tower.customData as MeatWagoCustomData);
         if (!hasShockwave) return;
         const x = GetUnitX(damageInstance.target);
         const y = GetUnitY(damageInstance.target);
         const dist = euclideanDistance({ x: attackTargetPositionX, y: attackTargetPositionY }, { x, y });
-        if (dist > 200) {
+        if (dist > stunAOERadius) {
             damageInstance.damage += 1;
         } else {
             StunUtils.stunUnit(damageInstance.target, 0.5);

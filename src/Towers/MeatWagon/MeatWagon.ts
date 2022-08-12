@@ -12,6 +12,7 @@ import { Shockwave } from "./Upgrades/Path1/Shockwave";
 export interface MeatWagoCustomData {
     attackTargetPositionX: number;
     attackTargetPositionY: number;
+    stunAOERadius: number;
     hasShockwave: boolean;
 }
 
@@ -38,6 +39,7 @@ export class MeatWagon extends TowerType {
         return {
             attackTargetPositionX: 0,
             attackTargetPositionY: 0,
+            stunAOERadius: 200,
             hasShockwave: false
         };
     }
