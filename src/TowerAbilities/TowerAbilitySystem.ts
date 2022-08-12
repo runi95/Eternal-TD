@@ -9,7 +9,7 @@ import { Point, Trigger, Unit } from "w3ts";
 import { Players } from "w3ts/globals";
 import { TowerAbilityType } from "./TowerAbilityType";
 import type { TowerAbility } from "./TowerAbility";
-import type { Timer } from "w3ts";
+import { Timer } from "w3ts";
 import { FortifiedVillager } from "../Creeps/Normal/FortifiedVillager";
 import { ObsidianStatueCustomData } from "../Towers/ObsidianStatue/ObsidianStatue";
 import { WhiteVillager } from "../Creeps/Normal/WhiteVillager";
@@ -528,6 +528,25 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return snowstorm();
+            case TowerAbilityType.ARTILLERY:
+                const artillery = () => {
+                    const currentCooldown: number = tower.unit.getAttackCooldown(0);
+                    const currentAreaOfEffect = BlzGetUnitWeaponRealField(tower.unit.handle, UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_FULL_DAMAGE, 0);
+                    BlzSetUnitWeaponRealField(tower.unit.handle, UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_FULL_DAMAGE, 0, currentAreaOfEffect * 1.15);
+                    tower.unit.setAttackCooldown(currentCooldown * 0.25, 0);
+
+                    const t: Timer = TimerUtils.newTimer();
+                    t.start(8, false, () => {
+                        TimerUtils.releaseTimer(t);
+
+                        const currentCooldown: number = tower.unit.getAttackCooldown(0);
+                        BlzSetUnitWeaponRealField(tower.unit.handle, UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_FULL_DAMAGE, 0, currentAreaOfEffect);
+                        tower.unit.setAttackCooldown(currentCooldown * 4, 0);
+                    });
+
+                    return true;
+                };
+                return artillery();
             default:
                 print(`ERROR: Unimplemented ability type '${towerAbilityType}'`);
                 return false;
