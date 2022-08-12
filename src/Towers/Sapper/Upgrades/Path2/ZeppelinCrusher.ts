@@ -4,7 +4,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ZeppelinCrusher extends TowerUpgrade {
     public name = "Zeppelin Crusher";
-    public icon = "ReplaceableTextures/CommandButtons/BTNEarthquake.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNControlMagic.blp";
     public cost = 27000;
     public description = "TODO: Write description";
     public ability = new ZeppelinCrushAbility();
