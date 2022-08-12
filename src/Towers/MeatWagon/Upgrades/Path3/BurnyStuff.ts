@@ -1,5 +1,6 @@
 import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
+import type { MeatWagoCustomData } from "../../MeatWagon";
 
 export class BurnyStuff extends TowerUpgrade {
     public name = "Burny Stuff";
@@ -7,7 +8,7 @@ export class BurnyStuff extends TowerUpgrade {
     public cost = 540;
     public description = "TODO: Write description";
 
-    public applyUpgrade(_tower: Tower): void {
-        // TODO: Add napalm to damaged enemies
+    public applyUpgrade(tower: Tower): void {
+        (tower.customData as MeatWagoCustomData).hasBurnyStuff = true;
     }
 }

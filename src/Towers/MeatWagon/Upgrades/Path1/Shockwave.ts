@@ -11,6 +11,8 @@ export class Shockwave extends TowerUpgrade {
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as MeatWagoCustomData).hasShockwave = true;
+        (tower.customData as MeatWagoCustomData).burnyStuffDamage += 1;
+        (tower.customData as MeatWagoCustomData).burnyStuffRate = 0.675;
         const newAreaOfEffect = 450;
 
         // NOTE: For some reason setting UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_FULL_DAMAGE also updates the attack cooldown so we have to remember it and re-set the value afterwards. 

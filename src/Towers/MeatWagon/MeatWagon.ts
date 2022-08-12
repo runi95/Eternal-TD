@@ -20,6 +20,9 @@ export interface MeatWagoCustomData {
     hasShockwave: boolean;
     hasFlare: boolean;
     hasPurge: boolean;
+    hasBurnyStuff: boolean;
+    burnyStuffDamage: number;
+    burnyStuffRate: number;
 }
 
 export class MeatWagon extends TowerType {
@@ -52,7 +55,10 @@ export class MeatWagon extends TowerType {
             stunAOERadius: 200,
             hasShockwave: false,
             hasFlare: false,
-            hasPurge: false
+            hasPurge: false,
+            hasBurnyStuff: false,
+            burnyStuffDamage: 1,
+            burnyStuffRate: 1.25
         };
     }
 }

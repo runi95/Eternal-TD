@@ -11,6 +11,7 @@ export class TheBiggestOne extends TowerUpgrade {
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as MeatWagoCustomData).stunAOERadius = 375;
+        (tower.customData as MeatWagoCustomData).burnyStuffDamage += 20;
         tower.largeVillagerBonusDamage += 25;
         tower.zeppelinVillagerBonusDamage += 25;
         const newAreaOfEffect = 800;

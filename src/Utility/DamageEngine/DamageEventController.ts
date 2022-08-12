@@ -16,6 +16,7 @@ import { Creep } from "../../Creeps/Creep";
 import { MeatWagonShockwaveDamageEvent } from "./DamageEvents/MeatWagonShockwaveDamageEvent";
 import { MeatWagonFlareDamageEvent } from "./DamageEvents/MeatWagonFlareDamageEvent";
 import { MeatWagonPurgeDamageEvent } from "./DamageEvents/MeatWagonPurgeDamageEvent";
+import { MeatWagonBurnyStuffDamageEvent } from "./DamageEvents/MeatWagonBurnyStuffDamageEvent";
 
 export interface ExtendedDamageInstance extends DamageInstance {
     sourceOwningPlayer: player;
@@ -59,6 +60,7 @@ export class DamageEventController {
         DamageEngine.register(new MeatWagonShockwaveDamageEvent(), DamageEventType.OnDamageEvent);
         DamageEngine.register(new MeatWagonFlareDamageEvent(), DamageEventType.OnDamageEvent);
         DamageEngine.register(new MeatWagonPurgeDamageEvent(), DamageEventType.OnDamageEvent);
+        DamageEngine.register(new MeatWagonBurnyStuffDamageEvent(), DamageEventType.OnDamageEvent);
 
         // After damage events
         DamageEngine.register(new SapperDamageEvent(), DamageEventType.AfterDamageEvent);
