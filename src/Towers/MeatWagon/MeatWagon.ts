@@ -11,6 +11,7 @@ import { Shockwave } from "./Upgrades/Path1/Shockwave";
 import { TheBigOne } from "./Upgrades/Path1/TheBigOne";
 import { TheBiggestOne } from "./Upgrades/Path1/TheBiggestOne";
 import { Flare } from "./Upgrades/Path3/Flare";
+import { Purge } from "./Upgrades/Path3/Purge";
 
 export interface MeatWagoCustomData {
     attackTargetPositionX: number;
@@ -18,6 +19,7 @@ export interface MeatWagoCustomData {
     stunAOERadius: number;
     hasShockwave: boolean;
     hasFlare: boolean;
+    hasPurge: boolean;
 }
 
 export class MeatWagon extends TowerType {
@@ -37,7 +39,8 @@ export class MeatWagon extends TowerType {
         [
             new ImprovedArtillery(),
             new BurnyStuff(),
-            new Flare()
+            new Flare(),
+            new Purge()
         ]
     ];
     public unitTypeId: number = FourCC('h00A');
@@ -49,6 +52,7 @@ export class MeatWagon extends TowerType {
             stunAOERadius: 200,
             hasShockwave: false,
             hasFlare: false,
+            hasPurge: false
         };
     }
 }
