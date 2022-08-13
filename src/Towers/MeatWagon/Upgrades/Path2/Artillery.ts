@@ -5,7 +5,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class Artillery extends TowerUpgrade {
     public name = "Artillery";
-    public icon = "ReplaceableTextures/CommandButtons/BTNStampede.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNClusterRockets.blp";
     public cost = 5940;
     public description = "TODO: Write description";
     public ability?: TowerAbility = new ArtilleryAbility();
