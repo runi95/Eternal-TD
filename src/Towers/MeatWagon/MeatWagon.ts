@@ -14,6 +14,7 @@ import { Flare } from "./Upgrades/Path3/Flare";
 import { Purge } from "./Upgrades/Path3/Purge";
 import { BurningOil } from "./Upgrades/Path3/BurningOil";
 import { Artillery } from "./Upgrades/Path2/Artillery";
+import { Earthquake } from "./Upgrades/Path2/Earthquake";
 
 export interface MeatWagoCustomData {
     attackTargetPositionX: number;
@@ -41,7 +42,8 @@ export class MeatWagon extends TowerType {
             new FasterReload(),
             new RapidReload(),
             new HeavyShells(),
-            new Artillery()
+            new Artillery(),
+            new Earthquake()
         ],
         [
             new ImprovedArtillery(),

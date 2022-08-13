@@ -8,4 +8,5 @@ export enum TowerAbilityType {
     SNOWSTORM,
     ABSOLUTE_ZERO,
     ARTILLERY,
+    EARTHQUAKE,
 }

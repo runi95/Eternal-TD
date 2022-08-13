@@ -547,6 +547,43 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return artillery();
+            case TowerAbilityType.EARTHQUAKE:
+                const earthquake = () => {
+                    let ticks = 8;
+                    const t: Timer = TimerUtils.newTimer();
+                    t.start(1, true, () => {
+                        ticks--;
+
+                        const x = tower.unit.x;
+                        const y = tower.unit.y;
+
+                        DestroyEffect(AddSpecialEffect("Abilities/Spells/Orc/EarthQuake/EarthQuakeTarget.mdl", x, y));
+
+                        const loc = new Point(x, y);
+                        const group: Group = Group.fromRange(1500, loc);
+                        group.for((u) => {
+                            if (u.owner.id !== 23) {
+                                return;
+                            }
+
+                            const creep = GameMap.SPAWNED_CREEP_MAP.get(u.id);
+                            if (creep === undefined) return;
+
+                            tower.unit.damageTarget(u.handle, 20, false, false, ATTACK_TYPE_SIEGE, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS);
+                            StunUtils.stunUnit(u.handle, 0.9);
+                        });
+                        group.destroy();
+                        loc.destroy();
+
+                        if (ticks <= 0) {
+                            TimerUtils.releaseTimer(t);
+                        }
+                    })
+
+
+                    return true;
+                };
+                return earthquake();
             default:
                 print(`ERROR: Unimplemented ability type '${towerAbilityType}'`);
                 return false;
