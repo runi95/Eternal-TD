@@ -4,7 +4,7 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class HeavyShells extends TowerUpgrade {
     public name = "Heavy Shells";
-    public icon = "ReplaceableTextures/CommandButtons/BTNEarthquake.blp";
+    public icon = "ReplaceableTextures/CommandButtons/BTNStampede.blp";
     public cost = 970;
     public description = "TODO: Write description";
 
