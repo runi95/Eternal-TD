@@ -148,6 +148,18 @@ export class Game {
             const creepSpawnDetails = round.creeps[creepIndex];
             Creep.spawn(creepSpawnDetails.creepType, modifiers);
 
+            const currentGoldToDistribute = GameMap.PLAYER_GOLD_TO_DISTRIBUTE;
+            if (currentGoldToDistribute > GameMap.ONLINE_PLAYER_ID_LIST.length) {
+                GameMap.PLAYER_GOLD_TO_DISTRIBUTE = 0;
+                const goldPerPlayer = Math.floor(currentGoldToDistribute / GameMap.ONLINE_PLAYER_ID_LIST.length);
+                GameMap.PLAYER_GOLD_TO_DISTRIBUTE += currentGoldToDistribute % GameMap.ONLINE_PLAYER_ID_LIST.length;
+
+                for (let i = 0; i < GameMap.ONLINE_PLAYER_ID_LIST.length; i++) {
+                    const player = MapPlayer.fromIndex(GameMap.ONLINE_PLAYER_ID_LIST[i]);
+                    player.setState(PLAYER_STATE_RESOURCE_GOLD, player.getState(PLAYER_STATE_RESOURCE_GOLD) + goldPerPlayer);
+                }
+            }
+
             if (creepCount >= round.creeps[creepIndex].amount) {
                 creepIndex++;
                 creepCount = 0;
@@ -159,16 +171,6 @@ export class Game {
 
             if (GameMap.ROUND_INDEX !== currentRound) {
                 TimerUtils.releaseTimer(t);
-
-                const currentGoldToDistribute = GameMap.PLAYER_GOLD_TO_DISTRIBUTE;
-                GameMap.PLAYER_GOLD_TO_DISTRIBUTE = 0;
-                const goldPerPlayer = Math.floor(currentGoldToDistribute / GameMap.ONLINE_PLAYER_ID_LIST.length);
-                GameMap.PLAYER_GOLD_TO_DISTRIBUTE += currentGoldToDistribute % GameMap.ONLINE_PLAYER_ID_LIST.length;
-
-                for (let i = 0; i < GameMap.ONLINE_PLAYER_ID_LIST.length; i++) {
-                    const player = MapPlayer.fromIndex(GameMap.ONLINE_PLAYER_ID_LIST[i]);
-                    player.setState(PLAYER_STATE_RESOURCE_GOLD, player.getState(PLAYER_STATE_RESOURCE_GOLD) + goldPerPlayer);
-                }
 
                 this.spawnRounds();
             }
