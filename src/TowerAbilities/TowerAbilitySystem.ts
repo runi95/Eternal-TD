@@ -484,8 +484,8 @@ export class TowerAbilitySystem {
                 };
                 return pandemic();
             case TowerAbilityType.ABSOLUTE_ZERO:
-                let snowstormDuration = 10;
-                let snowstormBlizzard = true
+                snowstormDuration = 10;
+                snowstormBlizzard = true
             case TowerAbilityType.SNOWSTORM:
                 const snowstorm = () => {
                     const x = tower.unit.x;
