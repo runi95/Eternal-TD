@@ -193,6 +193,13 @@ export class TowerUpgradeSystem {
         const player = MapPlayer.fromEvent();
         const playerCurrentGold = player.getState(PLAYER_STATE_RESOURCE_GOLD);
         const upgrade = tower.towerType.upgrades[path][tier];
+        if (playerCurrentGold < upgrade.cost) return;
+
+        const pathA: number = tower.pathUpgrades[(path + 1) % 3];
+        const pathB: number = tower.pathUpgrades[(path + 2) % 3];
+        const isPathAvailable = (pathA === 0 || pathB === 0) && (tier < 2 || (pathA < 3 && pathB < 3));
+        if (!isPathAvailable) return;
+
         player.setState(PLAYER_STATE_RESOURCE_GOLD, playerCurrentGold - upgrade.cost);
 
         if (GetLocalPlayer() === player.handle) {
