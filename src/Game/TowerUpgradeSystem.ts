@@ -26,6 +26,7 @@ export class TowerUpgradeSystem {
         this.originFrameGameUi = Frame.fromOrigin(ORIGIN_FRAME_GAME_UI, 0);
 
         this.menu = new Frame('EscMenuPopupMenuTemplate', this.originFrameGameUi, -1, 0);
+        this.menu.setEnabled(false);
         this.menu.setVisible(false);
         this.menu.setSize(0.14, 0.19);
         this.menu.setPoint(FRAMEPOINT_BOTTOMRIGHT, this.originFrameGameUi, FRAMEPOINT_BOTTOMRIGHT, -0.007, 0.16);
@@ -128,9 +129,9 @@ export class TowerUpgradeSystem {
 
     private createUpgradePathIconFrame(parent: Frame, offsetX: number, offsetY: number, texture = "UI/Widgets/EscMenu/Human/Quest-Unknown.dds"): Frame {
         const iconFrame = new Frame('iconFrame', parent, -1, 0, 'BACKDROP', '');
-        iconFrame.setSize(0.02625, 0.02625)
-        iconFrame.setPoint(FRAMEPOINT_CENTER, parent, FRAMEPOINT_CENTER, offsetX, offsetY)
-        iconFrame.setTexture(texture, 0, true)
+        iconFrame.setSize(0.02625, 0.02625);
+        iconFrame.setPoint(FRAMEPOINT_CENTER, parent, FRAMEPOINT_CENTER, offsetX, offsetY);
+        iconFrame.setTexture(texture, 0, true);
 
         return iconFrame;
     }
@@ -155,8 +156,8 @@ export class TowerUpgradeSystem {
             const player = MapPlayer.fromEvent();
             const playerCurrentGold = player.getState(PLAYER_STATE_RESOURCE_GOLD);
 
-            buttonFrame.setVisible(false);
-            buttonFrame.setVisible(true);
+            buttonFrame.setEnabled(false);
+            buttonFrame.setEnabled(true);
             if (GetLocalPlayer() === player.handle) {
                 if (!this.upgradePathEnabled[path][tier]) return;
                 if (!this.selectedTower) return;
