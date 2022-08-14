@@ -169,6 +169,7 @@ export class TowerAbilitySystem {
             });
             Players.forEach((player) => {
                 trig.registerPlayerKeyEvent(player, OS_KEYS[cooldownButtonIndex], 0, true);
+                trig.triggerRegisterFrameEvent(this.buttons[cooldownButtonIndex], FRAMEEVENT_CONTROL_CLICK);
             });
         }
     }
