@@ -103,12 +103,6 @@ export class TowerAbilitySystem {
             button.setTooltip(tooltipFrame);
             this.buttons.push(button);
 
-            print(button.parent);
-            print(backdrop.parent.id === button.id);
-            print(cooldownFrame.parent.id === button.id);
-            print(tooltipFrame.parent.id === button.id);
-            print(textFrame.parent.id === button.id);
-
             button.setVisible(false);
 
             const trig: Trigger = new Trigger();
