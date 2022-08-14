@@ -7,13 +7,22 @@ import { StunUtils } from "../Utility/StunUtils";
 import { TimerUtils } from "../Utility/TimerUtils";
 import { Point, Trigger, Unit } from "w3ts";
 import { Players } from "w3ts/globals";
-import { TowerAbilityType } from "./TowerAbilityType";
-import type { TowerAbility } from "./TowerAbility";
 import { Timer } from "w3ts";
 import { FortifiedVillager } from "../Creeps/Normal/FortifiedVillager";
 import { ObsidianStatueCustomData } from "../Towers/ObsidianStatue/ObsidianStatue";
 import { WhiteVillager } from "../Creeps/Normal/WhiteVillager";
 import { ZebraVillager } from "../Creeps/Normal/ZebraVillager";
+import { HireHarpyRoguesAbility } from "./HireHarpyRoguesAbility";
+import { EarthquakeAbility } from "./EarthquakeAbility";
+import { ArtilleryAbility } from "./ArtilleryAbility";
+import { SnowstormAbility } from "./SnowstormAbility";
+import { AbsoluteZeroAbility } from "./AbsoluteZeroAbility";
+import { PandemicAbility } from "./PandemicAbility";
+import { PlagueAbility } from "./PlagueAbility";
+import { WendigoSmashAbility } from "./WendigoSmashAbility";
+import { ZeppelinCrushAbility } from "./ZeppelinCrushAbility";
+import { HireGreaterHarpyAbility } from "./HireGreaterHarpyAbility";
+import type { TowerAbility } from "./TowerAbility";
 
 interface ActiveTowerAbility {
     towers: AbilityTowerMeta[];
@@ -106,7 +115,7 @@ export class TowerAbilitySystem {
 
                     tower.cooldown = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.cooldown;
 
-                    const abilityEffectResult = this.applyAbilityEffect(this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.abilityType, tower.tower);
+                    const abilityEffectResult = this.applyAbilityEffect(tower.tower, this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.constructor.name);
                     if (!abilityEffectResult) {
                         tower.cooldown = 0;
                         return;
@@ -263,7 +272,7 @@ export class TowerAbilitySystem {
         }
     }
 
-    private applyAbilityEffect(towerAbilityType: TowerAbilityType, tower: Tower): boolean {
+    private applyAbilityEffect(tower: Tower, towerAbilityName: string): boolean {
         let wendigoSmashDamage = 750;
         let pandemicDamage = 1;
         let pandemicDuration = 30;
@@ -271,8 +280,8 @@ export class TowerAbilitySystem {
         let snowstormDuration = 6;
         let snowstormBlizzard = false;
 
-        switch (towerAbilityType) {
-            case TowerAbilityType.HIRE_HARPY_ROGUES:
+        switch (towerAbilityName) {
+            case HireHarpyRoguesAbility.name:
                 const hireHarpyRogues = () => {
                     const units: Unit[] = [];
                     const dummyUnits: Unit[] = [];
@@ -336,7 +345,7 @@ export class TowerAbilitySystem {
                     return true;
                 }
                 return hireHarpyRogues();
-            case TowerAbilityType.HIRE_GREATER_HARPIES:
+            case HireGreaterHarpyAbility.name:
                 const hireGreaterHarpies = () => {
                     const units: Unit[] = [];
                     const dummyUnits: Unit[] = [];
@@ -400,9 +409,9 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return hireGreaterHarpies();
-            case TowerAbilityType.ZEPPELIN_CRUSH:
+            case ZeppelinCrushAbility.name:
                 wendigoSmashDamage = 4500;
-            case TowerAbilityType.WENDIGO_SMASH:
+            case WendigoSmashAbility.name:
                 const wendigoSmash = () => {
                     let targ: Unit | undefined;
                     let targLife = 0;
@@ -445,11 +454,11 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return wendigoSmash();
-            case TowerAbilityType.PLAGUE:
+            case PlagueAbility.name:
                 pandemicDamage = 2;
                 pandemicDuration = 90;
                 pandemicMaxUnitCount = 500;
-            case TowerAbilityType.PANDEMIC:
+            case PandemicAbility.name:
                 const pandemic = () => {
                     const x = tower.unit.x;
                     const y = tower.unit.y;
@@ -483,10 +492,10 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return pandemic();
-            case TowerAbilityType.ABSOLUTE_ZERO:
+            case AbsoluteZeroAbility.name:
                 snowstormDuration = 10;
                 snowstormBlizzard = true
-            case TowerAbilityType.SNOWSTORM:
+            case SnowstormAbility.name:
                 const snowstorm = () => {
                     const x = tower.unit.x;
                     const y = tower.unit.y;
@@ -528,7 +537,7 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return snowstorm();
-            case TowerAbilityType.ARTILLERY:
+            case ArtilleryAbility.name:
                 const artillery = () => {
                     const currentCooldown: number = tower.unit.getAttackCooldown(0);
                     const currentAreaOfEffect = BlzGetUnitWeaponRealField(tower.unit.handle, UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_FULL_DAMAGE, 0);
@@ -547,7 +556,7 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return artillery();
-            case TowerAbilityType.EARTHQUAKE:
+            case EarthquakeAbility.name:
                 const earthquake = () => {
                     let ticks = 8;
                     const t: Timer = TimerUtils.newTimer();
@@ -585,7 +594,7 @@ export class TowerAbilitySystem {
                 };
                 return earthquake();
             default:
-                print(`ERROR: Unimplemented ability type '${towerAbilityType}'`);
+                print(`ERROR: Unimplemented ability type '${towerAbilityName}'`);
                 return false;
         }
     }
