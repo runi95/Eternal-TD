@@ -5,7 +5,7 @@ import { Tower } from "../Towers/Tower";
 import { Group } from "../Utility/Group";
 import { StunUtils } from "../Utility/StunUtils";
 import { TimerUtils } from "../Utility/TimerUtils";
-import { Point, Trigger, Unit } from "w3ts";
+import { Frame, Point, Trigger, Unit } from "w3ts";
 import { Players } from "w3ts/globals";
 import { Timer } from "w3ts";
 import { FortifiedVillager } from "../Creeps/Normal/FortifiedVillager";
@@ -51,10 +51,10 @@ const MAX_FRAME_COUNT = 10;
 const OS_KEYS = [OSKEY_1, OSKEY_2, OSKEY_3, OSKEY_4, OSKEY_5, OSKEY_6, OSKEY_7, OSKEY_8, OSKEY_9, OSKEY_0];
 export class TowerAbilitySystem {
     private readonly towerAbilities: ActiveTowerAbility[][] = [];
-    private readonly backdrops: framehandle[] = [];
-    private readonly buttons: framehandle[] = [];
-    private readonly tooltips: framehandle[] = [];
-    private readonly cooldownFrames: framehandle[] = [];
+    private readonly backdrops: Frame[] = [];
+    private readonly buttons: Frame[] = [];
+    private readonly tooltips: Frame[] = [];
+    private readonly cooldownFrames: Frame[] = [];
 
     // TODO: Check for desyncs
 
@@ -63,47 +63,59 @@ export class TowerAbilitySystem {
 
         const frameMargin = (FRAME_END_POS_X - FRAME_START_POS_X - (BUTTON_SIZE * MAX_FRAME_COUNT)) / (MAX_FRAME_COUNT - 1);
         for (let i = 0; i < MAX_FRAME_COUNT; i++) {
-            const button: framehandle = BlzCreateFrameByType(
+            const backdrop = Frame.fromHandle(BlzCreateFrameByType('BACKDROP', 'backdrop', undefined, 'ButtonBackdropTemplate', 0));
+            backdrop.setSize(BUTTON_SIZE, BUTTON_SIZE);
+            backdrop.setTexture('ReplaceableTextures/CommandButtons/BTNFlakCannons.blp', 0, true);
+
+            this.backdrops.push(backdrop);
+
+            const cooldownFrame = Frame.fromHandle(BlzCreateFrameByType("STATUSBAR", "cooldown", undefined, "", 0));
+            cooldownFrame.setSize(0.04, 0.04);
+            cooldownFrame.setScale(COOLDOWN_FRAME_SIZE);
+            cooldownFrame.setValue(0);
+            cooldownFrame.setVisible(false);
+            cooldownFrame.setModel("ui/feedback/cooldown/ui-cooldown-indicator.mdx", 0)
+            this.cooldownFrames.push(cooldownFrame);
+
+            const button = Frame.fromHandle(BlzCreateFrameByType(
                 'BUTTON',
                 'button',
                 BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI, 0),
                 'StandardButtonTemplate',
                 0,
-            );
-            const backdrop: framehandle = BlzCreateFrameByType('BACKDROP', 'backdrop', button, 'ButtonBackdropTemplate', 0);
-            BlzFrameSetSize(button, BUTTON_SIZE, BUTTON_SIZE);
-            BlzFrameSetSize(backdrop, BUTTON_SIZE, BUTTON_SIZE);
+            ));
             const x = FRAME_START_POS_X + i * BUTTON_SIZE + i * frameMargin;
-            BlzFrameSetAbsPoint(button, FRAMEPOINT_CENTER, x, FRAME_START_POS_Y);
-            BlzFrameSetPoint(backdrop, FRAMEPOINT_CENTER, button, FRAMEPOINT_CENTER, 0.0, 0.0);
-            BlzFrameSetTexture(backdrop, 'ReplaceableTextures/CommandButtons/BTNFlakCannons.blp', 0, true);
+            button.setAbsPoint(FRAMEPOINT_CENTER, x, FRAME_START_POS_Y);
 
-            this.buttons.push(button);
-            this.backdrops.push(backdrop);
-
-            const cooldownFrame = BlzCreateFrameByType("STATUSBAR", "cooldown", button, "", 0);
-            BlzFrameSetPoint(cooldownFrame, FRAMEPOINT_CENTER, button, FRAMEPOINT_CENTER, 0.0, 0.0);
-            BlzFrameSetSize(cooldownFrame, 0.04, 0.04);
-            BlzFrameSetScale(cooldownFrame, COOLDOWN_FRAME_SIZE);
-            BlzFrameSetValue(cooldownFrame, 0);
-            BlzFrameSetModel(cooldownFrame, "ui/feedback/cooldown/ui-cooldown-indicator.mdx", 0);
-            BlzFrameSetVisible(cooldownFrame, false);
-            this.cooldownFrames.push(cooldownFrame);
-
-            const tooltipFrame = BlzCreateFrame("BoxedText", button, 0, 0);
-            const textFrame = BlzCreateFrameByType("TEXT", "textFrame", tooltipFrame, '', 0);
-            BlzFrameSetSize(textFrame, 0.25, 0);
-            BlzFrameSetPoint(tooltipFrame, FRAMEPOINT_BOTTOMLEFT, textFrame, FRAMEPOINT_BOTTOMLEFT, -0.01, -0.01);
-            BlzFrameSetPoint(tooltipFrame, FRAMEPOINT_TOPRIGHT, textFrame, FRAMEPOINT_TOPRIGHT, 0.01, 0.01);
-            BlzFrameSetTooltip(button, tooltipFrame);
-            BlzFrameSetPoint(textFrame, FRAMEPOINT_BOTTOM, button, FRAMEPOINT_TOP, 0, 0.01);
+            const tooltipFrame = Frame.fromHandle(BlzCreateFrame("BoxedText", button.handle, 0, 0));
+            const textFrame = Frame.fromHandle(BlzCreateFrameByType("TEXT", "textFrame", tooltipFrame.handle, '', 0));
+            textFrame.setSize(0.25, 0);
             this.tooltips.push(textFrame);
 
-            BlzFrameSetVisible(button, false);
+            backdrop.setParent(button);
+            cooldownFrame.setParent(button);
+            button.setSize(BUTTON_SIZE, BUTTON_SIZE);
+            backdrop.setPoint(FRAMEPOINT_CENTER, button, FRAMEPOINT_CENTER, 0.0, 0.0);
+            cooldownFrame.setPoint(FRAMEPOINT_CENTER, button, FRAMEPOINT_CENTER, 0.0, 0.0);
+            textFrame.setPoint(FRAMEPOINT_BOTTOM, button, FRAMEPOINT_TOP, 0, 0.01);
+            tooltipFrame.setPoint(FRAMEPOINT_BOTTOMLEFT, textFrame, FRAMEPOINT_BOTTOMLEFT, -0.01, -0.01);
+            tooltipFrame.setPoint(FRAMEPOINT_TOPRIGHT, textFrame, FRAMEPOINT_TOPRIGHT, 0.01, 0.01);
+            button.setTooltip(tooltipFrame);
+            this.buttons.push(button);
+
+            print(button.parent);
+            print(backdrop.parent.id === button.id);
+            print(cooldownFrame.parent.id === button.id);
+            print(tooltipFrame.parent.id === button.id);
+            print(textFrame.parent.id === button.id);
+
+            button.setVisible(false);
 
             const trig: Trigger = new Trigger();
             const cooldownButtonIndex = i;
             trig.addAction(() => {
+                this.buttons[cooldownButtonIndex].setEnabled(false);
+                this.buttons[cooldownButtonIndex].setEnabled(true);
                 const abilityPlayerIndex = GetPlayerId(GetTriggerPlayer());
                 if (this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex] !== undefined) {
                     const availableTowers = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers.filter((tower) => tower.cooldown === 0);
@@ -139,17 +151,16 @@ export class TowerAbilitySystem {
                             }
                         }
 
-
                         activeAbility.visibleCooldown = minCooldown;
 
-                        BlzFrameSetVisible(cooldownFrame, true);
+                        cooldownFrame.setVisible(true);
                         const t: Timer = TimerUtils.newTimer();
                         t.start(0.1, true, () => {
                             activeAbility.visibleCooldown -= 0.1;
-                            BlzFrameSetValue(this.cooldownFrames[activeAbility.buttonIndex], ((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
+                            this.cooldownFrames[activeAbility.buttonIndex].setValue(((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
 
                             if (activeAbility.visibleCooldown <= 0) {
-                                BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], false);
+                                this.cooldownFrames[activeAbility.buttonIndex].setVisible(false);
                                 TimerUtils.releaseTimer(t);
                             }
                         });
@@ -188,16 +199,16 @@ export class TowerAbilitySystem {
             }
             this.towerAbilities[playerIndex].push(activeAbility);
 
-            BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], true);
+            this.cooldownFrames[activeAbility.buttonIndex].setVisible(true);
 
             const t: Timer = TimerUtils.newTimer();
             t.start(0.1, true, () => {
                 activeAbility.visibleCooldown -= 0.1;
-                BlzFrameSetValue(this.cooldownFrames[activeAbility.buttonIndex], ((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
+                this.cooldownFrames[activeAbility.buttonIndex].setValue(((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
 
                 if (activeAbility.visibleCooldown <= 0) {
                     if (this.towerAbilities[playerIndex][activeAbility.buttonIndex].visibleCooldown <= 0) {
-                        BlzFrameSetVisible(this.cooldownFrames[activeAbility.buttonIndex], false);
+                        this.cooldownFrames[activeAbility.buttonIndex].setVisible(false);
                     }
                     TimerUtils.releaseTimer(t);
                 }
@@ -230,10 +241,10 @@ export class TowerAbilitySystem {
                 isCooldownVisible = this.towerAbilities[playerIndex][i].visibleCooldown > 0;
             }
 
-            BlzFrameSetTexture(this.backdrops[i], abilityIcon, 0, true);
-            BlzFrameSetVisible(this.buttons[i], isVisible);
-            BlzFrameSetText(this.tooltips[i], tooltipText);
-            BlzFrameSetVisible(this.cooldownFrames[i], isCooldownVisible);
+            this.backdrops[i].setTexture(abilityIcon, 0, true);
+            this.buttons[i].setVisible(isVisible);
+            this.tooltips[i].setText(tooltipText);
+            this.cooldownFrames[i].setVisible(isCooldownVisible);
         }
     }
 
