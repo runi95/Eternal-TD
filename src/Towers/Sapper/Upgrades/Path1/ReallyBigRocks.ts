@@ -3,10 +3,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ReallyBigRocks extends TowerUpgrade {
-    public name = "Really Big Rocks";
-    public icon = "ReplaceableTextures/CommandButtons/BTNHumanMissileUpThree.blp";
-    public cost = 1295;
-    public description = "TODO: Write description";
+    public readonly name = "Really Big Rocks";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNHumanMissileUpThree.blp";
+    public readonly cost = 1295;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as SapperCustomData).areaOfEffect += 90;

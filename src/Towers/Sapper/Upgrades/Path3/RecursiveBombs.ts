@@ -3,10 +3,10 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 const clusterBombsAbilityId: number = FourCC('A005');
 export class RecursiveBombs extends TowerUpgrade {
-    public name = "Recursive Bombs";
-    public icon = "ReplaceableTextures/CommandButtons/BTNScatterRockets.blp";
-    public cost = 3025;
-    public description = "TODO: Write description";
+    public readonly name = "Recursive Bombs";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNScatterRockets.blp";
+    public readonly cost = 3025;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.setAbilityLevel(clusterBombsAbilityId, 2);

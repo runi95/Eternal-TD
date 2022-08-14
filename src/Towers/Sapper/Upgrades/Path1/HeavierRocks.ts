@@ -3,10 +3,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class HeavierRocks extends TowerUpgrade {
-    public name = "Heavier Rocks";
-    public icon = "ReplaceableTextures/CommandButtons/BTNHumanMissileUpTwo.blp";
-    public cost = 700;
-    public description = "TODO: Write description";
+    public readonly name = "Heavier Rocks";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNHumanMissileUpTwo.blp";
+    public readonly cost = 700;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as SapperCustomData).maxUnitCount += 10;

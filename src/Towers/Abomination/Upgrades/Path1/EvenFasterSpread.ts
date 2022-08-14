@@ -3,10 +3,10 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 const tickTowerAbilityId: number = FourCC('A008');
 export class EvenFasterSpread extends TowerUpgrade {
-    public name = "Even Faster Spread";
-    public icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
-    public cost = 325;
-    public description = "TODO: Write description";
+    public readonly name = "Even Faster Spread";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNLocustSwarm.blp";
+    public readonly cost = 325;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         const abil: ability = tower.unit.getAbility(tickTowerAbilityId);

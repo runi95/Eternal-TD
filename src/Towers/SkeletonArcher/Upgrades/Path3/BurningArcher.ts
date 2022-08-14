@@ -2,11 +2,11 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class BurningArcher extends TowerUpgrade {
-    public name = "Burning Archer";
-    public icon = "ReplaceableTextures/CommandButtons/BTNSearingArrows.blp";
-    public cost = 675;
-    public description = "TODO: Write description";
-    public newUnitTypeId = FourCC('h002');
+    public readonly name = "Burning Archer";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNSearingArrows.blp";
+    public readonly cost = 675;
+    public readonly description = "TODO: Write description";
+    public readonly newUnitTypeId = FourCC('h002');
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.acquireRange = tower.unit.acquireRange + 80;

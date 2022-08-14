@@ -3,10 +3,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class IncreasedRange extends TowerUpgrade {
-    public name = "Increased Range";
-    public icon = "ReplaceableTextures/CommandButtons/BTNROBOGOBLIN.blp";
-    public cost = 270;
-    public description = "TODO: Write description";
+    public readonly name = "Increased Range";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNROBOGOBLIN.blp";
+    public readonly cost = 270;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as VoidwalkerCustomData).additionalRange += 40;

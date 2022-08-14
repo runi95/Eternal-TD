@@ -2,10 +2,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class Archmage extends TowerUpgrade {
-    public name = "Archmage";
-    public icon = "ReplaceableTextures/CommandButtons/BTNSorceressMaster.blp";
-    public cost = 34560;
-    public description = "TODO: Write description";
+    public readonly name = "Archmage";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNSorceressMaster.blp";
+    public readonly cost = 34560;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         // TODO: Add Dragon's Breath and Shimmer attacks?

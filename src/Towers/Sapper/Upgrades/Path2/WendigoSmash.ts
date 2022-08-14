@@ -3,11 +3,11 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class WendigoSmash extends TowerUpgrade {
-    public name = "Wendigo Smash";
-    public icon = "ReplaceableTextures/CommandButtons/BTNThunderclap.blp";
-    public cost = 3455;
-    public description = "TODO: Write description";
-    public ability = new WendigoSmashAbility();
+    public readonly name = "Wendigo Smash";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNThunderclap.blp";
+    public readonly cost = 3455;
+    public readonly description = "TODO: Write description";
+    public readonly ability = new WendigoSmashAbility();
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.acquireRange = tower.unit.acquireRange + 70;

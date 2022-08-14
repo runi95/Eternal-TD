@@ -4,10 +4,10 @@ import { AbominationCustomData } from "../../Abomination";
 
 const tickTowerAbilityId: number = FourCC('A008');
 export class Overdrive extends TowerUpgrade {
-    public name = "Overdrive";
-    public icon = "ReplaceableTextures/CommandButtons/BTNRegenerationAura.blp";
-    public cost = 3455;
-    public description = "TODO: Write description";
+    public readonly name = "Overdrive";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNRegenerationAura.blp";
+    public readonly cost = 3455;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as AbominationCustomData).maxUnitCount += 1;

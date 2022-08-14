@@ -2,10 +2,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class SharpShooter extends TowerUpgrade {
-    public name = "Sharp Shooter";
-    public icon = "ReplaceableTextures/CommandButtons/BTNMarksmanship.blp";
-    public cost = 2160;
-    public description = "TODO: Write description";
+    public readonly name = "Sharp Shooter";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNMarksmanship.blp";
+    public readonly cost = 2160;
+    public readonly description = "TODO: Write description";
 
     private readonly sharpShooterAbilityId: number = FourCC('A002');
 

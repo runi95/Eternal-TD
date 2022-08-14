@@ -4,10 +4,10 @@ import { ObsidianStatueCustomData } from "../../ObsidianStatue";
 
 const tickTowerAbilityId: number = FourCC('A008');
 export class SuperBrittle extends TowerUpgrade {
-    public name = "Super Brittle";
-    public icon = "ReplaceableTextures/CommandButtons/BTNSkeletalLongevity.blp";
-    public cost = 30240;
-    public description = "TODO: Write description";
+    public readonly name = "Super Brittle";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNSkeletalLongevity.blp";
+    public readonly cost = 30240;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as ObsidianStatueCustomData).hasSuperBrittle = true;

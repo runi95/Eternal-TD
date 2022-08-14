@@ -2,10 +2,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class CorrosiveAmmo extends TowerUpgrade {
-    public name = "Corrosive Ammo";
-    public icon = "ReplaceableTextures/CommandButtons/BTNCorrosiveBreath.blp";
-    public cost = 1945;
-    public description = "TODO: Write description";
+    public readonly name = "Corrosive Ammo";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNCorrosiveBreath.blp";
+    public readonly cost = 1945;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.acquireRange = tower.unit.acquireRange * 1.15;

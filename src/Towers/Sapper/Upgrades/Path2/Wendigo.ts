@@ -2,11 +2,11 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class Wendigo extends TowerUpgrade {
-    public name = "Wendigo";
-    public icon = "ReplaceableTextures/CommandButtons/BTNHumanArtilleryUpOne.blp";
-    public cost = 1190;
-    public description = "TODO: Write description";
-    public newUnitTypeId: number = FourCC('h005');
+    public readonly name = "Wendigo";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNHumanArtilleryUpOne.blp";
+    public readonly cost = 1190;
+    public readonly description = "TODO: Write description";
+    public readonly newUnitTypeId: number = FourCC('h005');
 
     public applyUpgrade(tower: Tower): void {
         tower.zeppelinVillagerBonusDamage += 18;

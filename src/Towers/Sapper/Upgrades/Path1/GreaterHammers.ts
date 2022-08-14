@@ -4,10 +4,10 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 const skeletalHammerAbilityId: number = FourCC('A004');
 export class GreaterHammers extends TowerUpgrade {
-    public name = "Greater Hammers";
-    public icon = "ReplaceableTextures/CommandButtons/BTNStormHammer.blp";
-    public cost = 59400;
-    public description = "TODO: Write description";
+    public readonly name = "Greater Hammers";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNStormHammer.blp";
+    public readonly cost = 59400;
+    public readonly description = "TODO: Write description";
 
     // TODO: Make sure this upgrade does allow for infinite stuns!
     public applyUpgrade(tower: Tower): void {

@@ -4,10 +4,10 @@ import { MeatWagoCustomData } from "../../MeatWagon";
 
 const attackGroundAbilityId: number = FourCC('A00B');
 export class TheBiggestOne extends TowerUpgrade {
-    public name = "The Biggest One";
-    public icon = "ReplaceableTextures/CommandButtons/BTNDisenchant.blp";
-    public cost = 30240;
-    public description = "TODO: Write description";
+    public readonly name = "The Biggest One";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNDisenchant.blp";
+    public readonly cost = 30240;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as MeatWagoCustomData).stunAOERadius = 375;

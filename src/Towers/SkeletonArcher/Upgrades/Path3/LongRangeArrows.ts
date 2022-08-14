@@ -2,10 +2,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class LongRangeArrows extends TowerUpgrade {
-    public name = "Long Range Arrows";
-    public icon = "ReplaceableTextures/CommandButtons/BTNSentinel.blp";
-    public cost = 95;
-    public description = "TODO: Write description";
+    public readonly name = "Long Range Arrows";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNSentinel.blp";
+    public readonly cost = 95;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.acquireRange = tower.unit.acquireRange + 80;

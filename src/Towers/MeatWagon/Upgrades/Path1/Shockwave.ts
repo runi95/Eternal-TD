@@ -4,10 +4,10 @@ import { MeatWagoCustomData } from "../../MeatWagon";
 
 const attackGroundAbilityId: number = FourCC('A00B');
 export class Shockwave extends TowerUpgrade {
-    public name = "Shockwave";
-    public icon = "ReplaceableTextures/CommandButtons/BTNShockWave.blp";
-    public cost = 970;
-    public description = "TODO: Write description";
+    public readonly name = "Shockwave";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNShockWave.blp";
+    public readonly cost = 970;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as MeatWagoCustomData).hasShockwave = true;

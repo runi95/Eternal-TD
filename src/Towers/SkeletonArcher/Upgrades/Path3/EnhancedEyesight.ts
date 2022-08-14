@@ -3,10 +3,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class EnhancedEyesight extends TowerUpgrade {
-    public name = "Enhanced Eyesight";
-    public icon = "ReplaceableTextures/CommandButtons/BTNUltravision.blp";
-    public cost = 215;
-    public description = "TODO: Write description";
+    public readonly name = "Enhanced Eyesight";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNUltravision.blp";
+    public readonly cost = 215;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.acquireRange = tower.unit.acquireRange + 80;

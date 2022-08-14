@@ -3,10 +3,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class IncreasedVoidwalkerEfficiency extends TowerUpgrade {
-    public name = "Increased Voidwalker Efficiency";
-    public icon = "ReplaceableTextures/CommandButtons/BTNEngineeringUpgrade.blp";
-    public cost = 620;
-    public description = "TODO: Write description";
+    public readonly name = "Increased Voidwalker Efficiency";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNEngineeringUpgrade.blp";
+    public readonly cost = 620;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.setAttackCooldown(tower.unit.getAttackCooldown(0) * 0.6, 0);

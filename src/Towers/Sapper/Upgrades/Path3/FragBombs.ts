@@ -3,10 +3,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class FragBombs extends TowerUpgrade {
-    public name = "Frag Bombs";
-    public icon = "ReplaceableTextures/CommandButtons/BTNFragmentationBombs.blp";
-    public cost = 325;
-    public description = "TODO: Write description";
+    public readonly name = "Frag Bombs";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNFragmentationBombs.blp";
+    public readonly cost = 325;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as SapperCustomData).aoeDamage += 1;

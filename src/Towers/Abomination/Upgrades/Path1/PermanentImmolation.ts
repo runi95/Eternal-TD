@@ -5,10 +5,10 @@ import { AbominationCustomData } from "../../Abomination";
 const diseaseCloudAbilityId: number = FourCC('A006');
 const permanentImmolationAbilityId: number = FourCC('A007');
 export class PermanentImmolation extends TowerUpgrade {
-    public name = "Permanent Immolation";
-    public icon = "ReplaceableTextures/CommandButtons/BTNDeathPact.blp";
-    public cost = 650;
-    public description = "TODO: Write description";
+    public readonly name = "Permanent Immolation";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNDeathPact.blp";
+    public readonly cost = 650;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.removeAbility(diseaseCloudAbilityId);

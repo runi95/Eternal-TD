@@ -2,13 +2,15 @@ import { TowerAbility } from "../TowerAbilities/TowerAbility";
 import { Tower } from "./Tower";
 
 export abstract class TowerUpgrade {
-    public abstract name: string;
-    public abstract icon: string;
-    public abstract cost: number;
-    public abstract description: string;
+    // Required
+    public abstract readonly name: string;
+    public abstract readonly icon: string;
+    public abstract readonly cost: number;
+    public abstract readonly description: string;
     public abstract applyUpgrade(tower: Tower): void;
 
-    public newUnitTypeId?: number = undefined;
-    public newUnitSkinTypeId?: number = undefined;
+    // Optional
+    public readonly newUnitTypeId?: number = undefined;
+    public readonly newUnitSkinTypeId?: number = undefined;
     public readonly ability?: TowerAbility = undefined;
 }

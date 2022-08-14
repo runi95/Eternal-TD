@@ -4,10 +4,10 @@ import { AbominationCustomData } from "../../Abomination";
 
 const tickTowerAbilityId: number = FourCC('A008');
 export class Enlarge extends TowerUpgrade {
-    public name = "Enlarge";
-    public icon = "ReplaceableTextures/CommandButtons/BTNUnholyFrenzy.blp";
-    public cost = 595;
-    public description = "TODO: Write description";
+    public readonly name = "Enlarge";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNUnholyFrenzy.blp";
+    public readonly cost = 595;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as AbominationCustomData).range += 30;

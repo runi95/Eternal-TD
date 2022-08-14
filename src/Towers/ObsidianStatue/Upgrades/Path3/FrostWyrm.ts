@@ -3,11 +3,11 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 import { ObsidianStatueCustomData } from "../../ObsidianStatue";
 
 export class FrostWyrm extends TowerUpgrade {
-    public name = "Frost Wyrm";
-    public icon = "ReplaceableTextures/CommandButtons/BTNFrostWyrm.blp";
-    public cost = 2105;
-    public description = "TODO: Write description";
-    public newUnitTypeId = FourCC('h00G');
+    public readonly name = "Frost Wyrm";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNFrostWyrm.blp";
+    public readonly cost = 2105;
+    public readonly description = "TODO: Write description";
+    public readonly newUnitTypeId = FourCC('h00G');
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as ObsidianStatueCustomData).maxUnitCount -= 10;

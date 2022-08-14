@@ -4,10 +4,10 @@ import type { GargoyleCustomData } from "../../Gargoyle";
 
 const zeppelinCrasherAbilityId: number = FourCC('A00G');
 export class CripplingShot extends TowerUpgrade {
-    public name = "Crippling Shot";
-    public icon = "ReplaceableTextures/CommandButtons/BTNCripple.blp";
-    public cost = 36720;
-    public description = "TODO: Write description";
+    public readonly name = "Crippling Shot";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNCripple.blp";
+    public readonly cost = 36720;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as GargoyleCustomData).aoeDamage += 6;

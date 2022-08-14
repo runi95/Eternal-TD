@@ -4,10 +4,10 @@ import type { GargoyleCustomData } from "../../Gargoyle";
 
 const obsidianFormAbilityId: number = FourCC('A00H');
 export class ObsidianForm extends TowerUpgrade {
-    public name = "Obsidian Form";
-    public icon = "ReplaceableTextures/CommandButtons/BTNStoneForm.blp";
-    public cost = 7775;
-    public description = "TODO: Write description";
+    public readonly name = "Obsidian Form";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNStoneForm.blp";
+    public readonly cost = 7775;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as GargoyleCustomData).hasObsidianForm = true;

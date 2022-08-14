@@ -3,10 +3,10 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 import { AbominationCustomData } from "../../Abomination";
 
 export class LongerRange extends TowerUpgrade {
-    public name = "Longer Range";
-    public icon = "ReplaceableTextures/CommandButtons/BTNBansheeAdept.blp";
-    public cost = 110;
-    public description = "TODO: Write description";
+    public readonly name = "Longer Range";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNBansheeAdept.blp";
+    public readonly cost = 110;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as AbominationCustomData).range += 40;

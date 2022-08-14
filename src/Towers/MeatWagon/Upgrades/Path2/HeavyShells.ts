@@ -3,10 +3,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class HeavyShells extends TowerUpgrade {
-    public name = "Heavy Shells";
-    public icon = "ReplaceableTextures/CommandButtons/BTNStampede.blp";
-    public cost = 970;
-    public description = "TODO: Write description";
+    public readonly name = "Heavy Shells";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNStampede.blp";
+    public readonly cost = 970;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         BlzSetUnitWeaponIntegerField(GetEnumUnit(), UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE, 0, AttackTypes.CHAOS);

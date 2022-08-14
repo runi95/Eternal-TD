@@ -2,10 +2,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ExcessiveHurling extends TowerUpgrade {
-    public name = "Excessive Hurling";
-    public icon = "ReplaceableTextures/CommandButtons/BTNFlakCannons.blp";
-    public cost = 430;
-    public description = "TODO: Write description";
+    public readonly name = "Excessive Hurling";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNFlakCannons.blp";
+    public readonly cost = 430;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.acquireRange = tower.unit.acquireRange + 40;

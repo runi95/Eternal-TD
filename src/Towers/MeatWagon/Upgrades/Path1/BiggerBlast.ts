@@ -3,10 +3,10 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 
 const attackGroundAbilityId: number = FourCC('A00B');
 export class BiggerBlast extends TowerUpgrade {
-    public name = "Bigger Blast";
-    public icon = "ReplaceableTextures/CommandButtons/BTNSmash.blp";
-    public cost = 540;
-    public description = "TODO: Write description";
+    public readonly name = "Bigger Blast";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNSmash.blp";
+    public readonly cost = 540;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         const newAreaOfEffect = 300;

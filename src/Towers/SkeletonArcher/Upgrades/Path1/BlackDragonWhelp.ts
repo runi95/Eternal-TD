@@ -2,11 +2,11 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class BlackDragonWhelp extends TowerUpgrade {
-    public name = "Black Dragon Whelp";
-    public icon = "ReplaceableTextures/CommandButtons/BTNVorpalBlades.blp";
-    public cost = 325;
-    public description = "TODO: Write description";
-    public newUnitTypeId = FourCC('h001');
+    public readonly name = "Black Dragon Whelp";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNVorpalBlades.blp";
+    public readonly cost = 325;
+    public readonly description = "TODO: Write description";
+    public readonly newUnitTypeId = FourCC('h001');
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.acquireRange = tower.unit.acquireRange + 680;

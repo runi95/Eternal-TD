@@ -2,10 +2,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ArcaneSpike extends TowerUpgrade {
-    public name = "Arcane Spike";
-    public icon = "ReplaceableTextures/CommandButtons/BTNPriestAdept.blp";
-    public cost = 10800;
-    public description = "TODO: Write description";
+    public readonly name = "Arcane Spike";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNPriestAdept.blp";
+    public readonly cost = 10800;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.zeppelinVillagerBonusDamage += 11;

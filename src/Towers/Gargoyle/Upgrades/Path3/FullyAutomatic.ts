@@ -2,10 +2,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class FullyAutomatic extends TowerUpgrade {
-    public name = "Fully-Automatic";
-    public icon = "ReplaceableTextures/CommandButtons/BTNDevourMagic.blp";
-    public cost = 4590;
-    public description = "TODO: Write description";
+    public readonly name = "Fully-Automatic";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNDevourMagic.blp";
+    public readonly cost = 4590;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.zeppelinVillagerBonusDamage += 1;

@@ -4,10 +4,10 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 import { ObsidianStatueCustomData } from "../../ObsidianStatue";
 
 export class IcicleImpale extends TowerUpgrade {
-    public name = "Icicle Impale";
-    public icon = "ReplaceableTextures/CommandButtons/BTNFrostBolt.blp";
-    public cost = 32400;
-    public description = "TODO: Write description";
+    public readonly name = "Icicle Impale";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNFrostBolt.blp";
+    public readonly cost = 32400;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as ObsidianStatueCustomData).hasIcicles = true;

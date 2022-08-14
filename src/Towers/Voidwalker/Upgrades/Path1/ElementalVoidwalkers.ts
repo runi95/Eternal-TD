@@ -9,10 +9,10 @@ const newVoidwalkerUnitTypeIds = [
     FourCC('o002')
 ];
 export class ElementalVoidwalkers extends TowerUpgrade {
-    public name = "Elemental Voidwalkers";
-    public icon = "ReplaceableTextures/CommandButtons/BTNStormEarth&Fire.blp";
-    public cost = 2700;
-    public description = "TODO: Write description";
+    public readonly name = "Elemental Voidwalkers";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNStormEarth&Fire.blp";
+    public readonly cost = 2700;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as VoidwalkerCustomData).voidwalkerUnitTypeIds = newVoidwalkerUnitTypeIds;

@@ -2,10 +2,10 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class ArcaneMastery extends TowerUpgrade {
-    public name = "Arcane Mastery";
-    public icon = "ReplaceableTextures/CommandButtons/BTNSorceressAdept.blp";
-    public cost = 1405;
-    public description = "TODO: Write description";
+    public readonly name = "Arcane Mastery";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNSorceressAdept.blp";
+    public readonly cost = 1405;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         tower.unit.acquireRange = tower.unit.acquireRange + 200;

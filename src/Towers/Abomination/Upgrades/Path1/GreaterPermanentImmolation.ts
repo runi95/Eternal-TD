@@ -4,10 +4,10 @@ import { AbominationCustomData } from "../../Abomination";
 
 const tickTowerAbilityId: number = FourCC('A008');
 export class GreaterPermanentImmolation extends TowerUpgrade {
-    public name = "Greater Permanent Immolation";
-    public icon = "ReplaceableTextures/CommandButtons/BTNDeathCoil.blp";
-    public cost = 3780;
-    public description = "TODO: Write description";
+    public readonly name = "Greater Permanent Immolation";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNDeathCoil.blp";
+    public readonly cost = 3780;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as AbominationCustomData).damageAmount += 1;

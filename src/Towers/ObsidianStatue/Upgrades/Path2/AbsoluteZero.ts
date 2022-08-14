@@ -5,11 +5,11 @@ import { Tower } from "../../../Tower";
 import { TowerUpgrade } from "../../../TowerUpgrade";
 
 export class AbsoluteZero extends TowerUpgrade {
-    public name = "Absolute Zero";
-    public icon = "ReplaceableTextures/CommandButtons/BTNIceShard.blp";
-    public cost = 21600;
-    public description = "TODO: Write description";
-    public ability?: TowerAbility = new AbsoluteZeroAbility();
+    public readonly name = "Absolute Zero";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNIceShard.blp";
+    public readonly cost = 21600;
+    public readonly description = "TODO: Write description";
+    public readonly ability?: TowerAbility = new AbsoluteZeroAbility();
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as ObsidianStatueCustomData).range += 100;

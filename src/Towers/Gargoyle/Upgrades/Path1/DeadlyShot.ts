@@ -3,10 +3,10 @@ import { TowerUpgrade } from "../../../TowerUpgrade";
 import type { GargoyleCustomData } from "../../Gargoyle";
 
 export class DeadlyShot extends TowerUpgrade {
-    public name = "Deadly Shot";
-    public icon = "ReplaceableTextures/CommandButtons/BTNAdvancedCreatureAttack.blp";
-    public cost = 3240;
-    public description = "TODO: Write description";
+    public readonly name = "Deadly Shot";
+    public readonly icon = "ReplaceableTextures/CommandButtons/BTNAdvancedCreatureAttack.blp";
+    public readonly cost = 3240;
+    public readonly description = "TODO: Write description";
 
     public applyUpgrade(tower: Tower): void {
         (tower.customData as GargoyleCustomData).aoeDamage += 2;
