@@ -18,6 +18,33 @@ import { Creep } from "../Creeps/Creep";
 import type { Checkpoint } from "../Utility/Checkpoint";
 import type { Timer } from "w3ts";
 
+const playerColors = [
+    "ffff0303",
+    "ff0042ff",
+    "ff1ce6b9",
+    "ff540081",
+    "fffffc00",
+    "fffe8a0e",
+    "ff20c000",
+    "ffe55bb0",
+    "ff959697",
+    "ff7ebff1",
+    "ff106246",
+    "ff4a2a04",
+    "ff9b0000",
+    "ff0000c3",
+    "ff00eaff",
+    "ffbe00fe",
+    "ffebcd87",
+    "fff8a48b",
+    "ffbfff80",
+    "ffdcb9eb",
+    "ff282828",
+    "ffebf0ff",
+    "ff00781e",
+    "ffa46f33"
+];
+
 export class Game {
     private readonly damageEngine: DamageEngine;
     private readonly damageEventController: DamageEventController;
@@ -87,9 +114,15 @@ export class Game {
     }
 
     public start(): void {
+        const playerLeavesTrig: Trigger = new Trigger();
+        playerLeavesTrig.addAction(() => {
+            DisplayTimedTextToForce(bj_FORCE_ALL_PLAYERS, 5, `|c${playerColors[GetPlayerId(GetTriggerPlayer())]}${GetPlayerName(GetTriggerPlayer())}|r has left the game!`);
+        });
+
         for (let i = 0; i < bj_MAX_PLAYERS; i++) {
             const player = MapPlayer.fromIndex(i);
             const creepPlayer = MapPlayer.fromIndex(23);
+            playerLeavesTrig.registerPlayerEvent(player, EVENT_PLAYER_LEAVE);
             if (player.slotState === PLAYER_SLOT_STATE_PLAYING && player.controller === MAP_CONTROL_USER) {
                 GameMap.ONLINE_PLAYER_ID_LIST.push(i);
 
