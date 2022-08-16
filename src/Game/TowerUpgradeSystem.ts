@@ -205,7 +205,7 @@ export class TowerUpgradeSystem {
         tower.pathUpgrades[path]++;
 
         if (this.towerController.upgradeTower(tower, upgrade)) {
-            SelectUnitForPlayerSingle(tower.unit.handle, player.handle);
+            SelectUnitForPlayerSingle(tower.unit.handle, player.handle); // TODO: Figure out if this causes / can cause desyncs
         } else {
             this.renderSelectedTowerUpgrades();
         }
