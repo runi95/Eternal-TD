@@ -202,9 +202,7 @@ export class TowerUpgradeSystem {
 
         player.setState(PLAYER_STATE_RESOURCE_GOLD, playerCurrentGold - upgrade.cost);
 
-        if (GetLocalPlayer() === player.handle) {
-            tower.pathUpgrades[path]++;
-        }
+        tower.pathUpgrades[path]++;
 
         if (this.towerController.upgradeTower(tower, upgrade)) {
             SelectUnitForPlayerSingle(tower.unit.handle, player.handle);
