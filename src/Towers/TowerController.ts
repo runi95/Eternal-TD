@@ -62,6 +62,7 @@ export class TowerController {
             tower.towerType.applyInitialUnitValues(trig);
 
             GameMap.BUILT_TOWER_MAP.set(trigHandleId, tower);
+            GameMap.BUILT_TOWER_INTERNAL_ID_MAP.set(tower.internalId, trigHandleId);
             this.addTickTower(tower);
         });
         constTrig.registerAnyUnitEvent(EVENT_PLAYER_UNIT_CONSTRUCT_START);

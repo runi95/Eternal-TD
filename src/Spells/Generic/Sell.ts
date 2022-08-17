@@ -27,7 +27,9 @@ export class Sell {
         const cost: number = GetUnitGoldCost(trig.typeId); // Todo: submit pr to w3ts
         owningPlayer.setState(PLAYER_STATE_RESOURCE_GOLD, Math.ceil(owningPlayer.getState(PLAYER_STATE_RESOURCE_GOLD) + 0.75 * cost));
         this.towerAbilitySystem.removeTowerAbility(owningPlayer.id, GameMap.BUILT_TOWER_MAP.get(trig.id));
+        const tower = GameMap.BUILT_TOWER_MAP.get(trig.id);
         GameMap.BUILT_TOWER_MAP.delete(trig.id);
+        GameMap.BUILT_TOWER_INTERNAL_ID_MAP.delete(tower.internalId);
         this.towerAbilitySystem.render();
         this.towerUpgradeSystem.deselectUnit(trig);
         trig.destroy();

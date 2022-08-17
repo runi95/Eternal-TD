@@ -11,6 +11,7 @@ export class GameMap {
     public static ONLINE_PLAYER_ID_LIST: number[] = [];
     public static readonly SPAWNED_CREEP_MAP = new Map<number, Creep>();
     public static readonly BUILT_TOWER_MAP: Map<number, Tower> = new Map();
+    public static readonly BUILT_TOWER_INTERNAL_ID_MAP: Map<number, number> = new Map();
     public static readonly AVAILABLE_MODIFIERS: CreepModifier[] = [];
     public static readonly CHECKPOINTS: Checkpoint[] = [
         // SPAWN

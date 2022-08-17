@@ -174,7 +174,7 @@ export class TowerUpgradeSystem {
                 const upgrade: TowerUpgrade = tower.towerType.upgrades[path][tier];
                 if (playerCurrentGold < upgrade.cost) return;
 
-                const stringifiedData = `${tower.unit.id}:${path}:${tier}`;
+                const stringifiedData = `${tower.internalId}:${path}:${tier}`;
                 BlzSendSyncData(TowerUpgradeSystem.UPGRADE_TOWER_SYNC_PREFIX, stringifiedData);
             }
         });
@@ -183,7 +183,8 @@ export class TowerUpgradeSystem {
 
     private upgradeTower(data: string) {
         const split = data.split(":");
-        const towerId = Number(split[0]);
+        const internalId = Number(split[0]);
+        const towerId = GameMap.BUILT_TOWER_INTERNAL_ID_MAP.get(internalId);
         const tower: Tower | undefined = GameMap.BUILT_TOWER_MAP.get(towerId);
         if (tower === null) return;
 
