@@ -193,16 +193,27 @@ export class TowerAbilitySystem {
             }
             this.towerAbilities[playerIndex].push(activeAbility);
 
-            this.cooldownFrames[activeAbility.buttonIndex].setVisible(true);
+            const localPlayerId = GetPlayerId(GetLocalPlayer());
+            let setCooldownFrameVisible = this.towerAbilities[localPlayerId][activeAbility.buttonIndex]?.visibleCooldown > 0;
+            if (playerIndex === localPlayerId) {
+                setCooldownFrameVisible = true;
+            }
+
+            this.cooldownFrames[activeAbility.buttonIndex].setVisible(setCooldownFrameVisible);
 
             const t: Timer = TimerUtils.newTimer();
             t.start(0.1, true, () => {
                 activeAbility.visibleCooldown -= 0.1;
-                this.cooldownFrames[activeAbility.buttonIndex].setValue(((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
+                let cooldownValue = 0;
+                if (this.towerAbilities[localPlayerId][activeAbility.buttonIndex] !== undefined) {
+                    cooldownValue = ((this.towerAbilities[localPlayerId][activeAbility.buttonIndex].ability.cooldown - this.towerAbilities[localPlayerId][activeAbility.buttonIndex].visibleCooldown) / this.towerAbilities[localPlayerId][activeAbility.buttonIndex].ability.cooldown) * 100;
+                }
+
+                this.cooldownFrames[activeAbility.buttonIndex].setValue(cooldownValue);
 
                 if (activeAbility.visibleCooldown <= 0) {
                     if (this.towerAbilities[playerIndex][activeAbility.buttonIndex].visibleCooldown <= 0) {
-                        this.cooldownFrames[activeAbility.buttonIndex].setVisible(false);
+                        this.cooldownFrames[activeAbility.buttonIndex].setVisible(this.towerAbilities[localPlayerId][activeAbility.buttonIndex]?.visibleCooldown > 0);
                     }
                     TimerUtils.releaseTimer(t);
                 }
