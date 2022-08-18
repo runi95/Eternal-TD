@@ -90,7 +90,9 @@ export class TowerController {
             tower.unit = unit;
 
             GameMap.BUILT_TOWER_MAP.delete(originalHandleId);
-            GameMap.BUILT_TOWER_MAP.set(unit.id, tower);
+            const newUnitId = unit.id;
+            GameMap.BUILT_TOWER_MAP.set(newUnitId, tower);
+            GameMap.BUILT_TOWER_INTERNAL_ID_MAP.set(tower.internalId, newUnitId);
 
             tower.towerType.applyInitialUnitValues(unit);
             for (let i = 0; i < pathUpgrades.length; i++) {
