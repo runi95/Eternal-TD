@@ -65,7 +65,6 @@ export class TowerAbilitySystem {
         for (let i = 0; i < MAX_FRAME_COUNT; i++) {
             const backdrop = Frame.fromHandle(BlzCreateFrameByType('BACKDROP', 'backdrop', undefined, 'ButtonBackdropTemplate', 0));
             backdrop.setSize(BUTTON_SIZE, BUTTON_SIZE);
-            backdrop.setTexture('ReplaceableTextures/CommandButtons/BTNFlakCannons.blp', 0, true);
 
             this.backdrops.push(backdrop);
 
