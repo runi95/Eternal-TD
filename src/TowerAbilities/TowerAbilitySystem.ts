@@ -50,11 +50,13 @@ const FRAME_START_POS_Y = 0.155;
 const MAX_FRAME_COUNT = 10;
 const OS_KEYS = [OSKEY_1, OSKEY_2, OSKEY_3, OSKEY_4, OSKEY_5, OSKEY_6, OSKEY_7, OSKEY_8, OSKEY_9, OSKEY_0];
 export class TowerAbilitySystem {
+    private readonly trig: Trigger = new Trigger();
     private readonly towerAbilities: ActiveTowerAbility[][] = [];
     private readonly backdrops: Frame[] = [];
     private readonly buttons: Frame[] = [];
     private readonly tooltips: Frame[] = [];
     private readonly cooldownFrames: Frame[] = [];
+    private readonly cooldownTimers: Timer[] = [];
 
     // TODO: Check for desyncs
 
@@ -104,22 +106,25 @@ export class TowerAbilitySystem {
 
             button.setVisible(false);
 
-            const trig: Trigger = new Trigger();
             const cooldownButtonIndex = i;
-            trig.addAction(() => {
+            this.trig.addAction(() => {
                 this.buttons[cooldownButtonIndex].setEnabled(false);
                 this.buttons[cooldownButtonIndex].setEnabled(true);
                 const abilityPlayerIndex = GetPlayerId(GetTriggerPlayer());
                 if (this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex] !== undefined) {
-                    const availableTowers = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers.filter((tower) => tower.cooldown === 0);
-                    if (availableTowers.length === 0)
-                        return;
+                    let towerIndex: number | null = null;
+                    for (let i = 0; i < this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers.length; i++) {
+                        if (this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers[i].cooldown === 0) {
+                            towerIndex = i;
+                            break;
+                        }
+                    }
+                    if (towerIndex === null) return;
 
-                    const isLastAbility = availableTowers.length === 1;
-                    const tower: AbilityTowerMeta = availableTowers[0];
+                    const tower = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers[towerIndex];
+                    if (tower.cooldown > 0) return;
 
                     tower.cooldown = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.cooldown;
-
                     const abilityEffectResult = this.applyAbilityEffect(tower.tower, this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].ability.constructor.name);
                     if (!abilityEffectResult) {
                         tower.cooldown = 0;
@@ -135,7 +140,13 @@ export class TowerAbilitySystem {
                         }
                     });
 
-                    if (isLastAbility) {
+                    if (this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers.every((tower) => tower.cooldown > 0)) {
+                        const localPlayerId = GetPlayerId(GetLocalPlayer());
+                        let setCooldownFrameVisible = this.towerAbilities[localPlayerId]?.[cooldownButtonIndex]?.visibleCooldown > 0;
+
+                        if (localPlayerId === GetPlayerId(GetTriggerPlayer())) {
+                            setCooldownFrameVisible = true;
+                        }
                         const activeAbility = this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex];
                         let minCooldown = tower.cooldown;
                         for (let i = 0; i < this.towerAbilities[abilityPlayerIndex][cooldownButtonIndex].towers.length; i++) {
@@ -145,25 +156,57 @@ export class TowerAbilitySystem {
                         }
 
                         activeAbility.visibleCooldown = minCooldown;
-
-                        cooldownFrame.setVisible(true);
-                        const t: Timer = TimerUtils.newTimer();
-                        t.start(0.1, true, () => {
-                            activeAbility.visibleCooldown -= 0.1;
-                            this.cooldownFrames[activeAbility.buttonIndex].setValue(((activeAbility.ability.cooldown - activeAbility.visibleCooldown) / activeAbility.ability.cooldown) * 100);
-
-                            if (activeAbility.visibleCooldown <= 0) {
-                                this.cooldownFrames[activeAbility.buttonIndex].setVisible(false);
-                                TimerUtils.releaseTimer(t);
-                            }
-                        });
+                        this.cooldownFrames[cooldownButtonIndex].setVisible(setCooldownFrameVisible);
+                        this.startCooldownTimer(cooldownButtonIndex);
                     }
                 }
             });
             Players.forEach((player) => {
-                trig.registerPlayerKeyEvent(player, OS_KEYS[cooldownButtonIndex], 0, true);
+                this.trig.registerPlayerKeyEvent(player, OS_KEYS[cooldownButtonIndex], 0, true);
             });
-            trig.triggerRegisterFrameEvent(this.buttons[cooldownButtonIndex], FRAMEEVENT_CONTROL_CLICK);
+            this.trig.triggerRegisterFrameEvent(this.buttons[cooldownButtonIndex], FRAMEEVENT_CONTROL_CLICK);
+        }
+    }
+
+    private startCooldownTimer(buttonIndex: number) {
+        if (this.cooldownTimers[buttonIndex] === undefined) {
+            const t: Timer = TimerUtils.newTimer();
+            this.cooldownTimers[buttonIndex] = t;
+            const localPlayerId = GetPlayerId(GetLocalPlayer());
+            t.start(0.1, true, () => {
+                let isFrameUpdateRequired = false;
+                let isLastTick = true;
+                for (let i = 0; i < this.towerAbilities.length; i++) {
+                    if (this.towerAbilities[i] !== undefined && this.towerAbilities[i][buttonIndex] !== undefined) {
+                        if (this.towerAbilities[i][buttonIndex].visibleCooldown > 0) {
+                            isLastTick = false;
+                            this.towerAbilities[i][buttonIndex].visibleCooldown -= 0.1;
+
+                            if (!(this.towerAbilities[i][buttonIndex].visibleCooldown > 0)) {
+                                isFrameUpdateRequired = true;
+                            }
+                        }
+                    }
+                }
+
+                let abilityCooldown = 1;
+                let visibleCooldown = 1;
+                if (this.towerAbilities[localPlayerId][buttonIndex] !== undefined) {
+                    abilityCooldown = this.towerAbilities[localPlayerId][buttonIndex].ability.cooldown;
+                    visibleCooldown = this.towerAbilities[localPlayerId][buttonIndex].visibleCooldown;
+                }
+                this.cooldownFrames[buttonIndex].setValue(((abilityCooldown - visibleCooldown) / abilityCooldown) * 100);
+
+                if (isFrameUpdateRequired) {
+                    print(!(this.towerAbilities[localPlayerId]?.[buttonIndex]?.visibleCooldown > 0));
+                    this.cooldownFrames[buttonIndex].setVisible(!(this.towerAbilities[localPlayerId]?.[buttonIndex]?.visibleCooldown > 0));
+                }
+
+                if (isLastTick) {
+                    TimerUtils.releaseTimer(t);
+                    this.cooldownTimers[buttonIndex] = undefined;
+                }
+            });
         }
     }
 
