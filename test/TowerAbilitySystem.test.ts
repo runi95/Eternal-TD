@@ -31,7 +31,6 @@ test.serial('Adding a new tower ability should display the ability frame to the 
     global.BlzCreateFrame = () => ({});
     global.BlzCreateFrameByType = () => ({});
     global.BlzGetOriginFrame = () => ({});
-    global.GetTriggerPlayer = () => undefined;
     global.GetPlayerId = () => 0;
     global.GetLocalPlayer = () => ({});
     global.ORIGIN_FRAME_GAME_UI = undefined;
@@ -82,7 +81,6 @@ test.serial('Adding a new tower ability should automatically start a cooldown ti
     global.BlzCreateFrame = () => ({});
     global.BlzCreateFrameByType = () => ({});
     global.BlzGetOriginFrame = () => ({});
-    global.GetTriggerPlayer = () => undefined;
     global.GetPlayerId = () => 0;
     global.GetLocalPlayer = () => ({});
     global.ORIGIN_FRAME_GAME_UI = undefined;
@@ -195,7 +193,6 @@ test.serial('Players should have separate cooldowns when abilities are added', a
     const player2TowerAbilitySystem = new TowerAbilitySystem();
     const player2CooldownFrame = frames[currentFrameCount + 1];
 
-    global.GetTriggerPlayer = () => ({ id: 0 });
     global.GetLocalPlayer = () => ({ id: 0 });
     player1TowerAbilitySystem.addTowerAbility(0, tower, towerAbility);
     global.GetLocalPlayer = () => ({ id: 1 });
