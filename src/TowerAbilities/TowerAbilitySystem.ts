@@ -198,7 +198,6 @@ export class TowerAbilitySystem {
                 this.cooldownFrames[buttonIndex].setValue(((abilityCooldown - visibleCooldown) / abilityCooldown) * 100);
 
                 if (isFrameUpdateRequired) {
-                    print(!(this.towerAbilities[localPlayerId]?.[buttonIndex]?.visibleCooldown > 0));
                     this.cooldownFrames[buttonIndex].setVisible(!(this.towerAbilities[localPlayerId]?.[buttonIndex]?.visibleCooldown > 0));
                 }
 
