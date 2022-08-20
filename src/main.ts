@@ -4,7 +4,7 @@ import { StringSink } from './lib/Serilog/Sinks/StringSink';
 import { Game } from './Game/Game';
 import "./global-overrides";
 
-Log.Init([new StringSink(LogLevel.Error, print)]);
+Log.Init([new StringSink(LogLevel.Information, print)]);
 
 addScriptHook(W3TS_HOOK.MAIN_AFTER, () => {
     xpcall(
