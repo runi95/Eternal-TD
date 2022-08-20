@@ -1,7 +1,6 @@
 /* eslint-disable */
 
-export enum LogLevel
-{
+export enum LogLevel {
     None = -1,
     Verbose = 0,
     Debug = 1,
@@ -11,44 +10,37 @@ export enum LogLevel
     Fatal = 5,
 }
 
-export enum LogEventType
-{
+export enum LogEventType {
     Text,
     Parameter,
 }
 
-export class LogEvent
-{
+export class LogEvent {
     constructor(public readonly Type: LogEventType, public readonly Text: string, public readonly Value: any) { }
 }
 
-export interface ILogSink
-{
+export interface ILogSink {
     LogLevel(): LogLevel;
     Log(level: LogLevel, events: LogEvent[]): void;
 }
 
-export namespace Log
-{
+export namespace Log {
     let _sinks: ILogSink[];
 
-    export function Init(this: void, sinks: ILogSink[]): void
-    {
+    export function Init(this: void, sinks: ILogSink[]): void {
         _sinks = sinks;
     }
 
-    function Parse(this: void, message: string, ...args: any[]): LogEvent[]
-    {
+    function Parse(this: void, message: string, ...args: any[]): LogEvent[] {
         const logEvents: LogEvent[] = [];
 
-        const matcher = string.gmatch(message, "{.-}");
+        const matcher = string.gmatch(message, "{.-}") as any; // This has to be cast to "any" or it breaks for some reason
         let match: string;
         let text: string;
         let n = 0;
         let i = 0;
         // @ts-ignore
-        while (match = matcher())
-        {
+        while (match = matcher()) {
             const [s, e] = string.find(message, match, 1, true);
             if (!s || !e) continue; // this should never happen
             text = message.substring(i, s - 1);
@@ -65,13 +57,10 @@ export namespace Log
         return logEvents;
     }
 
-    export function Log(this: void, level: LogLevel, message: string, ...args: any[]): void
-    {
+    export function Log(this: void, level: LogLevel, message: string, ...args: any[]): void {
         const logEvents = Parse(message, ...args);
-        for (let index = 0; index < _sinks.length; index++)
-        {
-            if (_sinks[index].LogLevel() <= level)
-            {
+        for (let index = 0; index < _sinks.length; index++) {
+            if (_sinks[index].LogLevel() <= level) {
                 _sinks[index].Log(level, logEvents);
             }
         }
