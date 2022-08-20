@@ -88,7 +88,7 @@ export class Game {
 
         for (let i = 0; i < GameMap.CHECKPOINTS.length; i++) {
             const trig: Trigger = new Trigger();
-            trig.addCondition(() => GetPlayerId(GetOwningPlayer(GetEnteringUnit())) === 23)
+            trig.addCondition(() => GetPlayerId(GetOwningPlayer(GetEnteringUnit())) === 23);
 
             const checkpoint: Checkpoint = GameMap.CHECKPOINTS[i];
             const nextCheckpointIndex: number = i + 1;
