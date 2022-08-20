@@ -104,9 +104,7 @@ export class Game {
                 }
 
                 const spawnedCreep = GameMap.SPAWNED_CREEP_MAP.get(GetHandleId(enteringUnit));
-                // spawnedCreep.currentCheckpoint = nextCheckpoint;
                 spawnedCreep.nextCheckpointIndex = nextCheckpointIndex;
-                // IssuePointOrder(enteringUnit, 'move', nextCheckpoint.x, nextCheckpoint.y);
             });
             // TODO: PR to w3ts to add this
             TriggerRegisterEnterRectSimple(trig.handle, Rect(checkpoint.x - 32, checkpoint.y - 32, checkpoint.x + 32, checkpoint.y + 32));
