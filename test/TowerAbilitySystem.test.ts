@@ -226,6 +226,128 @@ test.serial('Players should have separate cooldowns when abilities are added', a
     t.false(player2CooldownFrame.visible);
 });
 
+test.serial('Players should have separate cooldowns when abilities activated', async t => {
+    global.BlzCreateFrame = () => ({});
+    global.BlzCreateFrameByType = () => ({});
+    global.BlzGetOriginFrame = () => ({});
+    global.GetPlayerId = (player) => player.id;
+    global.ORIGIN_FRAME_GAME_UI = undefined;
+
+    const player1TowerAbilitySystem = new TowerAbilitySystem();
+    t.is(triggers.length, 1);
+
+    const unit = new Unit(0, 0, 0, 0, 0);
+    const tower = {
+        internalId: 0,
+        towerType: {
+            unitTypeId: 0,
+            upgrades: [],
+            initializeCustomData: () => { },
+            applyInitialUnitValues: () => { }
+        },
+        pathUpgrades: [],
+        customData: {
+            noop: true
+        },
+        visibleRegions: [],
+        unit,
+        fortifiedVillagerBonusDamage: 0,
+        purpleVillagerBonusDamage: 0,
+        largeVillagerBonusDamage: 0,
+        zeppelinVillagerBonusDamage: 0
+    };
+    const towerAbility = {
+        name: "ABILITY_NAME",
+        description: "ABILITY_DESCRIPTION",
+        icon: "ABILITY/ICON.blp",
+        cooldown: 5,
+        constructor: {
+            name: "no-op",
+        }
+    };
+
+    const player1CooldownFrame = frames[1];
+
+    const currentFrameCount = frames.length;
+    const player2TowerAbilitySystem = new TowerAbilitySystem();
+    const player2CooldownFrame = frames[currentFrameCount + 1];
+
+    global.GetLocalPlayer = () => ({ id: 0 });
+    player1TowerAbilitySystem.addTowerAbility(0, tower, towerAbility);
+    global.GetLocalPlayer = () => ({ id: 1 });
+    player2TowerAbilitySystem.addTowerAbility(0, tower, towerAbility);
+
+    t.true(player1CooldownFrame.visible);
+    t.false(player2CooldownFrame.visible);
+
+    const ticks = {};
+    Timer.setOnHandleFunc(async (t: Timer) => {
+        ticks[t.timerIndex] = (ticks[t.timerIndex] || 0) + 1;
+        if (ticks[t.timerIndex] % 27 === 0) {
+            await new Promise<void>((resolve, _reject) => setImmediate(() => resolve()));
+        }
+    });
+
+    await new Promise<void>((resolve, _reject) => setImmediate(() => resolve()));
+
+    t.true(player1CooldownFrame.value > 0);
+    t.false(player2CooldownFrame.value > 0);
+
+    global.GetLocalPlayer = () => ({ id: 0 });
+    player1TowerAbilitySystem.addTowerAbility(1, tower, towerAbility);
+    global.GetLocalPlayer = () => ({ id: 1 });
+    player2TowerAbilitySystem.addTowerAbility(1, tower, towerAbility);
+
+    t.true(player1CooldownFrame.visible);
+    t.true(player2CooldownFrame.visible);
+
+    await new Promise<void>((resolve, _reject) => setImmediate(() => resolve()));
+    await new Promise<void>((resolve, _reject) => setImmediate(() => resolve()));
+
+    t.false(player1CooldownFrame.visible);
+    t.false(player2CooldownFrame.visible);
+    t.false(player1CooldownFrame.value < 100);
+    t.false(player2CooldownFrame.value < 100);
+
+    global.GetTriggerPlayer = () => ({ id: 0 });
+    global.GetLocalPlayer = () => ({ id: 0 });
+    triggers[0].exec();
+    global.GetLocalPlayer = () => ({ id: 1 });
+    triggers[1].exec();
+
+    t.true(player1CooldownFrame.visible);
+    t.false(player2CooldownFrame.visible);
+
+    await new Promise<void>((resolve, _reject) => setImmediate(() => resolve()));
+    await new Promise<void>((resolve, _reject) => setImmediate(() => resolve()));
+
+    t.true(player1CooldownFrame.value < 100);
+    t.false(player2CooldownFrame.value < 100);
+
+    global.GetTriggerPlayer = () => ({ id: 1 });
+    global.GetLocalPlayer = () => ({ id: 0 });
+    triggers[0].exec();
+    global.GetLocalPlayer = () => ({ id: 1 });
+    triggers[1].exec();
+
+    t.true(player1CooldownFrame.visible);
+    t.true(player2CooldownFrame.visible);
+
+    await new Promise<void>((resolve, _reject) => setImmediate(() => resolve()));
+
+    t.false(player1CooldownFrame.visible);
+    t.true(player2CooldownFrame.visible);
+    t.false(player1CooldownFrame.value < 100);
+    t.true(player2CooldownFrame.value < 100);
+
+    await new Promise<void>((resolve, _reject) => setImmediate(() => resolve()));
+
+    t.false(player1CooldownFrame.visible);
+    t.false(player2CooldownFrame.visible);
+    t.false(player1CooldownFrame.value < 100);
+    t.false(player2CooldownFrame.value < 100);
+});
+
 test.afterEach(() => {
     global.BlzCreateFrame = undefined;
     global.BlzCreateFrameByType = undefined;

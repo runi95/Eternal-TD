@@ -198,7 +198,12 @@ export class TowerAbilitySystem {
                 this.cooldownFrames[buttonIndex].setValue(((abilityCooldown - visibleCooldown) / abilityCooldown) * 100);
 
                 if (isFrameUpdateRequired) {
-                    this.cooldownFrames[buttonIndex].setVisible(!(this.towerAbilities[localPlayerId]?.[buttonIndex]?.visibleCooldown > 0));
+                    let isVisible = false;
+                    if (this.towerAbilities[localPlayerId][buttonIndex] !== undefined) {
+                        isVisible = this.towerAbilities[localPlayerId][buttonIndex].visibleCooldown > 0;
+                    }
+
+                    this.cooldownFrames[buttonIndex].setVisible(isVisible);
                 }
 
                 if (isLastTick) {
@@ -657,6 +662,8 @@ export class TowerAbilitySystem {
                     return true;
                 };
                 return earthquake();
+            case "no-op":
+                return !!(tower.customData as any)?.noop;
             default:
                 print(`ERROR: Unimplemented ability type '${towerAbilityName}'`);
                 return false;
