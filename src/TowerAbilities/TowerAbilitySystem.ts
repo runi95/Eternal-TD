@@ -236,9 +236,11 @@ export class TowerAbilitySystem {
             this.towerAbilities[playerIndex].push(activeAbility);
 
             const localPlayerId = GetPlayerId(GetLocalPlayer());
-            let setCooldownFrameVisible = this.towerAbilities[localPlayerId][activeAbility.buttonIndex]?.visibleCooldown > 0;
+            let setCooldownFrameVisible = false;
             if (playerIndex === localPlayerId) {
                 setCooldownFrameVisible = true;
+            } else if (this.towerAbilities[localPlayerId][activeAbility.buttonIndex] !== undefined) {
+                setCooldownFrameVisible = this.towerAbilities[localPlayerId][activeAbility.buttonIndex].visibleCooldown > 0;
             }
 
             this.cooldownFrames[activeAbility.buttonIndex].setVisible(setCooldownFrameVisible);
@@ -255,7 +257,11 @@ export class TowerAbilitySystem {
 
                 if (activeAbility.visibleCooldown <= 0) {
                     if (this.towerAbilities[playerIndex][activeAbility.buttonIndex].visibleCooldown <= 0) {
-                        this.cooldownFrames[activeAbility.buttonIndex].setVisible(this.towerAbilities[localPlayerId][activeAbility.buttonIndex]?.visibleCooldown > 0);
+                        let isVisible = false;
+                        if (this.towerAbilities[localPlayerId][activeAbility.buttonIndex] !== undefined) {
+                            isVisible = this.towerAbilities[localPlayerId][activeAbility.buttonIndex].visibleCooldown > 0;
+                        }
+                        this.cooldownFrames[activeAbility.buttonIndex].setVisible(isVisible);
                     }
                     TimerUtils.releaseTimer(t);
                 }
