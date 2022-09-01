@@ -15,6 +15,7 @@ import { Sounds } from "../Utility/Sounds";
 import { GameMap } from "./GameMap";
 import { GameOptions } from "./GameOptions";
 import { Creep } from "../Creeps/Creep";
+import { Debugger } from "./Debugger";
 import type { Checkpoint } from "../Utility/Checkpoint";
 import type { Timer } from "w3ts";
 
@@ -59,10 +60,12 @@ export class Game {
     private readonly castleUnitTypeId: number = FourCC('h00H');
     private readonly castleUnit: unit;
     private readonly gameOptions: GameOptions;
+    private readonly debugger: Debugger;
     private readonly gameMap: GameMap;
 
     constructor() {
         this.gameOptions = new GameOptions();
+        this.debugger = new Debugger(this.gameOptions);
         this.gameMap = new GameMap();
         this.damageEngine = new DamageEngine();
         this.damageEventController = new DamageEventController();
