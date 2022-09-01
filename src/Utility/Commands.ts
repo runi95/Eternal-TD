@@ -3,6 +3,8 @@ import { GameMap } from "../Game/GameMap";
 import { Group } from "./Group";
 import { Rasterizer } from "./Rasterizer";
 import type { MapPlayer, Unit } from "w3ts";
+import { Log, LogLevel } from "../lib/Serilog/Serilog";
+import { StringSink } from "../lib/Serilog/Sinks/StringSink";
 
 const COMMAND_PREFIX = '-';
 
@@ -80,6 +82,8 @@ export class Commands {
 
                 GameMap.ROUND_INDEX = parseInt(args[0]) - 1;
                 break;
+            case "debug":
+                Log.Init([new StringSink(LogLevel.Debug, print)]);
         }
 
     }
