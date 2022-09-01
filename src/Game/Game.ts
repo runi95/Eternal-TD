@@ -127,7 +127,7 @@ export class Game {
             if (player.slotState === PLAYER_SLOT_STATE_PLAYING && player.controller === MAP_CONTROL_USER) {
                 GameMap.ONLINE_PLAYER_ID_LIST.push(i);
 
-                new Commands(player);
+                new Commands(this.gameOptions, player);
                 this.towerUpgradeSystem.addPlayer(player);
 
                 player.setState(PLAYER_STATE_RESOURCE_GOLD, 650);
