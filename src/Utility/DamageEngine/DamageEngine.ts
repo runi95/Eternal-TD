@@ -2,6 +2,7 @@
 import { TimerUtils } from '../TimerUtils';
 import type { Timer } from "w3ts";
 import type { DamageEvent } from './DamageEvent';
+import { Log } from '../../lib/Serilog/Serilog';
 
 type TransformerFunc = (d: DamageInstance) => DamageInstance;
 
@@ -145,6 +146,7 @@ export class DamageEngine {
             if (this.userIndex.targetClass && !IsUnitType(this.current.target, this.userIndex.targetClass)) return true;
             if (this.current.damage >= this.userIndex.damageMin) return true;
 
+            Log.Fatal("DamageEngine configuration failed!");
             return false;
         }
     })();
@@ -225,6 +227,7 @@ export class DamageEngine {
             EnableTrigger(this.t3);
             this.isDreaming = true;
 
+            Log.Debug("Start of event running");
             for (const event of events) {
                 this.userIndex = event as any; // FIXME: Don't use any type here!
                 if (check()) break;
@@ -233,6 +236,7 @@ export class DamageEngine {
                 }
                 isFirstEvent = false;
             }
+            Log.Debug("End of event running");
 
             this.isDreaming = false;
             this.enable(true);
@@ -488,6 +492,7 @@ export class DamageEngine {
 
             this.proclusGlobal = {};
             this.fischerMorrow = {};
+            Log.Debug("Cleared up the groups");
         }
     }
 
@@ -545,6 +550,7 @@ export class DamageEngine {
         TriggerRegisterAnyUnitEventBJ(this.t1, EVENT_PLAYER_UNIT_DAMAGING);
         TriggerAddCondition(this.t1, Filter(() => {
             const d = this.createFromEvent(false);
+            Log.Debug("Pre-damage event running...");
             if (this.isAlarmSet) {
                 if (this.totem) { // WarCraft 3 didn't run the DAMAGED event despite running the DAMAGING event.
                     if (d.damageType == DAMAGE_TYPE_SPIRIT_LINK || d.damageType == DAMAGE_TYPE_DEFENSIVE || d.damageType == DAMAGE_TYPE_PLANT) {
@@ -586,6 +592,7 @@ export class DamageEngine {
                     }
                     this.onAOEEnd();
                     this.current = null;
+                    Log.Debug("Timer wrapped up");
                 });
                 if (DamageEngine._USE_EXTRA) {
                     this.originalSource = d.source
@@ -607,6 +614,7 @@ export class DamageEngine {
         TriggerAddCondition(this.t2, Filter(() => {
             const r = GetEventDamage();
             let d = this.current;
+            Log.Debug("Second damage event running...");
             if (this.prepped) this.prepped = null;
             else if (this.isDreaming || d.prevAmt == 0.00) return;
             else if (this.totem) this.totem = false;
@@ -674,6 +682,7 @@ export class DamageEngine {
             }
 
             this.recursiveStack.push(d);
+            Log.Debug(`recursiveStack: ${this.recursiveStack.length} levelsDeep: ${this.userIndex.levelsDeep} sleepLevel: ${this.sleepLevel}`);
         }
     }
 
@@ -719,6 +728,8 @@ export class DamageEngine {
             levelsDeep: 0,
             damageEvent: damageEvent
         });
+
+        Log.Debug(`Registered new event to ${damageEvent.constructor.name}`);
     }
 
     // FIXME: Implement Damage.apply from line:798
